@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WildNest — Zoo Resort & Wildlife Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Raleway:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c9a84c;
+  --gold-bright: #f0d060;
+  --gold-dim: rgba(201,168,76,0.25);
+  --gold-glow: rgba(201,168,76,0.12);
+  --cream: #f5efe3;
+  --dark: #020c06;
+  --deep: #010804;
+  --mid: #061209;
+  --emerald: #0d3320;
+  --text-muted: rgba(245,239,227,0.35);
+  --text-sub: rgba(245,239,227,0.6);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--deep);
+  overflow: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1px solid rgba(201,168,76,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s cubic-bezier(0.16,1,0.3,1),
+              height 0.4s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.3s;
+}
+body:has(#enter-btn:hover) #cursor { width: 14px; height: 14px; }
+body:has(#enter-btn:hover) #cursor-ring { width: 70px; height: 70px; border-color: rgba(201,168,76,0.8); }
+
+#root {
+  width: 100%; height: 100vh;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Raleway', sans-serif;
+}
+
+/* ══════════════════════════════════
+   IDLE / TITLE SCREEN
+══════════════════════════════════ */
+#idle-screen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 10;
+  transition: opacity 1.4s cubic-bezier(0.4,0,0.2,1),
+              transform 1.4s cubic-bezier(0.4,0,0.2,1);
+}
+#idle-screen.exit {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+/* ── LAYERED BACKGROUND ── */
+.bg-void {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 100%, #061a0c 0%, #030d06 50%, #010804 100%);
+}
+.bg-mist {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 60%, rgba(10,40,18,0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 75% 50%, rgba(5,25,12,0.5) 0%, transparent 55%);
+  animation: mistDrift 18s ease-in-out infinite alternate;
+}
+@keyframes mistDrift {
+  from { transform: translateX(-15px) scale(1); }
+  to { transform: translateX(15px) scale(1.03); }
+}
+.bg-aurora {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 45% at 50% 95%,
+    rgba(201,168,76,0.06) 0%, transparent 65%);
+  animation: auroraBreath 7s ease-in-out infinite;
+}
+@keyframes auroraBreath {
+  0%,100% { opacity: 0.5; transform: scaleY(0.9); }
+  50% { opacity: 1; transform: scaleY(1.1); }
+}
+.bg-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%,
+    transparent 50%, rgba(1,8,4,0.7) 100%);
+  pointer-events: none;
+}
+
+/* ── FILM GRAIN ── */
+.grain {
+  position: absolute; inset: 0; pointer-events: none; z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+}
+
+/* ── STARS ── */
+#star-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  animation: starsFadeIn 4s ease forwards;
+}
+@keyframes starsFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes twinkle {
+  0%,100% { opacity: 0.15; r: 0.8; }
+  50% { opacity: 1; }
+}
+@keyframes moonGlow {
+  0%,100% { filter: drop-shadow(0 0 10px rgba(245,230,160,0.5)) drop-shadow(0 0 30px rgba(245,230,160,0.2)); }
+  50% { filter: drop-shadow(0 0 22px rgba(245,230,160,0.8)) drop-shadow(0 0 60px rgba(245,230,160,0.3)); }
+}
+
+/* ── LANDSCAPE ── */
+#landscape {
+  position: absolute; bottom: 0; left: 0; width: 100%;
+  animation: landscapeRise 3s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+}
+@keyframes landscapeRise {
+  from { transform: translateY(80px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes treeSway {
+  0%,100% { transform-origin: bottom center; transform: rotate(-0.6deg); }
+  50% { transform: rotate(0.6deg); }
+}
+@keyframes treeSway2 {
+  0%,100% { transform-origin: bottom center; transform: rotate(0.5deg); }
+  50% { transform: rotate(-0.8deg); }
+}
+
+/* ── FIREFLIES ── */
+@keyframes firefly {
+  0% { transform: translate(0,0); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 0.8; }
+  100% { transform: translate(var(--fx), var(--fy)); opacity: 0; }
+}
+
+/* ── CONTENT CENTER ── */
+.idle-content {
+  position: relative; z-index: 20;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+/* ── TOP BADGE ── */
+.top-badge {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 22px;
+  animation: fadeUp 1s ease 0.8s both;
+}
+.top-badge .b-line {
+  width: 45px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6));
+}
+.top-badge .b-line.r { background: linear-gradient(90deg, rgba(201,168,76,0.6), transparent); }
+.top-badge span {
+  font-size: 9px; letter-spacing: 4px;
+  color: rgba(201,168,76,0.7);
+  font-weight: 300; text-transform: uppercase;
+  font-family: 'Raleway', sans-serif;
+}
+
+/* ── CREST / MONOGRAM ── */
+.crest {
+  width: 64px; height: 64px;
+  margin-bottom: 18px;
+  animation: fadeUp 1s ease 1s both;
+  filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
+}
+
+/* ── WORDMARK ── */
+.wordmark-wrap {
+  position: relative;
+  display: flex; flex-direction: column;
+  align-items: center;
+  animation: wordmarkReveal 1.5s cubic-bezier(0.16,1,0.3,1) 1.2s both;
+}
+@keyframes wordmarkReveal {
+  from { opacity: 0; filter: blur(12px); letter-spacing: 0.7em; }
+  to { opacity: 1; filter: blur(0); }
+}
+
+.brand-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(36px, 6.5vw, 80px);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: var(--cream);
+  text-shadow:
+    0 0 80px rgba(201,168,76,0.2),
+    0 0 30px rgba(201,168,76,0.1),
+    0 4px 60px rgba(0,0,0,0.9);
+  line-height: 1;
+  position: relative;
+}
+.brand-name::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.gold-rule-wrap {
+  display: flex; align-items: center; gap: 14px;
+  margin: 12px 0 10px;
+  animation: ruleReveal 1.2s ease 2s both;
+  transform-origin: center;
+}
+@keyframes ruleReveal {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+.gold-rule {
+  height: 1px; width: 110px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.gold-diamond {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px var(--gold);
+  flex-shrink: 0;
+}
+
+.brand-tagline {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(8px, 1.1vw, 11px);
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  animation: fadeUp 1s ease 2.3s both;
+  opacity: 0.85;
+}
+
+.est-row {
+  margin-top: 16px;
+  display: flex; align-items: center; gap: 12px;
+  animation: fadeUp 1s ease 2.5s both;
+}
+.est-row .e-line { width: 28px; height: 1px; background: rgba(245,239,227,0.12); }
+.est-row span { font-size: 8px; letter-spacing: 3.5px; color: var(--text-muted); font-weight: 200; }
+
+/* ── ENTER ZONE ── */
+.enter-zone {
+  position: relative; z-index: 20;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 16px;
+  animation: fadeUp 1.2s ease 3s both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── THE LEGENDARY ENTER BUTTON ── */
+#enter-btn {
+  position: relative;
+  width: 96px; height: 96px;
+  background: transparent;
+  border: none;
+  cursor: none;
+  outline: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+#enter-btn:hover { transform: scale(1.08); }
+#enter-btn:active { transform: scale(0.94); }
+
+/* Pulse rings */
+.btn-pulse {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.3);
+  animation: pulsRing 3s ease-out infinite;
+}
+.btn-pulse:nth-child(2) { animation-delay: 1s; }
+.btn-pulse:nth-child(3) { animation-delay: 2s; }
+@keyframes pulsRing {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Outer ring with tick marks */
+.btn-ring {
+  position: absolute;
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.2);
+  animation: ringSlowSpin 20s linear infinite;
+}
+@keyframes ringSlowSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Inner filled circle */
+.btn-core {
+  position: absolute;
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%,
+    rgba(201,168,76,0.18) 0%,
+    rgba(10,30,15,0.9) 50%,
+    rgba(2,12,6,0.98) 100%);
+  border: 1px solid rgba(201,168,76,0.4);
+  box-shadow:
+    0 0 30px rgba(201,168,76,0.15),
+    inset 0 0 20px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(201,168,76,0.2);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+#enter-btn:hover .btn-core {
+  box-shadow:
+    0 0 50px rgba(201,168,76,0.35),
+    0 0 100px rgba(201,168,76,0.1),
+    inset 0 0 25px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(201,168,76,0.3);
+}
+
+/* Play icon */
+.btn-play {
+  position: absolute;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 9px 0 9px 15px;
+  border-color: transparent transparent transparent var(--gold);
+  margin-left: 4px;
+  filter: drop-shadow(0 0 6px rgba(201,168,76,0.7));
+  transition: filter 0.3s ease, border-left-color 0.3s;
+}
+#enter-btn:hover .btn-play {
+  filter: drop-shadow(0 0 12px rgba(240,208,96,0.9));
+  border-left-color: var(--gold-bright);
+}
+
+/* Label */
+.enter-label {
+  font-size: 9px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  letter-spacing: 4px;
+  color: rgba(201,168,76,0.55);
+  text-transform: uppercase;
+  animation: labelPulse 2.5s ease-in-out infinite;
+}
+@keyframes labelPulse {
+  0%,100% { opacity: 0.55; }
+  50% { opacity: 1; color: rgba(201,168,76,0.9); }
+}
+
+/* ── CORNER MARKS ── */
+.corner {
+  position: absolute;
+  width: 36px; height: 36px;
+}
+.corner.tl { top: 28px; left: 28px; }
+.corner.tr { top: 28px; right: 28px; transform: scaleX(-1); }
+.corner.bl { bottom: 28px; left: 28px; transform: scaleY(-1); }
+.corner.br { bottom: 28px; right: 28px; transform: scale(-1); }
+.corner svg { width: 100%; height: 100%; opacity: 0; animation: cornerReveal 1s ease 3.5s forwards; }
+@keyframes cornerReveal { to { opacity: 1; } }
+
+/* ── DEV CREDIT ── */
+.dev-credit {
+  position: absolute;
+  bottom: 20px;
+  font-size: 8.5px;
+  letter-spacing: 2.5px;
+  color: rgba(201,168,76,0.2);
+  font-weight: 200;
+  text-transform: uppercase;
+  font-family: 'Raleway', sans-serif;
+  animation: fadeUp 1s ease 4s both;
+  z-index: 30;
+}
+
+/* ── VERSION TAG ── */
+.version-tag {
+  position: absolute;
+  bottom: 20px; right: 28px;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(201,168,76,0.18);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 200;
+  z-index: 30;
+}
+
+/* ══════════════════════════════════
+   LOADING SCREEN
+══════════════════════════════════ */
+#loading-screen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 8;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+  background: #010804;
+}
+#loading-screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.load-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 100%, #061a0c 0%, #020a05 60%, #010804 100%);
+}
+
+/* Loading wordmark — smaller, top area */
+.load-header {
+  position: relative; z-index: 5;
+  display: flex; flex-direction: column;
+  align-items: center;
+  margin-bottom: 48px;
+}
+.load-brand {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: var(--cream);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.load-brand.show { opacity: 1; transform: translateY(0); }
+
+.load-sub {
+  font-size: 9px; letter-spacing: 4px;
+  color: rgba(201,168,76,0.5);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  margin-top: 6px;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.3s;
+}
+.load-sub.show { opacity: 1; }
+
+/* ── BIG CIRCULAR PROGRESS ── */
+.circle-progress-wrap {
+  position: relative; z-index: 5;
+  width: 200px; height: 200px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 44px;
+}
+.circle-bg { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 2; }
+.circle-track { fill: none; stroke: rgba(201,168,76,0.08); stroke-width: 2; }
+.circle-fill {
+  fill: none;
+  stroke: url(#goldGrad);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 565.5; /* 2π × 90 */
+  stroke-dashoffset: 565.5;
+  transform-origin: center;
+  transform: rotate(-90deg);
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1);
+  filter: drop-shadow(0 0 6px rgba(201,168,76,0.5));
+}
+.circle-inner {
+  position: absolute;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px;
+}
+.circle-pct {
+  font-family: 'Cinzel', serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 30px rgba(201,168,76,0.4);
+}
+.circle-pct-sym {
+  font-size: 16px;
+  color: var(--gold);
+  margin-left: 2px;
+  vertical-align: super;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+}
+.circle-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: rgba(201,168,76,0.4);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 200;
+  text-transform: uppercase;
+}
+
+/* Outer ring deco */
+.circle-deco-ring {
+  position: absolute; inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.08);
+  animation: ringSlowSpin 30s linear infinite reverse;
+}
+.circle-deco-ring-2 {
+  position: absolute; inset: -22px;
+  border-radius: 50%;
+  border: 1px dashed rgba(201,168,76,0.05);
+  animation: ringSlowSpin 50s linear infinite;
+}
+
+/* ── STEP INDICATORS ── */
+.steps-wrap {
+  position: relative; z-index: 5;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0;
+  width: 380px;
+  max-width: 90vw;
+}
+.step-row {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: opacity 0.4s ease;
+  opacity: 0.25;
+}
+.step-row.active { opacity: 1; }
+.step-row.done { opacity: 0.45; }
+.step-num {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  color: rgba(201,168,76,0.3);
+  letter-spacing: 1px;
+  width: 18px;
+  flex-shrink: 0;
+  text-align: right;
+  transition: color 0.4s;
+}
+.step-row.active .step-num { color: var(--gold); }
+.step-row.done .step-num { color: rgba(201,168,76,0.5); }
+.step-icon {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.2);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.4s ease;
+}
+.step-row.active .step-icon {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(201,168,76,0.5);
+  background: rgba(201,168,76,0.15);
+}
+.step-row.done .step-icon {
+  border-color: rgba(201,168,76,0.5);
+  background: rgba(201,168,76,0.1);
+}
+.step-icon svg { width: 7px; height: 7px; opacity: 0; transition: opacity 0.3s 0.1s; }
+.step-row.done .step-icon svg { opacity: 1; }
+.step-text-lbl {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  color: rgba(245,239,227,0.35);
+  text-transform: uppercase;
+  flex: 1;
+  transition: color 0.4s;
+}
+.step-row.active .step-text-lbl { color: rgba(245,239,227,0.8); }
+.step-row.done .step-text-lbl { color: rgba(245,239,227,0.3); }
+
+/* ── WELCOME MESSAGE ── */
+.welcome-final {
+  position: absolute;
+  bottom: 80px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(18px, 2.5vw, 26px);
+  color: var(--cream);
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 1s ease, transform 1s ease;
+  z-index: 5;
+}
+.welcome-final.show { opacity: 0.85; transform: translateY(0); }
+.welcome-final em { color: var(--gold); font-style: normal; }
+
+/* ── TRANSITION VEIL ── */
+#veil {
+  position: fixed; inset: 0;
+  background: #010804;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+#veil.active { opacity: 1; pointer-events: all; }
+
+/* ── SCANLINE ── */
+.scanline {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 40;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.03) 3px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="veil" class="active"></div>
+
+<div id="root">
+
+  <!-- ══ IDLE SCREEN ══ -->
+  <div id="idle-screen">
+    <div class="bg-void"></div>
+    <div class="bg-mist"></div>
+    <div class="bg-aurora"></div>
+    <div class="bg-vignette"></div>
+    <div class="scanline"></div>
+    <div class="grain"></div>
+
+    <!-- Stars + Moon SVG -->
+    <svg id="star-canvas" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid slice"
+         style="position:absolute;inset:0;width:100%;height:100%;">
+      <defs>
+        <radialGradient id="moonGrad" cx="50%" cy="30%">
+          <stop offset="0%" stop-color="#fffce8"/>
+          <stop offset="60%" stop-color="#f5e8a8"/>
+          <stop offset="100%" stop-color="#d4b86a" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="moonBloom" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Moon halo -->
+      <circle cx="1050" cy="110" r="70" fill="rgba(245,230,150,0.04)"/>
+      <circle cx="1050" cy="110" r="50" fill="rgba(245,230,150,0.06)"/>
+      <!-- Moon -->
+      <circle cx="1050" cy="110" r="34" fill="url(#moonGrad)" filter="url(#moonBloom)"
+              style="animation: moonGlow 4s ease-in-out infinite;"/>
+      <!-- Moon crater hints -->
+      <circle cx="1042" cy="102" r="5" fill="rgba(200,180,100,0.12)"/>
+      <circle cx="1060" cy="118" r="3.5" fill="rgba(200,180,100,0.1)"/>
+      <!-- Stars group -->
+      <g id="star-group"></g>
+    </svg>
+
+    <!-- Landscape -->
+    <svg id="landscape" viewBox="0 0 1400 320" preserveAspectRatio="xMidYMax slice"
+         xmlns="http://www.w3.org/2000/svg">
+      <!-- Far mountains -->
+      <path d="M0 320 L0 220 L80 170 L180 200 L300 130 L420 180 L520 110 L640 165 L760 100 L880 155 L960 80 L1100 150 L1200 90 L1300 140 L1400 100 L1400 320 Z"
+            fill="rgba(4,18,9,0.95)"/>
+      <!-- Mid hills -->
+      <path d="M0 320 L0 260 L120 230 L260 250 L400 210 L560 240 L700 195 L860 230 L1000 200 L1140 235 L1280 205 L1400 225 L1400 320 Z"
+            fill="rgba(3,14,7,0.98)"/>
+      <!-- Treeline base -->
+      <rect x="0" y="290" width="1400" height="30" fill="#010804"/>
+
+      <!-- Trees — left cluster -->
+      <g style="animation:treeSway 6s ease-in-out infinite; transform-box:fill-box;">
+        <polygon points="80,290 95,230 110,290" fill="#030d06"/>
+        <polygon points="95,290 112,210 129,290" fill="#040f07"/>
+        <polygon points="112,290 130,225 148,290" fill="#030d06"/>
+      </g>
+      <!-- Trees — mid cluster -->
+      <g style="animation:treeSway2 8s ease-in-out infinite 1s; transform-box:fill-box;">
+        <polygon points="560,290 580,220 600,290" fill="#040f07"/>
+        <polygon points="580,290 602,205 624,290" fill="#030d06"/>
+        <polygon points="600,290 624,225 648,290" fill="#040f07"/>
+      </g>
+      <!-- Trees — right cluster -->
+      <g style="animation:treeSway 7s ease-in-out infinite 2s; transform-box:fill-box;">
+        <polygon points="1220,290 1238,215 1256,290" fill="#030d06"/>
+        <polygon points="1240,290 1260,200 1280,290" fill="#040f07"/>
+        <polygon points="1260,290 1282,220 1304,290" fill="#030d06"/>
+      </g>
+      <!-- Firefly glow points -->
+      <circle cx="300" cy="265" r="1.5" fill="rgba(201,168,76,0.7)" opacity="0.5">
+        <animate attributeName="opacity" values="0;0.8;0" dur="3.2s" repeatCount="indefinite" begin="0s"/>
+      </circle>
+      <circle cx="750" cy="255" r="1.5" fill="rgba(180,220,130,0.7)" opacity="0">
+        <animate attributeName="opacity" values="0;0.9;0" dur="2.8s" repeatCount="indefinite" begin="1.4s"/>
+      </circle>
+      <circle cx="1100" cy="270" r="1" fill="rgba(201,168,76,0.8)" opacity="0">
+        <animate attributeName="opacity" values="0;1;0" dur="3.8s" repeatCount="indefinite" begin="0.7s"/>
+      </circle>
+      <circle cx="450" cy="260" r="1.2" fill="rgba(180,220,130,0.6)" opacity="0">
+        <animate attributeName="opacity" values="0;0.7;0" dur="4.2s" repeatCount="indefinite" begin="2.1s"/>
+      </circle>
+      <!-- Ground mist -->
+      <ellipse cx="700" cy="300" rx="700" ry="20"
+               fill="rgba(10,35,16,0.4)"/>
+    </svg>
+
+    <!-- Floating particles -->
+    <div id="particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:15;"></div>
+
+    <!-- ── CENTER CONTENT ── -->
+    <div class="idle-content">
+      <div class="top-badge">
+        <div class="b-line"></div>
+        <span>Est. 2026</span>
+        <div class="b-line r"></div>
+      </div>
+
+      <!-- SVG Crest -->
+      <svg class="crest" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,4 60,20 60,44 32,60 4,44 4,20" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+        <polygon points="32,10 54,23 54,41 32,54 10,41 10,23" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="0.8"/>
+        <!-- WN monogram -->
+        <text x="32" y="37" font-family="Cinzel,serif" font-size="13" font-weight="700"
+              fill="rgba(201,168,76,0.85)" text-anchor="middle" letter-spacing="1">WN</text>
+        <!-- Top diamond -->
+        <polygon points="32,1 34,4 32,7 30,4" fill="rgba(201,168,76,0.6)"/>
+        <!-- Bottom diamond -->
+        <polygon points="32,57 34,60 32,63 30,60" fill="rgba(201,168,76,0.6)"/>
+      </svg>
+
+      <div class="wordmark-wrap">
+        <div class="brand-name" data-text="WILDNEST">WILDNEST</div>
+        <div class="gold-rule-wrap">
+          <div class="gold-rule"></div>
+          <div class="gold-diamond"></div>
+          <div class="gold-rule"></div>
+        </div>
+        <div class="brand-tagline">Zoo Resort &nbsp;·&nbsp; Wildlife Experience</div>
+      </div>
+
+      <div class="est-row">
+        <div class="e-line"></div>
+        <span>Cebu, Philippines</span>
+        <div class="e-line"></div>
+      </div>
+    </div>
+
+    <!-- ── ENTER BUTTON ── -->
+    <div class="enter-zone">
+      <button id="enter-btn" aria-label="Enter WildNest">
+        <div class="btn-pulse"></div>
+        <div class="btn-pulse"></div>
+        <div class="btn-pulse"></div>
+        <div class="btn-ring"></div>
+        <div class="btn-core"></div>
+        <div class="btn-play"></div>
+      </button>
+      <div class="enter-label">Press to Enter</div>
+    </div>
+
+    <!-- Corners -->
+    <div class="corner tl">
+      <svg viewBox="0 0 36 36" fill="none"><path d="M2 34L2 2L34 2" stroke="rgba(201,168,76,0.28)" stroke-width="1.2" stroke-linecap="round"/><circle cx="2" cy="2" r="2" fill="rgba(201,168,76,0.3)"/></svg>
+    </div>
+    <div class="corner tr">
+      <svg viewBox="0 0 36 36" fill="none"><path d="M2 34L2 2L34 2" stroke="rgba(201,168,76,0.28)" stroke-width="1.2" stroke-linecap="round"/><circle cx="2" cy="2" r="2" fill="rgba(201,168,76,0.3)"/></svg>
+    </div>
+    <div class="corner bl">
+      <svg viewBox="0 0 36 36" fill="none"><path d="M2 34L2 2L34 2" stroke="rgba(201,168,76,0.28)" stroke-width="1.2" stroke-linecap="round"/><circle cx="2" cy="2" r="2" fill="rgba(201,168,76,0.3)"/></svg>
+    </div>
+    <div class="corner br">
+      <svg viewBox="0 0 36 36" fill="none"><path d="M2 34L2 2L34 2" stroke="rgba(201,168,76,0.28)" stroke-width="1.2" stroke-linecap="round"/><circle cx="2" cy="2" r="2" fill="rgba(201,168,76,0.3)"/></svg>
+    </div>
+
+    <div class="dev-credit">Developed by James Niño B. Mandawe</div>
+    <div class="version-tag">v 1.0.0</div>
+  </div>
+
+  <!-- ══ LOADING SCREEN ══ -->
+  <div id="loading-screen">
+    <div class="load-bg"></div>
+    <div class="scanline"></div>
+    <div class="grain"></div>
+
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMax slice">
+      <path d="M0 700 L0 580 L200 540 L420 570 L640 520 L860 555 L1080 510 L1300 550 L1400 530 L1400 700 Z" fill="rgba(4,14,8,0.6)"/>
+    </svg>
+
+    <div class="load-header">
+      <div class="load-brand" id="load-brand">WILDNEST</div>
+      <div class="load-sub" id="load-sub">Zoo Resort &nbsp;·&nbsp; Wildlife Experience</div>
+    </div>
+
+    <!-- Circular Progress -->
+    <div class="circle-progress-wrap">
+      <div class="circle-deco-ring-2"></div>
+      <div class="circle-deco-ring"></div>
+      <svg viewBox="0 0 200 200" width="200" height="200" style="position:absolute;inset:0;">
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#c9a84c"/>
+            <stop offset="50%" stop-color="#f0d060"/>
+            <stop offset="100%" stop-color="#c9a84c"/>
+          </linearGradient>
+        </defs>
+        <circle class="circle-bg" cx="100" cy="100" r="90"/>
+        <circle class="circle-track" cx="100" cy="100" r="90"/>
+        <circle class="circle-fill" id="circle-fill" cx="100" cy="100" r="90"/>
+        <!-- tick marks -->
+        <g id="ticks" opacity="0.25"></g>
+      </svg>
+      <div class="circle-inner">
+        <div class="circle-pct" id="circ-pct">0<span class="circle-pct-sym">%</span></div>
+        <div class="circle-label">Loading</div>
+      </div>
+    </div>
+
+    <!-- Steps list -->
+    <div class="steps-wrap" id="steps-wrap">
+      <div class="step-row" id="srow-0">
+        <span class="step-num">01</span>
+        <div class="step-icon"><svg viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6 7,2" stroke="rgba(201,168,76,0.9)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <span class="step-text-lbl">Connecting to Database</span>
+      </div>
+      <div class="step-row" id="srow-1">
+        <span class="step-num">02</span>
+        <div class="step-icon"><svg viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6 7,2" stroke="rgba(201,168,76,0.9)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <span class="step-text-lbl">Syncing Cabin Records</span>
+      </div>
+      <div class="step-row" id="srow-2">
+        <span class="step-num">03</span>
+        <div class="step-icon"><svg viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6 7,2" stroke="rgba(201,168,76,0.9)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <span class="step-text-lbl">Loading Wildlife Packages</span>
+      </div>
+      <div class="step-row" id="srow-3">
+        <span class="step-num">04</span>
+        <div class="step-icon"><svg viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6 7,2" stroke="rgba(201,168,76,0.9)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <span class="step-text-lbl">Checking Animal Health Alerts</span>
+      </div>
+      <div class="step-row" id="srow-4">
+        <span class="step-num">05</span>
+        <div class="step-icon"><svg viewBox="0 0 8 8" fill="none"><polyline points="1,4 3,6 7,2" stroke="rgba(201,168,76,0.9)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <span class="step-text-lbl">Launching WildNest</span>
+      </div>
+    </div>
+
+    <div class="welcome-final" id="welcome-final">
+      Welcome to <em>WildNest</em>. Your experience awaits.
+    </div>
+
+    <div class="dev-credit">Developed by James Niño B. Mandawe</div>
+    <div class="version-tag">v 1.0.0</div>
+  </div>
+
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+/* ── STARS ── */
+const starGroup = document.getElementById('star-group');
+const starData = [
+  [60,35,1.2],[140,20,0.9],[230,48,1.5],[320,18,1],[410,42,1.2],
+  [490,28,0.9],[565,50,1.4],[615,18,1.1],[45,78,1],[185,88,1.3],
+  [365,72,1.5],[515,82,0.9],[645,68,1.2],[105,108,1.5],[435,96,1],
+  [255,32,1.1],[695,58,0.9],[820,28,1.4],[905,52,1],[1050,22,1.3],
+  [1130,42,1.5],[745,78,1],[995,68,1.1],[848,108,0.9],[28,128,1.4],
+  [595,16,0.8],[945,88,1.2],[1180,62,1],[328,108,1.5],[475,128,0.9],
+  [170,145,1],[550,140,1.3],[900,135,0.9],[1250,50,1.2],[1350,95,1],
+];
+starData.forEach(([x, y, r], i) => {
+  const delay = (Math.random() * 4).toFixed(1);
+  const dur = (2.8 + Math.random() * 2.5).toFixed(1);
+  const isGold = Math.random() > 0.78;
+  const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r);
+  c.setAttribute('fill', isGold ? '#d4a830' : '#e8e0cc');
+  c.setAttribute('opacity', isGold ? '0.6' : '0.8');
+  c.style.animation = `twinkle ${dur}s ease-in-out infinite ${delay}s`;
+  starGroup.appendChild(c);
+});
+
+/* ── CIRCLE TICKS ── */
+const ticksG = document.getElementById('ticks');
+for (let i = 0; i < 60; i++) {
+  const angle = (i / 60) * 360;
+  const rad = angle * Math.PI / 180;
+  const r1 = 86, r2 = i % 5 === 0 ? 80 : 83;
+  const x1 = 100 + r1 * Math.cos(rad - Math.PI/2);
+  const y1 = 100 + r1 * Math.sin(rad - Math.PI/2);
+  const x2 = 100 + r2 * Math.cos(rad - Math.PI/2);
+  const y2 = 100 + r2 * Math.sin(rad - Math.PI/2);
+  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1',x1); line.setAttribute('y1',y1);
+  line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+  line.setAttribute('stroke', i % 5 === 0 ? 'rgba(201,168,76,0.5)' : 'rgba(201,168,76,0.2)');
+  line.setAttribute('stroke-width', i % 5 === 0 ? '1.2' : '0.7');
+  ticksG.appendChild(line);
+}
+
+/* ── PARTICLES ── */
+const particlesEl = document.getElementById('particles');
+function spawnParticle() {
+  const p = document.createElement('div');
+  const size = 1.5 + Math.random() * 2.5;
+  const x = 15 + Math.random() * 70;
+  const dx = (Math.random() - 0.5) * 70;
+  const dur = 6 + Math.random() * 6;
+  const delay = Math.random() * 2;
+  const isGold = Math.random() > 0.6;
+  p.style.cssText = `
+    position:absolute; border-radius:50%;
+    width:${size}px; height:${size}px;
+    left:${x}%; bottom:100px;
+    background:${isGold ? 'rgba(201,168,76,0.8)' : 'rgba(180,220,130,0.7)'};
+    box-shadow:0 0 ${size*3}px ${isGold ? 'rgba(201,168,76,0.5)' : 'rgba(180,220,130,0.4)'};
+    opacity:0;
+    --dx:${dx}px;
+    animation:particleDrift ${dur}s ease-in ${delay}s infinite;
+  `;
+  particlesEl.appendChild(p);
+  setTimeout(() => { try { p.remove(); } catch(e){} }, (dur + delay + 1) * 1000);
+}
+// Add particle animation
+const pStyle = document.createElement('style');
+pStyle.textContent = `
+@keyframes particleDrift {
+  0% { transform:translateY(0) translateX(0); opacity:0; }
+  10% { opacity:0.9; }
+  100% { transform:translateY(-200px) translateX(var(--dx)); opacity:0; }
+}`;
+document.head.appendChild(pStyle);
+for (let i = 0; i < 12; i++) spawnParticle();
+setInterval(spawnParticle, 1600);
+
+/* ── INTRO VEIL ── */
+const veil = document.getElementById('veil');
+setTimeout(() => { veil.classList.remove('active'); }, 300);
+
+/* ── ENTER BUTTON ── */
+const enterBtn = document.getElementById('enter-btn');
+const idleScreen = document.getElementById('idle-screen');
+const loadingScreen = document.getElementById('loading-screen');
+enterBtn.addEventListener('click', startExperience);
+
+function startExperience() {
+  try { window.chrome?.webview?.postMessage('started'); } catch(e) {}
+  enterBtn.style.pointerEvents = 'none';
+  veil.classList.add('active');
+  setTimeout(() => {
+    veil.classList.remove('active');
+    idleScreen.classList.add('exit');
+    loadingScreen.classList.add('active');
+    setTimeout(() => {
+      document.getElementById('load-brand').classList.add('show');
+      document.getElementById('load-sub').classList.add('show');
+      setTimeout(runLoader, 600);
+    }, 200);
+  }, 700);
+}
+
+/* ── LOADER ── */
+const steps = [
+  { pct: 20 }, { pct: 40 }, { pct: 60 }, { pct: 80 }, { pct: 100 }
+];
+const circumference = 2 * Math.PI * 90;
+const circleFill = document.getElementById('circle-fill');
+const circPct = document.getElementById('circ-pct');
+
+function setProgress(pct) {
+  const offset = circumference - (pct / 100) * circumference;
+  circleFill.style.strokeDashoffset = offset;
+  // Animate number
+  const current = parseInt(circPct.textContent);
+  const diff = pct - current;
+  const steps2 = 20;
+  let step2 = 0;
+  const interval = setInterval(() => {
+    step2++;
+    const val = Math.round(current + (diff * step2 / steps2));
+    circPct.innerHTML = val + '<span class="circle-pct-sym">%</span>';
+    if (step2 >= steps2) clearInterval(interval);
+  }, 30);
+}
+
+function runLoader() {
+  let i = 0;
+  document.getElementById('srow-0').classList.add('active');
+
+  function next() {
+    if (i >= steps.length) {
+      setTimeout(() => {
+        document.getElementById('welcome-final').classList.add('show');
+        setTimeout(() => {
+          try { window.chrome?.webview?.postMessage('ready'); } catch(e) {}
+        }, 3000);
+      }, 400);
+      return;
+    }
+    const s = steps[i];
+    setProgress(s.pct);
+
+    if (i > 0) {
+      document.getElementById('srow-' + (i-1)).classList.remove('active');
+      document.getElementById('srow-' + (i-1)).classList.add('done');
+    }
+    if (i < 5) document.getElementById('srow-' + i).classList.add('active');
+    i++;
+    setTimeout(next, 900);
+  }
+  setTimeout(next, 500);
+}
+
+function resetAll() {
+  veil.classList.add('active');
+  setTimeout(() => {
+    // reset circle
+    circleFill.style.strokeDashoffset = circumference;
+    circPct.innerHTML = '0<span class="circle-pct-sym">%</span>';
+    // reset steps
+    for (let j = 0; j < 5; j++) {
+      const row = document.getElementById('srow-' + j);
+      row.classList.remove('active','done');
+    }
+    document.getElementById('welcome-final').classList.remove('show');
+    document.getElementById('load-brand').classList.remove('show');
+    document.getElementById('load-sub').classList.remove('show');
+
+    loadingScreen.classList.remove('active');
+    idleScreen.classList.remove('exit');
+    enterBtn.style.pointerEvents = '';
+    setTimeout(() => veil.classList.remove('active'), 100);
+  }, 700);
+}
+</script>
+</body>
+</html>

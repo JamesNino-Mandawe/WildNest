@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .title { font: 700 34px Georgia, serif; fill: #123c2d; }
+      .subtitle { font: 600 16px "Segoe UI", Arial, sans-serif; fill: #c9971a; }
+      .section { font: 700 13px "Segoe UI", Arial, sans-serif; fill: #123c2d; letter-spacing: 1.2px; }
+      .box-title { font: 700 16px Georgia, serif; fill: #ffffff; }
+      .box-text { font: 13px "Segoe UI", Arial, sans-serif; fill: #1e1e1e; }
+      .note { font: 12px "Segoe UI", Arial, sans-serif; fill: #666666; }
+      .link { stroke: #5c746a; stroke-width: 2.4; fill: none; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5c746a"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1600" height="1100"/>
+
+  <text x="70" y="72" class="title">WILDNEST</text>
+  <text x="70" y="100" class="subtitle">Clean Print Class Diagram</text>
+  <text x="70" y="123" class="note">This version is simplified for defense and hard-copy printing.</text>
+
+  <text x="95" y="185" class="section">PUBLIC LAYER</text>
+  <text x="505" y="185" class="section">BOOKING AND SHARED SERVICES</text>
+  <text x="1115" y="185" class="section">STAFF AND OPERATIONS</text>
+
+  <!-- helper groups -->
+  <!-- left -->
+  <g transform="translate(80,220)">
+    <rect width="240" height="112" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="240" height="32" rx="18" fill="#123c2d"/>
+    <rect y="16" width="240" height="16" fill="#123c2d"/>
+    <text x="120" y="22" text-anchor="middle" class="box-title">HomePage</text>
+    <text x="120" y="68" text-anchor="middle" class="box-text">Main public interface</text>
+    <text x="120" y="89" text-anchor="middle" class="box-text">Navigation entry point</text>
+  </g>
+
+  <g transform="translate(80,405)">
+    <rect width="240" height="112" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="240" height="32" rx="18" fill="#123c2d"/>
+    <rect y="16" width="240" height="16" fill="#123c2d"/>
+    <text x="120" y="22" text-anchor="middle" class="box-title">GuestPortalWebView</text>
+    <text x="120" y="68" text-anchor="middle" class="box-text">Guest portal access</text>
+    <text x="120" y="89" text-anchor="middle" class="box-text">QR, receipts, timing status</text>
+  </g>
+
+  <g transform="translate(80,590)">
+    <rect width="240" height="112" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="240" height="32" rx="18" fill="#123c2d"/>
+    <rect y="16" width="240" height="16" fill="#123c2d"/>
+    <text x="120" y="22" text-anchor="middle" class="box-title">StaffLogin</text>
+    <text x="120" y="68" text-anchor="middle" class="box-text">Role-based authentication</text>
+    <text x="120" y="89" text-anchor="middle" class="box-text">Entry to staff dashboard</text>
+  </g>
+
+  <!-- center -->
+  <g transform="translate(430,240)">
+    <rect width="280" height="126" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="280" height="17" fill="#123c2d"/>
+    <text x="140" y="24" text-anchor="middle" class="box-title">BookNow</text>
+    <text x="140" y="72" text-anchor="middle" class="box-text">Unified booking interface</text>
+    <text x="140" y="93" text-anchor="middle" class="box-text">Cabin, Day Visit, Experience, Full Stay</text>
+  </g>
+
+  <g transform="translate(430,455)">
+    <rect width="280" height="112" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="32" rx="18" fill="#123c2d"/>
+    <rect y="16" width="280" height="16" fill="#123c2d"/>
+    <text x="140" y="22" text-anchor="middle" class="box-title">BookingPersistence</text>
+    <text x="140" y="68" text-anchor="middle" class="box-text">Stores reservation and payment data</text>
+    <text x="140" y="89" text-anchor="middle" class="box-text">Main booking save service</text>
+  </g>
+
+  <g transform="translate(430,640)">
+    <rect width="280" height="112" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="32" rx="18" fill="#123c2d"/>
+    <rect y="16" width="280" height="16" fill="#123c2d"/>
+    <text x="140" y="22" text-anchor="middle" class="box-title">BookingIdGenerator</text>
+    <text x="140" y="68" text-anchor="middle" class="box-text">Creates unique booking references</text>
+    <text x="140" y="89" text-anchor="middle" class="box-text">Prevents duplicate reservation IDs</text>
+  </g>
+
+  <g transform="translate(430,825)">
+    <rect width="280" height="112" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="32" rx="18" fill="#123c2d"/>
+    <rect y="16" width="280" height="16" fill="#123c2d"/>
+    <text x="140" y="22" text-anchor="middle" class="box-title">EmailService and Pass Generator</text>
+    <text x="140" y="68" text-anchor="middle" class="box-text">Sends confirmation emails</text>
+    <text x="140" y="89" text-anchor="middle" class="box-text">Generates QR and booking pass</text>
+  </g>
+
+  <!-- right -->
+  <g transform="translate(980,220)">
+    <rect width="280" height="120" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="280" height="17" fill="#123c2d"/>
+    <text x="140" y="24" text-anchor="middle" class="box-title">StaffPortalSupport</text>
+    <text x="140" y="70" text-anchor="middle" class="box-text">Shared helpers for staff portals</text>
+    <text x="140" y="91" text-anchor="middle" class="box-text">Database, dialogs, reports, chat utilities</text>
+  </g>
+
+  <g transform="translate(1320,160)">
+    <rect width="210" height="86" rx="16" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="210" height="30" rx="16" fill="#123c2d"/>
+    <rect y="15" width="210" height="15" fill="#123c2d"/>
+    <text x="105" y="21" text-anchor="middle" class="box-title">UcReceptionCheckIn</text>
+    <text x="105" y="62" text-anchor="middle" class="box-text">QR and reception check-in</text>
+  </g>
+
+  <g transform="translate(1320,280)">
+    <rect width="210" height="86" rx="16" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="210" height="30" rx="16" fill="#123c2d"/>
+    <rect y="15" width="210" height="15" fill="#123c2d"/>
+    <text x="105" y="21" text-anchor="middle" class="box-title">UcReceptionChat</text>
+    <text x="105" y="62" text-anchor="middle" class="box-text">Guest support conversations</text>
+  </g>
+
+  <g transform="translate(1320,400)">
+    <rect width="210" height="86" rx="16" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="210" height="30" rx="16" fill="#123c2d"/>
+    <rect y="15" width="210" height="15" fill="#123c2d"/>
+    <text x="105" y="21" text-anchor="middle" class="box-title">UcStaffChat</text>
+    <text x="105" y="62" text-anchor="middle" class="box-text">Internal staff messaging</text>
+  </g>
+
+  <g transform="translate(1320,520)">
+    <rect width="210" height="86" rx="16" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="210" height="30" rx="16" fill="#123c2d"/>
+    <rect y="15" width="210" height="15" fill="#123c2d"/>
+    <text x="105" y="21" text-anchor="middle" class="box-title">UcManagerDashboardContent</text>
+    <text x="105" y="62" text-anchor="middle" class="box-text">Manager analytics and reports</text>
+  </g>
+
+  <g transform="translate(1320,640)">
+    <rect width="210" height="86" rx="16" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="210" height="30" rx="16" fill="#123c2d"/>
+    <rect y="15" width="210" height="15" fill="#123c2d"/>
+    <text x="105" y="21" text-anchor="middle" class="box-title">UcTourGuideGroups</text>
+    <text x="105" y="62" text-anchor="middle" class="box-text">Tour event queue and claims</text>
+  </g>
+
+  <g transform="translate(1320,760)">
+    <rect width="210" height="86" rx="16" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="210" height="30" rx="16" fill="#123c2d"/>
+    <rect y="15" width="210" height="15" fill="#123c2d"/>
+    <text x="105" y="21" text-anchor="middle" class="box-title">UcZookeeperHealth</text>
+    <text x="105" y="62" text-anchor="middle" class="box-text">Animal health records</text>
+  </g>
+
+  <g transform="translate(1320,880)">
+    <rect width="210" height="86" rx="16" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="210" height="30" rx="16" fill="#123c2d"/>
+    <rect y="15" width="210" height="15" fill="#123c2d"/>
+    <text x="105" y="21" text-anchor="middle" class="box-title">UcZookeeperFlag and Clear</text>
+    <text x="105" y="62" text-anchor="middle" class="box-text">Animal alert workflow</text>
+  </g>
+
+  <!-- links -->
+  <path d="M320 276 L430 303" class="link" marker-end="url(#arrow)"/>
+  <path d="M320 461 L430 303" class="link" marker-end="url(#arrow)"/>
+  <path d="M320 646 L430 511" class="link" marker-end="url(#arrow)"/>
+  <path d="M320 646 L430 696" class="link" marker-end="url(#arrow)"/>
+
+  <path d="M710 303 L980 280" class="link" marker-end="url(#arrow)"/>
+  <path d="M710 303 L430 511" class="link" marker-end="url(#arrow)"/>
+  <path d="M710 303 L430 696" class="link" marker-end="url(#arrow)"/>
+  <path d="M710 303 L430 881" class="link" marker-end="url(#arrow)"/>
+
+  <path d="M1260 280 L1320 203" class="link" marker-end="url(#arrow)"/>
+  <path d="M1260 280 L1320 323" class="link" marker-end="url(#arrow)"/>
+  <path d="M1260 280 L1320 443" class="link" marker-end="url(#arrow)"/>
+  <path d="M1260 280 L1320 563" class="link" marker-end="url(#arrow)"/>
+  <path d="M1260 280 L1320 683" class="link" marker-end="url(#arrow)"/>
+  <path d="M1260 280 L1320 803" class="link" marker-end="url(#arrow)"/>
+  <path d="M1260 280 L1320 923" class="link" marker-end="url(#arrow)"/>
+
+  <text x="70" y="1048" class="note">Print recommendation: A3 landscape, color, fit to page.</text>
+  <text x="70" y="1070" class="note">Use this cleaner version for hard copy. It is more formal and easier to explain than the rough earlier versions.</text>
+</svg>

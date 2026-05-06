@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1260" viewBox="0 0 2000 1260">
+  <defs>
+    <style>
+      .bg { fill: #fcfbf8; }
+      .title { font: 800 44px Arial, sans-serif; fill: #000; }
+      .sub { font: 15px "Segoe UI", Arial, sans-serif; fill: #555; }
+      .group { font: 700 14px "Segoe UI", Arial, sans-serif; fill: #163d2e; letter-spacing: 1.3px; }
+      .boxhead { fill: #b6b6b6; stroke: #707070; stroke-width: 1.6; }
+      .boxbody { fill: #fff; stroke: #707070; stroke-width: 1.6; }
+      .label { font: italic 700 18px Arial, sans-serif; fill: #222; }
+      .txt { font: 15px Arial, sans-serif; fill: #111; }
+      .txtb { font: 700 15px Arial, sans-serif; fill: #111; }
+      .line { stroke: #111; stroke-width: 2.6; fill: none; }
+      .note { font: 13px "Segoe UI", Arial, sans-serif; fill: #666; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#111"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="2000" height="1260"/>
+  <text x="1000" y="70" text-anchor="middle" class="title">WILDNEST</text>
+  <text x="1000" y="98" text-anchor="middle" class="sub">System Flow Diagram</text>
+
+  <text x="110" y="160" class="group">ENTRY AND PUBLIC ACCESS</text>
+  <text x="470" y="160" class="group">BOOKING AND GUEST SIDE</text>
+  <text x="980" y="160" class="group">CONFIRMATION AND RECEPTION FLOW</text>
+  <text x="1490" y="160" class="group">STAFF OPERATIONS SIDE</text>
+
+  <g transform="translate(70,200)">
+    <rect width="250" height="34" rx="12" class="boxhead"/>
+    <text x="125" y="23" text-anchor="middle" class="label">HomePage</text>
+    <rect y="34" width="250" height="220" class="boxbody"/>
+    <text x="24" y="72" class="txtb">Public access:</text>
+    <text x="24" y="100" class="txt">Home sections and project overview</text>
+    <text x="24" y="128" class="txt">Book Now entry point</text>
+    <text x="24" y="156" class="txt">Guest Portal access</text>
+    <text x="24" y="184" class="txt">Staff Portal entry</text>
+    <text x="24" y="212" class="txt">Cabins / Experiences / Animals / Map / Visit / About</text>
+  </g>
+
+  <g transform="translate(70,520)">
+    <rect width="250" height="34" rx="12" class="boxhead"/>
+    <text x="125" y="23" text-anchor="middle" class="label">StaffLogin</text>
+    <rect y="34" width="250" height="190" class="boxbody"/>
+    <text x="24" y="72" class="txtb">Authentication:</text>
+    <text x="24" y="100" class="txt">Username and password</text>
+    <text x="24" y="128" class="txt">Role-based access control</text>
+    <text x="24" y="156" class="txt">Redirects to correct dashboard</text>
+    <text x="24" y="184" class="txt">Manager / Reception / Guide / Keeper</text>
+  </g>
+
+  <g transform="translate(420,180)">
+    <rect width="370" height="34" rx="12" class="boxhead"/>
+    <text x="185" y="23" text-anchor="middle" class="label">BookNow</text>
+    <rect y="34" width="370" height="320" class="boxbody"/>
+    <text x="28" y="72" class="txtb">4 booking flows:</text>
+    <text x="28" y="100" class="txt">1. Cabin Stay</text>
+    <text x="28" y="128" class="txt">2. Day Visit</text>
+    <text x="28" y="156" class="txt">3. Experience Only</text>
+    <text x="28" y="184" class="txt">4. Full Stay + Experience</text>
+    <text x="28" y="224" class="txtb">Guest selects:</text>
+    <text x="28" y="252" class="txt">Date, exact time, guests, add-ons</text>
+    <text x="28" y="280" class="txt">Guest information and contact details</text>
+    <text x="28" y="308" class="txt">Payment method, notes, and booking review</text>
+  </g>
+
+  <g transform="translate(420,600)">
+    <rect width="370" height="34" rx="12" class="boxhead"/>
+    <text x="185" y="23" text-anchor="middle" class="label">GuestPortalWebView</text>
+    <rect y="34" width="370" height="250" class="boxbody"/>
+    <text x="28" y="72" class="txtb">Guest can:</text>
+    <text x="28" y="100" class="txt">View reservation details and status</text>
+    <text x="28" y="128" class="txt">Open proof of booking and QR pass</text>
+    <text x="28" y="156" class="txt">Download receipt / PDF / proof files</text>
+    <text x="28" y="184" class="txt">Send message to Reception support</text>
+    <text x="28" y="212" class="txt">See check-in timing or countdown</text>
+    <text x="28" y="240" class="txt">Track upcoming / checked-in / overdue state</text>
+  </g>
+
+  <g transform="translate(920,180)">
+    <rect width="300" height="34" rx="12" class="boxhead"/>
+    <text x="150" y="23" text-anchor="middle" class="label">BookingPersistence</text>
+    <rect y="34" width="300" height="160" class="boxbody"/>
+    <text x="24" y="72" class="txt">Save reservation record</text>
+    <text x="24" y="100" class="txt">Save payment method and payment status</text>
+    <text x="24" y="128" class="txt">Save selected arrival / visit / session time</text>
+    <text x="24" y="156" class="txt">Prepare guest-facing reservation access</text>
+  </g>
+
+  <g transform="translate(920,420)">
+    <rect width="300" height="34" rx="12" class="boxhead"/>
+    <text x="150" y="23" text-anchor="middle" class="label">Booking ID + QR + Email</text>
+    <rect y="34" width="300" height="180" class="boxbody"/>
+    <text x="24" y="72" class="txt">Generate unique reservation reference</text>
+    <text x="24" y="100" class="txt">Generate QR booking pass</text>
+    <text x="24" y="128" class="txt">Send confirmation through email</text>
+    <text x="24" y="156" class="txt">Connect reservation to guest portal</text>
+    <text x="24" y="184" class="txt">Prepare reception verification workflow</text>
+  </g>
+
+  <g transform="translate(920,700)">
+    <rect width="300" height="34" rx="12" class="boxhead"/>
+    <text x="150" y="23" text-anchor="middle" class="label">Reception Check-In</text>
+    <rect y="34" width="300" height="220" class="boxbody"/>
+    <text x="24" y="72" class="txt">Manual entry or live QR scan</text>
+    <text x="24" y="100" class="txt">Validate booking reference and status</text>
+    <text x="24" y="128" class="txt">Check selected arrival / visit time</text>
+    <text x="24" y="156" class="txt">If Pay at Resort, settle payment first</text>
+    <text x="24" y="184" class="txt">Approve arrival and mark checked-in</text>
+    <text x="24" y="212" class="txt">Update reservation, cabin, or entry state</text>
+  </g>
+
+  <g transform="translate(1380,180)">
+    <rect width="420" height="34" rx="12" class="boxhead"/>
+    <text x="210" y="23" text-anchor="middle" class="label">Manager Portal</text>
+    <rect y="34" width="420" height="170" class="boxbody"/>
+    <text x="28" y="72" class="txt">Dashboard summary and operational overview</text>
+    <text x="28" y="100" class="txt">Staff account management and access control</text>
+    <text x="28" y="128" class="txt">Sales reports, billing, and analytics</text>
+    <text x="28" y="156" class="txt">Reservation and business monitoring</text>
+  </g>
+
+  <g transform="translate(1380,430)">
+    <rect width="420" height="34" rx="12" class="boxhead"/>
+    <text x="210" y="23" text-anchor="middle" class="label">Reception and Guest Communication</text>
+    <rect y="34" width="420" height="170" class="boxbody"/>
+    <text x="28" y="72" class="txt">Walk-in booking assistance</text>
+    <text x="28" y="100" class="txt">Guest chat assignment and response</text>
+    <text x="28" y="128" class="txt">Check-in and check-out support</text>
+    <text x="28" y="156" class="txt">Payment collection for Pay at Resort</text>
+  </g>
+
+  <g transform="translate(1380,680)">
+    <rect width="420" height="34" rx="12" class="boxhead"/>
+    <text x="210" y="23" text-anchor="middle" class="label">Tour Guide and Zoo Keeper Modules</text>
+    <rect y="34" width="420" height="220" class="boxbody"/>
+    <text x="28" y="72" class="txtb">Tour Guide:</text>
+    <text x="150" y="72" class="txt">shared event queue, claim tour, complete event</text>
+    <text x="28" y="120" class="txtb">Zoo Keeper:</text>
+    <text x="150" y="120" class="txt">health records, flag alerts, clear active issues</text>
+    <text x="28" y="168" class="txtb">Shared goal:</text>
+    <text x="150" y="168" class="txt">support the wildlife and guided experience side</text>
+  </g>
+
+  <path d="M320 300 L420 240" class="line" marker-end="url(#arrow)"/>
+  <path d="M320 330 L420 635" class="line" marker-end="url(#arrow)"/>
+  <path d="M320 615 L1380 231" class="line" marker-end="url(#arrow)"/>
+  <path d="M790 290 L920 240" class="line" marker-end="url(#arrow)"/>
+  <path d="M790 345 L920 510" class="line" marker-end="url(#arrow)"/>
+  <path d="M790 725 L920 725" class="line" marker-end="url(#arrow)"/>
+  <path d="M1220 510 L1380 515" class="line" marker-end="url(#arrow)"/>
+  <path d="M1220 510 L1380 790" class="line" marker-end="url(#arrow)"/>
+  <path d="M1220 820 L1380 820" class="line" marker-end="url(#arrow)"/>
+  <path d="M1220 820 L1325 820" class="line" marker-end="url(#arrow)"/>
+  <text x="1255" y="790" class="txt">Guest cleared for entry</text>
+
+  <text x="90" y="1200" class="note">Print recommendation: A3 landscape, color, fit to page.</text>
+  <text x="90" y="1225" class="note">This version is more specific than the earlier simplified draft, while still keeping the layout readable for defense printing.</text>
+</svg>

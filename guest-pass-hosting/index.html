@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WildNest Guest Pass</title>
+  <style>
+    :root {
+      --forest: #071a0e;
+      --forest-soft: #0f2d18;
+      --gold: #d4a017;
+      --gold-soft: #f2d78a;
+      --cream: #f8f4ef;
+      --mist: #dfe7df;
+      --ink: #102016;
+      --card: rgba(255,255,255,0.9);
+      --shadow: 0 24px 60px rgba(5, 15, 10, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--cream);
+      background:
+        radial-gradient(circle at top right, rgba(212,160,23,0.18), transparent 20%),
+        radial-gradient(circle at bottom left, rgba(212,160,23,0.14), transparent 18%),
+        linear-gradient(160deg, #041108 0%, #0b2414 48%, #10331c 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(212,160,23,0.18);
+      border-radius: 28px;
+      padding: 28px;
+      background:
+        linear-gradient(145deg, rgba(13,44,23,0.94), rgba(6,24,13,0.98));
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -50px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,160,23,0.16), transparent 70%);
+    }
+
+    .brand {
+      letter-spacing: 0.32em;
+      font-size: 13px;
+      color: var(--gold-soft);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(40px, 5vw, 68px);
+      line-height: 1.02;
+    }
+
+    .accent { color: var(--gold); font-style: italic; }
+    .subtitle {
+      margin-top: 14px;
+      max-width: 760px;
+      font-size: 18px;
+      color: rgba(248,244,239,0.82);
+      line-height: 1.55;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.95fr;
+      gap: 22px;
+      margin-top: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      color: var(--ink);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .card h2, .card h3 {
+      margin: 0 0 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      color: #0c2615;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(212,160,23,0.14);
+      color: #8f5d00;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .meta-box {
+      background: #fffaf1;
+      border: 1px solid rgba(212,160,23,0.18);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .label {
+      color: #87631a;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #102016;
+    }
+
+    .muted {
+      color: #556458;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid rgba(16,32,22,0.08);
+      padding-bottom: 10px;
+    }
+
+    .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .summary-row strong { color: #0c2615; }
+
+    .qr-box {
+      display: grid;
+      place-items: center;
+      background: #fffaf1;
+      border: 1px solid rgba(212,160,23,0.18);
+      border-radius: 22px;
+      padding: 18px;
+      margin-top: 16px;
+      min-height: 280px;
+    }
+
+    .qr-box img {
+      width: min(100%, 260px);
+      height: auto;
+      border-radius: 14px;
+      background: white;
+      padding: 14px;
+      box-shadow: 0 10px 26px rgba(9,22,14,0.15);
+    }
+
+    .fallback-qr {
+      font-weight: 800;
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      color: #16351f;
+      text-align: center;
+    }
+
+    .notice {
+      margin-top: 18px;
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: linear-gradient(135deg, #fff7de, #f5ecd1);
+      border: 1px solid rgba(212,160,23,0.2);
+      color: #5f4710;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 22px;
+      text-align: center;
+      color: rgba(248,244,239,0.72);
+      font-size: 14px;
+    }
+
+    .footer strong { color: var(--gold-soft); }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .meta { grid-template-columns: 1fr; }
+      .hero { padding: 24px 20px; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="brand">WildNest • Zoo Resort • Wildlife Experience</div>
+      <h1>Guest <span class="accent">Booking</span> Pass</h1>
+      <div class="subtitle">
+        Present this page upon arrival for a smooth front-desk check-in and quick reservation recognition across your WildNest stay or visit.
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <span class="pill" id="statusPill">Booking Confirmed</span>
+        <h2 id="guestName" style="margin-top:16px;">Valued WildNest Guest</h2>
+        <div class="muted" id="leadText">Your reservation details are ready for check-in, verification, and premium guest support.</div>
+
+        <div class="meta">
+          <div class="meta-box">
+            <div class="label">Booking Reference</div>
+            <div class="value" id="reservationId">WN-DEMO-0001</div>
+          </div>
+          <div class="meta-box">
+            <div class="label">Booking Type</div>
+            <div class="value" id="bookingType">Full Stay</div>
+          </div>
+          <div class="meta-box">
+            <div class="label">Stay / Visit</div>
+            <div class="value" id="dateWindow">April 30, 2026</div>
+          </div>
+          <div class="meta-box">
+            <div class="label">Guests</div>
+            <div class="value" id="guestCount">2 Adults</div>
+          </div>
+        </div>
+
+        <div class="summary-list">
+          <div class="summary-row"><span>Accommodation / Experience</span><strong id="primaryItem">River Shell</strong></div>
+          <div class="summary-row"><span>Arrival Time</span><strong id="arrivalTime">2:00 PM</strong></div>
+          <div class="summary-row"><span>Payment Method</span><strong id="paymentMethod">Pay at Resort</strong></div>
+          <div class="summary-row"><span>Total Amount</span><strong id="totalAmount">PHP 14,250.00</strong></div>
+        </div>
+
+        <div class="notice">
+          <strong>Arrival Guidance:</strong> Please present this pass together with a valid ID at Reception. If your booking includes walk-in settlement or payment verification, our front-desk team will guide you through the final confirmation steps.
+        </div>
+      </article>
+
+      <aside class="card">
+        <h3>Scan & Verify</h3>
+        <div class="muted">This QR can be used for guest portal access and reception-side booking recognition.</div>
+        <div class="qr-box" id="qrBox">
+          <div class="fallback-qr" id="fallbackQr">WN-DEMO-0001</div>
+        </div>
+        <div class="notice" style="margin-top:16px;">
+          <strong>Need help?</strong> Keep this page open or screenshot your booking reference before you travel. If the QR is unavailable, your reservation ID can still be presented to WildNest Reception.
+        </div>
+      </aside>
+    </section>
+
+    <div class="footer">
+      Powered by <strong>WildNest Guest Access</strong> • Premium reservation visibility for any device, any network
+    </div>
+  </div>
+
+  <script>
+    const fallbackData = {
+      reservationId: 'WN-DEMO-0001',
+      guestName: 'Valued WildNest Guest',
+      bookingType: 'Full Stay',
+      dateWindow: 'April 30, 2026',
+      guestCount: '2 Adults',
+      primaryItem: 'River Shell',
+      arrivalTime: '2:00 PM',
+      paymentMethod: 'Pay at Resort',
+      totalAmount: 'PHP 14,250.00',
+      status: 'Booking Confirmed',
+      qrImage: ''
+    };
+
+    const params = new URLSearchParams(window.location.search);
+
+    function expandBookingType(code) {
+      switch ((code || '').toUpperCase()) {
+        case 'CS': return 'Cabin Stay';
+        case 'DV': return 'Day Visit';
+        case 'EO': return 'Experience Only';
+        case 'FX': return 'Full Stay + Experience';
+        default: return code || fallbackData.bookingType;
+      }
+    }
+
+    function expandPayment(code) {
+      switch ((code || '').toUpperCase()) {
+        case 'R': return 'Pay at Resort';
+        case 'C': return 'Credit / Debit Card';
+        case 'G': return 'GCash / Maya';
+        case 'B': return 'Bank Transfer';
+        default: return code || fallbackData.paymentMethod;
+      }
+    }
+
+    function expandStatus(code) {
+      switch ((code || '').toUpperCase()) {
+        case 'C': return 'Booking Confirmed';
+        default: return code || fallbackData.status;
+      }
+    }
+
+    function normalizeCompactDate(value) {
+      if (!value) return fallbackData.dateWindow;
+      const parts = value.split('-');
+      const formatOne = (part) => {
+        if (!/^\d{8}$/.test(part)) return part;
+        const year = part.slice(0, 4);
+        const month = part.slice(4, 6);
+        const day = part.slice(6, 8);
+        const date = new Date(`${year}-${month}-${day}T00:00:00`);
+        return Number.isNaN(date.getTime())
+          ? part
+          : date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      };
+      return parts.map(formatOne).join(' to ');
+    }
+
+    function normalizeGuestCount(value) {
+      if (!value) return fallbackData.guestCount;
+      const match = /^(\d+)A(?:(\d+)C)?$/i.exec(value);
+      if (!match) return value;
+      const adults = Number(match[1] || 0);
+      const children = Number(match[2] || 0);
+      if (children > 0) return `${adults} adult${adults === 1 ? '' : 's'}, ${children} child${children === 1 ? '' : 'ren'}`;
+      return `${adults} adult${adults === 1 ? '' : 's'}`;
+    }
+
+    function normalizeAmount(value) {
+      if (!value) return fallbackData.totalAmount;
+      if (/^PHP/i.test(value)) return value;
+      const numeric = Number(value.replace(/,/g, ''));
+      return Number.isFinite(numeric) ? `PHP ${numeric.toLocaleString()}` : value;
+    }
+
+    function decodeBase64Url(value) {
+      if (!value) return null;
+      try {
+        let base64 = value.replace(/-/g, '+').replace(/_/g, '/');
+        while (base64.length % 4) base64 += '=';
+        return JSON.parse(atob(base64));
+      } catch {
+        return null;
+      }
+    }
+
+    const packed = decodeBase64Url(params.get('d')) || {};
+    const data = {
+      reservationId: params.get('i') || params.get('id') || params.get('r') || params.get('ref') || fallbackData.reservationId,
+      guestName: packed.g || params.get('guest') || fallbackData.guestName,
+      bookingType: expandBookingType(packed.t || params.get('type') || fallbackData.bookingType),
+      dateWindow: normalizeCompactDate(packed.dw || params.get('dates') || fallbackData.dateWindow),
+      guestCount: normalizeGuestCount(packed.gc || params.get('guests') || fallbackData.guestCount),
+      primaryItem: packed.pi || params.get('item') || fallbackData.primaryItem,
+      arrivalTime: packed.at || params.get('arrival') || fallbackData.arrivalTime,
+      paymentMethod: expandPayment(packed.pm || params.get('payment') || fallbackData.paymentMethod),
+      totalAmount: normalizeAmount(packed.ta || params.get('amount') || fallbackData.totalAmount),
+      status: expandStatus(packed.st || params.get('status') || fallbackData.status),
+      qrImage: params.get('qr') || fallbackData.qrImage
+    };
+
+    document.getElementById('statusPill').textContent = data.status;
+    document.getElementById('guestName').textContent = data.guestName;
+    document.getElementById('reservationId').textContent = data.reservationId;
+    document.getElementById('bookingType').textContent = data.bookingType;
+    document.getElementById('dateWindow').textContent = data.dateWindow;
+    document.getElementById('guestCount').textContent = data.guestCount;
+    document.getElementById('primaryItem').textContent = data.primaryItem;
+    document.getElementById('arrivalTime').textContent = data.arrivalTime;
+    document.getElementById('paymentMethod').textContent = data.paymentMethod;
+    document.getElementById('totalAmount').textContent = data.totalAmount;
+
+    if (data.qrImage) {
+      const box = document.getElementById('qrBox');
+      box.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = data.qrImage;
+      img.alt = 'WildNest QR';
+      box.appendChild(img);
+    } else {
+      document.getElementById('fallbackQr').textContent = data.reservationId;
+    }
+  </script>
+</body>
+</html>

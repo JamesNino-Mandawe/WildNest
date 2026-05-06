@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="BookNow - Copy\BookNow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow - Copy\CabinStay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow - Copy\DayVisit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow - Copy\ExperienceVisit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow - Copy\FullStayExperience.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\BookNow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\CabinStay.Security.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\DayVisit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\DayVisit.Security.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\ExperienceVisit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\ExperienceVisit.Security.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\FullStayExperience.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\CabinStay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="BookNow\FullStayExperience.Security.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Experience\UcExperience.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Accomodations\GuestPortalPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Accomodations\GuestPortalWebView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Abouts\UcAbout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Abouts\UcHistory.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Abouts\UcImpact.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Abouts\UcMission.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Abouts\UcTeam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Animals\UcAllResidents.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Maps\UcMap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Visits\UcFaq.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Visits\UcGettingHere.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Visits\UcWhatToExpect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Accomodations\MyAccomodation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SplashScreenWeb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\StaffDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\StaffLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Animals\UcAnimals.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Cabin\UcCabin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="HomePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Homepage Buttons\Visits\UcVisit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminAnimals.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminBills.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminCabins.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminDashboardContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminEncounters.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminGuests.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminReservations.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminSmartSearch.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcAdministrator\UcAdminUsers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerAnimals.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerBills.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerCabins.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerDashboardContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerEncounters.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerGuests.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerReservations.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerSalesReports.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerSmartSearch.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcManager\UcManagerUsers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\QrCameraScanner.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcCheckInConfirmDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionChat.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionDashboardContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionNewBooking.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionCheckIn.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionCheckOut.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionGuests.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionCabins.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcReception\UcReceptionEncounters.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcStaffChat.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcTourGuide\UcTourGuideDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcTourGuide\UcTourGuideDefaultContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcTourGuide\UcTourGuideGroups.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcTourGuide\UcTourGuideComplete.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcTourGuide\UcTourGuideHistory.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcZooKeeper\UcZookeeperDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcZooKeeper\UcZookeeperDefaultContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcZooKeeper\UcZookeeperHealth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcZooKeeper\UcZookeeperFlag.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcZooKeeper\UcZookeeperClear.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcZooKeeper\UcZookeeperFeeding.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="StaffPortal\UcZooKeeper\UcZookeeperLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

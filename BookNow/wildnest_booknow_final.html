@@ -1,0 +1,1597 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WildNest — Book Your Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --gold:#C8922A;--gold-lt:#E2AA42;--gold-dim:rgba(200,146,42,.12);--gold-dim2:rgba(200,146,42,.18);--gold-line:rgba(200,146,42,.22);
+  --dark:#071A0E;--dark2:#0D2416;--dark3:#122B1A;--dark4:#0A1F12;
+  --cream:#F7F3EC;--cream2:#EDE8DF;--cream3:#E2DAD0;
+  --text:#1A1209;--muted:#6B6257;--dim:#9E9792;
+  --green:#2A5C3A;--success:#27AE60;--red:#C0392B;
+  --border:rgba(0,0,0,.07);--bordergold:rgba(200,146,42,.22);
+  --sh:0 2px 20px rgba(7,26,14,.08);--sh-lg:0 8px 40px rgba(7,26,14,.14);
+  --radius:12px;--radius-sm:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:var(--dark);border-bottom:1px solid var(--gold-line);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;border:1px solid var(--gold-line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;background:rgba(200,146,42,.06)}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--cream);letter-spacing:.08em}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:rgba(247,243,236,.48);text-decoration:none;font-size:12.5px;padding:5px 11px;border-radius:5px;transition:color .18s}
+.nav-links a:hover{color:rgba(247,243,236,.82)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.n-btn{background:transparent;border:1px solid var(--gold-line);color:rgba(247,243,236,.65);padding:7px 16px;border-radius:5px;font-size:12.5px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s}
+.n-btn:hover{border-color:var(--gold);color:var(--gold)}
+.n-gold{background:var(--gold);color:var(--dark);font-weight:600;border:none;padding:7px 18px;border-radius:5px;font-size:12.5px;font-family:'DM Sans',sans-serif;cursor:pointer}
+.n-dim{background:transparent;border:1px solid rgba(247,243,236,.1);color:rgba(247,243,236,.35);padding:7px 14px;border-radius:5px;font-size:12.5px;font-family:'DM Sans',sans-serif;cursor:pointer}
+
+/* ── HERO ── */
+.hero{background:var(--dark4);padding:46px 48px 38px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 110%,rgba(200,146,42,.08) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:10.5px;font-weight:500;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.hero-eyebrow span{opacity:.5;font-size:8px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,50px);font-weight:600;color:var(--cream);line-height:1.1;margin-bottom:10px;letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:13px;color:rgba(247,243,236,.45);letter-spacing:.05em;margin-bottom:18px}
+.hero-rule{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto}
+
+/* ── BOOKING TABS ── */
+.tabs-wrap{background:var(--dark2);border-bottom:1px solid var(--gold-line);position:sticky;top:64px;z-index:190}
+.tabs-inner{display:flex;max-width:1260px;margin:0 auto;padding:0 48px}
+.tab-btn{flex:1;padding:15px 10px;background:none;border:none;border-bottom:2px solid transparent;color:rgba(247,243,236,.4);font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .22s;white-space:nowrap}
+.tab-btn:hover{color:rgba(247,243,236,.72)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-icon{font-size:14px}
+
+/* ── MAIN LAYOUT ── */
+.main-wrap{max-width:1260px;margin:0 auto;padding:32px 48px 80px;display:grid;grid-template-columns:1fr 352px;gap:28px;align-items:start}
+.booking-left{min-width:0}
+.booking-right{position:sticky;top:152px;align-self:start}
+
+/* ── TAB PANELS ── */
+.tab-panel{display:none}.tab-panel.active{display:block}
+.booking-step{display:none}.booking-step.active{display:block;animation:stepIn .28s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── STEP BAR ── */
+.step-bar{display:flex;align-items:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 22px;margin-bottom:22px;box-shadow:var(--sh)}
+.s-item{display:flex;align-items:center;gap:9px}
+.s-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;flex-shrink:0;transition:all .3s}
+.s-num.done{background:var(--dark);color:var(--gold)}
+.s-num.active{background:var(--gold);color:var(--dark);box-shadow:0 0 0 3px var(--gold-dim)}
+.s-num.wait{background:var(--cream2);color:var(--dim);border:1.5px solid rgba(0,0,0,.07)}
+.s-lbl{font-size:11.5px;font-weight:500;color:var(--muted);white-space:nowrap;transition:color .3s}
+.s-lbl.active{color:var(--dark);font-weight:600}
+.s-conn{flex:1;height:1px;background:var(--cream3);margin:0 10px;transition:background .3s}
+.s-conn.done{background:var(--gold)}
+
+/* ── FORM SECTIONS ── */
+.fs-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--sh);margin-bottom:16px;overflow:hidden}
+.fs-head{padding:18px 24px 14px;border-bottom:1px solid rgba(0,0,0,.04);display:flex;align-items:center;gap:13px}
+.fs-icon{width:40px;height:40px;border-radius:9px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.fs-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--dark)}
+.fs-sub{font-size:11.5px;color:var(--dim);margin-top:2px}
+.fs-body{padding:20px 24px}
+
+/* ── DATE PICKER ── */
+.date-row{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center}
+.d-field label{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.d-field input[type=date]{width:100%;padding:11px 13px;border:1.5px solid rgba(0,0,0,.09);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);cursor:pointer;transition:border-color .2s}
+.d-field input[type=date]:focus{outline:none;border-color:var(--gold)}
+.nights-pill{text-align:center;background:var(--gold-dim);border:1px solid var(--gold-line);border-radius:var(--radius-sm);padding:11px 15px;min-width:70px}
+.nights-n{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--gold);display:block;line-height:1}
+.nights-l{font-size:9.5px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase}
+
+/* ── GUEST COUNTERS ── */
+.guest-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+.guest-tile{border:1.5px solid var(--border);border-radius:10px;padding:15px;background:var(--cream);display:flex;flex-direction:column;gap:10px}
+.gt-type{font-size:13px;font-weight:600;color:var(--dark)}
+.gt-age{font-size:10.5px;color:var(--dim);margin-top:1px}
+.counter{display:flex;align-items:center;gap:12px}
+.c-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(0,0,0,.11);background:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);transition:all .14s;font-weight:300}
+.c-btn:hover{border-color:var(--gold);color:var(--gold)}
+.c-val{font-size:20px;font-weight:700;color:var(--dark);min-width:22px;text-align:center;font-family:'Cormorant Garamond',serif}
+
+/* ── CABIN CARDS ── */
+.cabin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.c-card{border:1.5px solid var(--border);border-radius:10px;padding:15px 16px;cursor:pointer;transition:all .2s;background:var(--cream);position:relative}
+.c-card:hover{border-color:var(--gold);background:rgba(200,146,42,.04);transform:translateY(-1px);box-shadow:var(--sh)}
+.c-card.selected{border-color:var(--gold);background:rgba(200,146,42,.07);box-shadow:0 0 0 3px var(--gold-dim)}
+.c-sel-badge{position:absolute;top:11px;right:11px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--dark);display:none;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+.c-card.selected .c-sel-badge{display:flex}
+.c-tier{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:20px;display:inline-block;margin-bottom:8px}
+.tier-pod{background:rgba(200,146,42,.12);color:#8a6010}
+.tier-suite{background:rgba(52,152,219,.12);color:#1a6a9e}
+.tier-glass{background:rgba(142,68,173,.12);color:#6a2080}
+.tier-villa{background:rgba(200,146,42,.18);color:#7a4a08}
+.tier-pres{background:rgba(7,26,14,.12);color:#2A5C3A}
+.c-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark);margin-bottom:3px}
+.c-meta{font-size:11.5px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+.c-price{font-size:17px;font-weight:700;color:var(--gold)}
+.c-price sub{font-size:11px;font-weight:400;color:var(--dim)}
+.c-avail{font-size:10px;font-weight:600;color:var(--success);display:flex;align-items:center;gap:4px;margin-bottom:6px}
+.c-avail::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);display:block}
+
+/* ── EXPERIENCE CARDS ── */
+.exp-list{display:flex;flex-direction:column;gap:11px}
+.e-card{border:1.5px solid var(--border);border-radius:10px;padding:15px 16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;background:var(--cream)}
+.e-card:hover{border-color:var(--gold);background:rgba(200,146,42,.04)}
+.e-card.selected{border-color:var(--gold);background:rgba(200,146,42,.07)}
+.e-icon{width:46px;height:46px;border-radius:9px;background:rgba(7,26,14,.06);display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
+.e-info{flex:1;min-width:0}
+.e-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark)}
+.e-detail{font-size:11.5px;color:var(--muted);margin-top:2px}
+.e-right{text-align:right;flex-shrink:0}
+.e-price{font-size:16px;font-weight:700;color:var(--gold)}
+.e-unit{font-size:10.5px;color:var(--dim)}
+.e-chk{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(0,0,0,.12);background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .2s}
+.e-card.selected .e-chk{background:var(--gold);border-color:var(--gold);color:var(--dark);font-weight:700}
+
+/* ── ZONE CARDS ── */
+.zone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.z-card{border:1.5px solid var(--border);border-radius:9px;padding:13px 11px;cursor:pointer;text-align:center;transition:all .2s;background:var(--cream);position:relative}
+.z-card:hover{border-color:var(--gold);background:rgba(200,146,42,.04)}
+.z-card.selected{border-color:var(--gold);background:rgba(200,146,42,.07);box-shadow:0 0 0 2px var(--gold-dim)}
+.z-emoji{font-size:22px;margin-bottom:7px;display:block}
+.z-name{font-size:12px;font-weight:600;color:var(--dark)}
+.z-animal{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3}
+.z-fee{font-size:13px;font-weight:700;color:var(--gold);margin-top:6px}
+.z-chk{position:absolute;top:7px;right:7px;width:18px;height:18px;border-radius:50%;background:var(--gold);color:var(--dark);font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center}
+.z-card.selected .z-chk{display:flex}
+.zone-actions{display:flex;gap:8px;margin-bottom:14px}
+.z-action{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
+.z-action.on{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+
+/* ── TICKET TYPE ── */
+.ticket-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.tkt-card{border:1.5px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;text-align:center;transition:all .2s;background:var(--cream)}
+.tkt-card:hover{border-color:var(--gold)}
+.tkt-card.selected{border-color:var(--gold);background:rgba(200,146,42,.07);box-shadow:0 0 0 3px var(--gold-dim)}
+.tkt-icon{font-size:24px;margin-bottom:8px}
+.tkt-name{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:3px}
+.tkt-price{font-size:16px;font-weight:700;color:var(--gold)}
+.tkt-note{font-size:10.5px;color:var(--dim);margin-top:3px}
+
+/* ── TIME SLOTS ── */
+.slot-grid{display:flex;flex-wrap:wrap;gap:9px;margin-top:4px}
+.slot{padding:8px 16px;border:1.5px solid var(--border);border-radius:6px;font-size:12.5px;cursor:pointer;transition:all .2s;background:var(--cream);color:var(--text)}
+.slot:hover{border-color:var(--gold)}
+.slot.selected{border-color:var(--gold);background:var(--gold-dim);color:var(--dark);font-weight:600}
+
+/* ── ADD-ON CARDS ── */
+.addon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.a-card{border:1.5px solid var(--border);border-radius:9px;padding:14px;cursor:pointer;text-align:center;transition:all .2s;background:var(--cream)}
+.a-card:hover{border-color:var(--gold)}
+.a-card.selected{border-color:var(--gold);background:rgba(200,146,42,.07)}
+.a-icon{font-size:22px;margin-bottom:7px;display:block}
+.a-name{font-size:12.5px;font-weight:600;color:var(--dark);margin-bottom:3px}
+.a-desc{font-size:10.5px;color:var(--dim);line-height:1.4;margin-bottom:7px}
+.a-price{font-size:13.5px;font-weight:700;color:var(--gold)}
+.addon-2col{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+
+/* ── SECTION DIVIDER LABEL ── */
+.divider-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:20px 0 13px;display:flex;align-items:center;gap:10px}
+.divider-label::before,.divider-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── FORM FIELDS ── */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.f-lbl{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.f-inp{padding:11px 13px;border:1.5px solid rgba(0,0,0,.09);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);width:100%;transition:border-color .2s}
+.f-inp:focus{outline:none;border-color:var(--gold)}
+.f-sel{padding:11px 13px;border:1.5px solid rgba(0,0,0,.09);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);width:100%;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+.f-sel:focus{outline:none;border-color:var(--gold)}
+.f-ta{padding:11px 13px;border:1.5px solid rgba(0,0,0,.09);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--cream);width:100%;resize:vertical;min-height:80px;transition:border-color .2s}
+.f-ta:focus{outline:none;border-color:var(--gold)}
+
+/* ── PAYMENT — ELITE UI ── */
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.pay-card{border:1.5px solid var(--border);border-radius:12px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:13px;transition:all .22s;background:var(--cream);position:relative}
+.pay-card:hover{border-color:var(--gold-lt);background:rgba(200,146,42,.035);transform:translateY(-1px);box-shadow:var(--sh)}
+.pay-card.selected{border-color:var(--gold);background:linear-gradient(135deg,rgba(200,146,42,.08),rgba(200,146,42,.04));box-shadow:0 0 0 3px var(--gold-dim),var(--sh)}
+.pay-ico{font-size:26px;flex-shrink:0}
+.pay-name{font-size:14px;font-weight:600;color:var(--dark)}
+.pay-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.pay-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(0,0,0,.14);margin-left:auto;flex-shrink:0;transition:all .2s;position:relative}
+.pay-card.selected .pay-dot{border-color:var(--gold);background:var(--gold)}
+.pay-card.selected .pay-dot::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--dark);display:block;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+
+/* Payment Detail Panels */
+.pay-detail-panel{display:none;animation:stepIn .22s ease}
+.pay-detail-panel.show{display:block}
+.pay-panel-inner{border:1.5px solid var(--gold-line);border-radius:12px;background:linear-gradient(135deg,rgba(200,146,42,.03),rgba(200,146,42,.01));padding:22px;margin-bottom:6px}
+.pay-panel-title{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.pay-panel-title::after{content:'';flex:1;height:1px;background:var(--gold-line)}
+
+/* Card fields */
+.card-fields{display:flex;flex-direction:column;gap:12px}
+.card-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.card-row-2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.card-brand-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.card-brand{height:22px;border-radius:4px;background:var(--cream2);border:1px solid var(--border);padding:2px 7px;font-size:10px;font-weight:700;color:var(--muted);display:flex;align-items:center}
+.card-secured{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);margin-top:6px}
+
+/* GCash / Maya panel */
+.ewallet-panel{text-align:center;padding:8px 0}
+.ewallet-qr{width:120px;height:120px;background:var(--cream2);border:2px dashed rgba(0,0,0,.1);border-radius:10px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--dim);padding:10px;text-align:center;line-height:1.4}
+.ewallet-number{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--dark);letter-spacing:.04em;margin-bottom:4px}
+.ewallet-name{font-size:12px;color:var(--muted);margin-bottom:14px}
+.ewallet-steps{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--cream2);border-radius:9px;padding:14px;margin-bottom:4px}
+.ewallet-step{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:var(--text)}
+.ewallet-step-num{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--dark);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.ewallet-ref{display:flex;align-items:center;gap:10px;background:rgba(200,146,42,.06);border:1px solid var(--gold-line);border-radius:8px;padding:11px 14px;margin-top:12px}
+.ewallet-ref-lbl{font-size:10.5px;color:var(--muted)}
+.ewallet-ref-val{font-size:13px;font-weight:700;color:var(--dark);font-family:'Cormorant Garamond',serif;letter-spacing:.04em}
+
+/* Bank Transfer panel */
+.bank-tabs{display:flex;gap:8px;margin-bottom:16px}
+.bank-tab{padding:7px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;background:var(--cream);color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif}
+.bank-tab.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+.bank-details{display:flex;flex-direction:column;gap:10px}
+.bank-row{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;background:var(--cream2);border-radius:7px}
+.bank-row-lbl{font-size:11px;color:var(--muted);font-weight:500}
+.bank-row-val{font-size:13px;font-weight:700;color:var(--dark);font-family:'Cormorant Garamond',serif}
+.bank-copy-btn{background:transparent;border:1px solid var(--gold-line);color:var(--gold);padding:4px 9px;border-radius:5px;font-size:10.5px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.bank-copy-btn:hover{background:var(--gold-dim)}
+.bank-upload{border:1.5px dashed rgba(0,0,0,.12);border-radius:8px;padding:18px;text-align:center;cursor:pointer;margin-top:12px;background:var(--cream);transition:border-color .2s}
+.bank-upload:hover{border-color:var(--gold)}
+.bank-upload-icon{font-size:22px;margin-bottom:6px}
+.bank-upload-txt{font-size:12px;color:var(--muted)}
+.bank-upload-btn{background:var(--dark);color:var(--gold);border:none;padding:7px 16px;border-radius:6px;font-size:11.5px;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:8px}
+.pay-ref-box{display:flex;flex-direction:column;gap:10px;margin-top:14px;text-align:left}
+.pay-ref-note{font-size:11.5px;color:var(--muted);line-height:1.5}
+.pay-ref-sample{font-size:11.5px;color:var(--gold);font-weight:600}
+
+/* Pay at Resort panel */
+.resort-pay{display:flex;flex-direction:column;gap:12px}
+.resort-info-box{display:flex;align-items:flex-start;gap:12px;padding:14px;border-radius:9px;background:var(--cream2)}
+.resort-info-icon{font-size:22px;flex-shrink:0}
+.resort-info-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:4px}
+.resort-info-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.resort-methods{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:2px}
+.resort-method{border:1.5px solid var(--border);border-radius:8px;padding:12px;text-align:center;background:#fff}
+.resort-method-icon{font-size:20px;margin-bottom:5px}
+.resort-method-name{font-size:11.5px;font-weight:600;color:var(--dark)}
+.resort-method-note{font-size:10px;color:var(--dim);margin-top:2px}
+.resort-hold-notice{background:rgba(200,146,42,.06);border:1px solid var(--gold-line);border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ── POLICIES ── */
+.policy-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.policy-item{display:flex;align-items:flex-start;gap:11px;padding:13px;border-radius:8px;background:var(--cream2)}
+.policy-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.policy-title{font-size:12.5px;font-weight:600;color:var(--dark)}
+.policy-desc{font-size:11.5px;color:var(--muted);margin-top:2px}
+.terms-row{display:flex;align-items:flex-start;gap:9px;margin-top:15px}
+.terms-row input{margin-top:3px;accent-color:var(--gold)}
+.terms-txt{font-size:12px;color:var(--muted);line-height:1.55}
+.terms-txt a{color:var(--gold);text-decoration:none}
+
+/* ── REVIEW ── */
+.review-block{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.review-head{padding:11px 17px;background:var(--cream2);font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.review-body{padding:14px 17px}
+.r-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.04)}
+.r-row:last-child{border:none}
+.r-lbl{font-size:12.5px;color:var(--muted)}
+.r-val{font-size:12.5px;font-weight:600;color:var(--dark)}
+.review-total{padding:16px;background:var(--dark);border-radius:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.rt-lbl{font-size:12.5px;color:rgba(247,243,236,.55)}
+.rt-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--gold)}
+.email-notice{display:flex;align-items:flex-start;gap:11px;padding:13px;background:rgba(39,174,96,.06);border:1px solid rgba(39,174,96,.18);border-radius:8px;font-size:12px;color:var(--muted);margin-bottom:15px}
+
+/* ── CONFIRM BUTTON ── */
+.btn-confirm{width:100%;background:var(--dark);color:var(--gold);border:none;padding:15px;border-radius:10px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:.02em;box-shadow:0 6px 24px rgba(7,26,14,.18);margin-top:6px;transition:background .2s}
+.btn-confirm:hover{background:var(--dark3)}
+
+/* ── STEP NAV ── */
+.step-nav{display:flex;align-items:center;justify-content:space-between;padding-top:20px;margin-top:4px;border-top:1px solid rgba(0,0,0,.06)}
+.step-meta{font-size:11.5px;color:var(--dim)}
+.btn-back{background:transparent;border:1.5px solid rgba(0,0,0,.1);color:var(--muted);padding:10px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .18s}
+.btn-back:hover{border-color:rgba(0,0,0,.18);color:var(--text)}
+.btn-next{background:var(--gold);color:var(--dark);border:none;padding:11px 26px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(200,146,42,.3);transition:background .18s}
+.btn-next:hover{background:var(--gold-lt)}
+
+/* ── CONFIRMATION ── */
+.conf-wrap{text-align:center;padding:18px 0}
+.conf-icon{width:70px;height:70px;background:linear-gradient(135deg,var(--gold),#E8AA30);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--dark);margin:0 auto 18px;box-shadow:0 8px 28px rgba(200,146,42,.35)}
+.conf-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--dark);margin-bottom:7px}
+.conf-sub{font-size:13.5px;color:var(--muted);margin-bottom:26px;max-width:380px;margin-left:auto;margin-right:auto;line-height:1.6}
+.bid-box{display:inline-flex;align-items:center;gap:14px;background:var(--dark);border-radius:10px;padding:14px 22px;margin-bottom:22px}
+.bid-lbl{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(247,243,236,.4);margin-bottom:3px}
+.bid-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold)}
+.bid-copy{background:transparent;border:1px solid var(--gold-line);color:var(--gold);padding:7px 13px;border-radius:6px;font-size:11.5px;font-family:'DM Sans',sans-serif;cursor:pointer}
+.qr-box{border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px}
+.qr-lbl{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.qr-ph{width:110px;height:110px;background:var(--cream2);border:2px dashed rgba(0,0,0,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--dim);margin:0 auto 12px;text-align:center;padding:10px}
+.qr-actions{display:flex;gap:9px;justify-content:center}
+.btn-save-qr{background:var(--dark);color:var(--gold);border:none;padding:9px 16px;border-radius:7px;font-size:12.5px;font-family:'DM Sans',sans-serif;cursor:pointer}
+.btn-print{background:transparent;border:1.5px solid rgba(0,0,0,.1);color:var(--muted);padding:9px 16px;border-radius:7px;font-size:12.5px;font-family:'DM Sans',sans-serif;cursor:pointer}
+.email-sent{display:flex;align-items:center;gap:11px;background:rgba(39,174,96,.07);border:1px solid rgba(39,174,96,.18);border-radius:8px;padding:12px 16px;margin-bottom:18px}
+.es-icon{font-size:18px}
+.es-title{font-size:12.5px;font-weight:600;color:var(--dark)}
+.es-detail{font-size:11.5px;color:var(--muted);margin-top:1px}
+.conf-actions{display:flex;gap:11px;justify-content:center}
+.btn-portal{background:var(--dark);color:var(--gold);padding:11px 26px;border-radius:8px;font-size:13.5px;font-weight:600;font-family:'DM Sans',sans-serif;border:none;cursor:pointer}
+.btn-newbook{background:transparent;border:1.5px solid rgba(0,0,0,.11);color:var(--text);padding:11px 26px;border-radius:8px;font-size:13.5px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer}
+
+/* ── SUMMARY SIDEBAR ── */
+.summary-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden}
+.sum-head{background:var(--dark4);padding:18px 22px 16px}
+.sum-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.sum-tag{font-size:10.5px;color:rgba(247,243,236,.4);letter-spacing:.05em}
+.sum-body{padding:18px 20px;max-height:none;overflow:visible}
+.sum-section{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:7px;margin-top:15px}
+.sum-section:first-child{margin-top:0}
+.sum-cabin-box{border:1px solid var(--gold-line);border-radius:9px;padding:11px 13px;background:rgba(200,146,42,.03);margin-bottom:9px}
+.sum-cabin-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--dark)}
+.sum-cabin-sub{font-size:10.5px;color:var(--muted);margin-top:2px;margin-bottom:7px}
+.sum-line{display:flex;justify-content:space-between;font-size:11.5px;padding:3px 0}
+.sum-lbl{color:var(--muted)}
+.sum-val{font-weight:600;color:var(--dark)}
+.sum-div{height:1px;background:rgba(0,0,0,.06);margin:11px 0}
+.sum-total{display:flex;justify-content:space-between;align-items:center;padding:8px 0 3px}
+.sum-tlbl{font-size:12.5px;font-weight:600;color:var(--dark)}
+.sum-tval{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:700;color:var(--gold)}
+.sum-foot{padding:14px 20px;border-top:1px solid rgba(0,0,0,.06);background:var(--cream)}
+.sum-badges{display:flex;flex-direction:column;gap:6px}
+.sum-badge{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.sum-badge-icon{font-size:12px}
+.sum-empty{text-align:center;padding:28px 14px;color:var(--dim);font-size:12.5px;line-height:1.65}
+.sum-empty-icon{font-size:30px;margin-bottom:9px;display:block}
+
+/* ── MISC ── */
+.info-tip{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--gold-dim);border:1px solid var(--gold-line);border-radius:8px;font-size:11.5px;color:var(--muted);margin-top:15px;line-height:1.5}
+.info-tip-icon{font-size:15px;flex-shrink:0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav{padding:0 20px}
+  .main-wrap{grid-template-columns:1fr;padding:22px 18px 60px}
+  .booking-right{position:static}
+  .cabin-grid{grid-template-columns:1fr}
+  .zone-grid{grid-template-columns:repeat(2,1fr)}
+  .addon-grid{grid-template-columns:1fr 1fr}
+  .tabs-inner,.hero{padding-left:18px;padding-right:18px}
+  .card-row{grid-template-columns:1fr 1fr}
+  .pay-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .guest-grid{grid-template-columns:1fr}
+  .ticket-grid{grid-template-columns:1fr}
+  .addon-grid{grid-template-columns:1fr}
+  .field-grid{grid-template-columns:1fr}
+  .zone-grid{grid-template-columns:repeat(2,1fr)}
+  .card-row{grid-template-columns:1fr}
+  .nav-links,.nav-actions .n-btn,.nav-actions .n-dim{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ NAV ════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🦁</div>
+    <span class="nav-brand">WILDNEST</span>
+  </a>
+  <div class="nav-links">
+    <a href="#">Home</a><a href="#">Cabins</a><a href="#">Experiences</a>
+    <a href="#">Animals</a><a href="#">Zones</a><a href="#">Visit</a><a href="#">About</a>
+  </div>
+  <div class="nav-actions">
+    <button class="n-btn">Accommodation</button>
+    <button class="n-gold">Book Now</button>
+    <button class="n-dim">Staff Portal</button>
+  </div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<div class="hero">
+  <div class="hero-eyebrow"><span>✦</span> Carmen, Cebu — Philippines <span>✦</span></div>
+  <h1>Reserve Your<br/><em>WildNest</em> Experience</h1>
+  <p class="hero-sub">Day visits · Cabin stays · Wildlife encounters · All in one place</p>
+  <div class="hero-rule"></div>
+</div>
+
+<!-- ════ TABS ════ -->
+<div class="tabs-wrap">
+  <div class="tabs-inner">
+    <button class="tab-btn active" onclick="switchTab('cabin',this)"><span class="tab-icon">🛏️</span> Cabin Stay</button>
+    <button class="tab-btn" onclick="switchTab('day',this)"><span class="tab-icon">☀️</span> Day Visit</button>
+    <button class="tab-btn" onclick="switchTab('exp',this)"><span class="tab-icon">🌿</span> Experience Only</button>
+    <button class="tab-btn" onclick="switchTab('full',this)"><span class="tab-icon">⭐</span> Full Stay + Experience</button>
+  </div>
+</div>
+
+<!-- ════ MAIN ════ -->
+<div class="main-wrap">
+  <div class="booking-left">
+
+  <!-- ══════════════════════════════════════════
+       TAB: CABIN STAY
+  ══════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-cabin">
+    <div class="step-bar" id="sb-cabin">
+      <div class="s-item"><div class="s-num active" id="cb-n1">1</div><span class="s-lbl active" id="cb-l1">Cabin</span></div>
+      <div class="s-conn" id="cb-c1"></div>
+      <div class="s-item"><div class="s-num wait" id="cb-n2">2</div><span class="s-lbl" id="cb-l2">Add-ons</span></div>
+      <div class="s-conn" id="cb-c2"></div>
+      <div class="s-item"><div class="s-num wait" id="cb-n3">3</div><span class="s-lbl" id="cb-l3">Guest Info</span></div>
+      <div class="s-conn" id="cb-c3"></div>
+      <div class="s-item"><div class="s-num wait" id="cb-n4">4</div><span class="s-lbl" id="cb-l4">Payment</span></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="booking-step active" id="cb-s1">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">📅</div><div><div class="fs-title">Select Your Dates</div><div class="fs-sub">Minimum 1 night · Free cancellation up to 48 hours before check-in</div></div></div>
+        <div class="fs-body">
+          <div class="date-row">
+            <div class="d-field"><label>Check-in</label><input type="date" id="cb-ci" onchange="calcNights('cb')"/></div>
+            <div class="nights-pill"><span class="nights-n" id="cb-nights">—</span><span class="nights-l">nights</span></div>
+            <div class="d-field"><label>Check-out</label><input type="date" id="cb-co" onchange="calcNights('cb')"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🕒</div><div><div class="fs-title">Arrival Time</div><div class="fs-sub">Choose the exact time you plan to arrive for check-in</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">Exact Arrival Time</label><input type="time" id="cb-time" data-booking-time="cb" class="f-inp" value="14:00"/></div>
+            <div class="fg"><label class="f-lbl">Suggested Arrival Window</label><input type="text" class="f-inp" value="2:00 PM to 6:00 PM" readonly/></div>
+            <div class="fg full"><label class="f-lbl">Suggested Times</label>
+              <div class="slot-grid">
+                <div class="slot" onclick="selSlot(this,'cb')">10:00 AM</div>
+                <div class="slot" onclick="selSlot(this,'cb')">12:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'cb')">2:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'cb')">4:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'cb')">6:00 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">👥</div><div><div class="fs-title">Guests</div><div class="fs-sub">Number of guests staying in the cabin</div></div></div>
+        <div class="fs-body">
+          <div class="guest-grid">
+            <div class="guest-tile"><div><div class="gt-type">Adults</div><div class="gt-age">Age 13+</div></div><div class="counter"><button class="c-btn" onclick="chg('cb-adults',-1)">−</button><span class="c-val" id="cb-adults">2</span><button class="c-btn" onclick="chg('cb-adults',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Children</div><div class="gt-age">Age 4–12 · ₱500 each</div></div><div class="counter"><button class="c-btn" onclick="chg('cb-children',-1)">−</button><span class="c-val" id="cb-children">0</span><button class="c-btn" onclick="chg('cb-children',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Toddlers</div><div class="gt-age">Age 0–3 · Free</div></div><div class="counter"><button class="c-btn" onclick="chg('cb-toddlers',-1)">−</button><span class="c-val" id="cb-toddlers">0</span><button class="c-btn" onclick="chg('cb-toddlers',1)">+</button></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🏕️</div><div><div class="fs-title">Choose Your Cabin</div><div class="fs-sub">All 10 cabins available — select one to continue</div></div></div>
+        <div class="fs-body">
+          <div class="cabin-grid">
+            <div class="c-card" onclick="selCabin(this,'River Shell',14500,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pod">Signature Pod</div><div class="c-avail">Available</div><div class="c-name">River Shell</div><div class="c-meta">2 guests · Teardrop pod · River overlook</div><div class="c-price">₱14,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Forest Nest',18200,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pod">Canopy Retreat</div><div class="c-avail">Available</div><div class="c-name">Forest Nest</div><div class="c-meta">2 guests · Deep forest canopy</div><div class="c-price">₱18,200<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Cliff Edge',22800,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-glass">Panorama Deck</div><div class="c-avail">Available</div><div class="c-name">Cliff Edge</div><div class="c-meta">2 guests · Panoramic · Glass-bottom balcony</div><div class="c-price">₱22,800<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Glass Manor',35000,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pres">Grand Manor</div><div class="c-avail">Available</div><div class="c-name">Glass Manor</div><div class="c-meta">4 guests · Premium villa · 360° views</div><div class="c-price">₱35,000<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Safari Tent Alpha',5200,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-suite">Safari Suite</div><div class="c-avail">Available</div><div class="c-name">Safari Tent Alpha</div><div class="c-meta">2 guests · Savanna view</div><div class="c-price">₱5,200<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Lakeside Lodge',6500,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-villa">Lakeside Lodge</div><div class="c-avail">Available</div><div class="c-name">Lakeside Lodge</div><div class="c-meta">3 guests · Waterfront</div><div class="c-price">₱6,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Treetop Treehouse',4500,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-suite">Treehouse Escape</div><div class="c-avail">Available</div><div class="c-name">Treetop Treehouse</div><div class="c-meta">2 guests · Forest view</div><div class="c-price">₱4,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Eco Bungalow',2500,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pod">Eco Bungalow</div><div class="c-avail">Available</div><div class="c-name">Eco Bungalow</div><div class="c-meta">2 guests · Solar-powered</div><div class="c-price">₱2,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Forest Cabin A',3500,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-suite">Forest Cabin</div><div class="c-avail">Available</div><div class="c-name">Forest Cabin A</div><div class="c-meta">4 guests · Nature trail access</div><div class="c-price">₱3,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Sanctuary Villa',11000,'cb')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pres">Sanctuary Villa</div><div class="c-avail">Available</div><div class="c-name">Sanctuary Villa</div><div class="c-meta">6 guests · Private pool</div><div class="c-price">₱11,000<sub>/night</sub></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav"><span class="step-meta">Step 1 of 4 — dates, guests &amp; cabin</span><button class="btn-next" onclick="cbStep(2)">Continue — Add-ons →</button></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="booking-step" id="cb-s2">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">✨</div><div><div class="fs-title">Cabin Add-ons</div><div class="fs-sub">Optional extras to enhance your stay — select any combination</div></div></div>
+        <div class="fs-body">
+          <div class="addon-grid">
+            <div class="a-card" onclick="togAddon(this,'cb','Gourmet Picnic',4500)"><span class="a-icon">🧺</span><div class="a-name">Gourmet Picnic</div><div class="a-desc">Artisan basket for two with local wine</div><div class="a-price">+₱4,500</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Stargazing Kit',1200)"><span class="a-icon">🔭</span><div class="a-name">Stargazing Kit</div><div class="a-desc">Telescope rental and printed sky map</div><div class="a-price">+₱1,200</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Photography Pro',5500)"><span class="a-icon">📷</span><div class="a-name">Photography Pro</div><div class="a-desc">Dedicated photographer · 2-hour session</div><div class="a-price">+₱5,500</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Welcome Basket',350)"><span class="a-icon">🎁</span><div class="a-name">Welcome Basket</div><div class="a-desc">Tropical fruits, local delicacies &amp; note</div><div class="a-price">+₱350</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Breakfast for 2',600)"><span class="a-icon">🍳</span><div class="a-name">Breakfast for 2</div><div class="a-desc">Filipino breakfast delivered to your cabin</div><div class="a-price">+₱600/day</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Romantic Setup',1200)"><span class="a-icon">💑</span><div class="a-name">Romantic Setup</div><div class="a-desc">Rose petals, candles &amp; sparkling wine</div><div class="a-price">+₱1,200</div></div>
+          </div>
+          <div class="divider-label">Optional Services</div>
+          <div class="addon-2col">
+            <div class="a-card" onclick="togAddon(this,'cb','Early Check-in',1500)"><span class="a-icon">🌅</span><div class="a-name">Early Check-in</div><div class="a-desc">Before standard 2:00 PM check-in</div><div class="a-price">+₱1,500</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Late Check-out',1500)"><span class="a-icon">🌆</span><div class="a-name">Late Check-out</div><div class="a-desc">Extended stay past 12:00 PM</div><div class="a-price">+₱1,500</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Airport Transfer',2800)"><span class="a-icon">🚐</span><div class="a-name">Airport Transfer</div><div class="a-desc">Per way · arranged by resort staff</div><div class="a-price">+₱2,800/way</div></div>
+            <div class="a-card" onclick="togAddon(this,'cb','Travel Insurance',450)"><span class="a-icon">🛡️</span><div class="a-name">Travel Insurance</div><div class="a-desc">Per person coverage for your stay</div><div class="a-price">+₱450/person</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="cbStep(1)">← Back</button><span class="step-meta">Step 2 of 4 — optional add-ons</span><button class="btn-next" onclick="cbStep(3)">Continue — Guest Info →</button></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="booking-step" id="cb-s3">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">👤</div><div><div class="fs-title">Primary Guest Information</div><div class="fs-sub">The lead guest must be 18 or older · Details used for check-in</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">First Name</label><input type="text" class="f-inp" placeholder="Juan"/></div>
+            <div class="fg"><label class="f-lbl">Last Name</label><input type="text" class="f-inp" placeholder="Dela Cruz"/></div>
+            <div class="fg"><label class="f-lbl">Email Address</label><input type="email" class="f-inp" placeholder="juan@email.com"/></div>
+            <div class="fg"><label class="f-lbl">Mobile Number</label><input type="tel" class="f-inp" placeholder="09XX XXX XXXX"/></div>
+            <div class="fg"><label class="f-lbl">Nationality</label><select class="f-sel"><option>Filipino</option><option>Foreign national</option></select></div>
+            <div class="fg"><label class="f-lbl">Valid ID Type</label><select class="f-sel"><option>Philippine Passport</option><option>Driver's License</option><option>PhilSys / National ID</option><option>UMID</option><option>Foreign Passport</option></select></div>
+          </div>
+          <div class="divider-label">Arrival Support Details</div>
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">Mode of Transport</label><select class="f-sel"><option>Private vehicle</option><option>Hired van / bus</option><option>Taxi / TNVS</option><option>Public transport</option></select></div>
+            <div class="fg"><label class="f-lbl">Arrival Reminder</label><input type="text" class="f-inp" value="Reception will validate your chosen arrival time." readonly/></div>
+            <div class="fg full"><label class="f-lbl">Special Requests (optional)</label><textarea class="f-ta" placeholder="Any special requests, dietary needs, or accessibility requirements..."></textarea></div>
+          </div>
+          <div class="info-tip"><span class="info-tip-icon">📧</span><span>A booking confirmation email with your Booking ID and QR Code will be sent to the email address provided above.</span></div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="cbStep(2)">← Back</button><span class="step-meta">Step 3 of 4 — guest details</span><button class="btn-next" onclick="cbStep(4)">Continue — Payment →</button></div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="booking-step" id="cb-s4">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">💳</div><div><div class="fs-title">Payment &amp; Confirmation</div><div class="fs-sub">All transactions are secured and encrypted · SSL protected</div></div></div>
+        <div class="fs-body">
+          <div class="pay-grid">
+            <div class="pay-card selected" onclick="selPay(this,'card','cb')"><span class="pay-ico">💳</span><div><div class="pay-name">Credit / Debit Card</div><div class="pay-sub">Visa, Mastercard, JCB</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'gcash','cb')"><span class="pay-ico">📱</span><div><div class="pay-name">GCash / Maya</div><div class="pay-sub">E-wallet transfer</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'bank','cb')"><span class="pay-ico">🏦</span><div><div class="pay-name">Bank Transfer</div><div class="pay-sub">BDO, BPI, Metrobank</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'resort','cb')"><span class="pay-ico">🏨</span><div><div class="pay-name">Pay at Resort</div><div class="pay-sub">Cash or card on arrival</div></div><div class="pay-dot"></div></div>
+          </div>
+
+          <!-- CARD PANEL -->
+          <div class="pay-detail-panel show" id="cb-pay-card">
+            <div class="pay-panel-inner">
+              <div class="pay-panel-title">💳 Card Details</div>
+              <div class="card-fields">
+                <div class="card-brand-row"><span class="card-brand">VISA</span><span class="card-brand">MC</span><span class="card-brand">JCB</span><span style="font-size:11px;color:var(--dim);margin-left:4px">Accepted networks</span></div>
+                <div class="fg"><label class="f-lbl">Card Number</label><input type="text" class="f-inp" placeholder="4111  1111  1111  1111" maxlength="19"/></div>
+                <div class="card-row">
+                  <div class="fg"><label class="f-lbl">Cardholder Name</label><input type="text" class="f-inp" placeholder="JUAN DELA CRUZ"/></div>
+                  <div class="fg"><label class="f-lbl">Expiry Date</label><input type="text" class="f-inp" placeholder="12 / 28"/></div>
+                  <div class="fg"><label class="f-lbl">CVV / CVC</label><input type="text" class="f-inp" placeholder="123"/></div>
+                </div>
+                <div class="card-secured">🔒 &nbsp;Demo sample: 4111 1111 1111 1111 · Exp 12/28 · CVV 123</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GCASH PANEL -->
+          <div class="pay-detail-panel" id="cb-pay-gcash">
+            <div class="pay-panel-inner">
+              <div class="pay-panel-title">📱 GCash / Maya Transfer</div>
+              <div class="ewallet-panel">
+                <div class="ewallet-qr">QR Code<br/>Scan to pay<br/>via GCash or Maya</div>
+                <div class="ewallet-number">0917 - 999 - WILD</div>
+                <div class="ewallet-name">WildNest Resort Inc. — Registered Account</div>
+                <div class="ewallet-steps">
+                  <div class="ewallet-step"><div class="ewallet-step-num">1</div><span>Open your GCash or Maya app and tap <strong>Send Money</strong></span></div>
+                  <div class="ewallet-step"><div class="ewallet-step-num">2</div><span>Enter number <strong>0917-999-WILD</strong> or scan the QR above</span></div>
+                  <div class="ewallet-step"><div class="ewallet-step-num">3</div><span>Enter the <strong>exact total amount</strong> shown in your booking review below</span></div>
+                  <div class="ewallet-step"><div class="ewallet-step-num">4</div><span>Add your <strong>Booking Reference</strong> in the message/note field</span></div>
+                </div>
+                <div class="ewallet-ref"><div><div class="ewallet-ref-lbl">Your Booking Reference</div><div class="ewallet-ref-val">WN-REF-CB-2026</div></div><button class="bid-copy" onclick="event.preventDefault()">📋 Copy</button></div>
+                <div class="pay-ref-box">
+                  <div class="fg"><label class="f-lbl">GCash / Maya Reference Number</label><input type="text" class="f-inp" placeholder="Example: GCash-2026-001245"/></div>
+                  <div class="pay-ref-sample">Sample format: GCash-2026-001245 or Maya-88014592</div>
+                  <div class="pay-ref-note">No photo upload is required for the demo. Reception can verify this reference later if needed.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BANK PANEL -->
+          <div class="pay-detail-panel" id="cb-pay-bank">
+            <div class="pay-panel-inner">
+              <div class="pay-panel-title">🏦 Bank Transfer Details</div>
+              <div class="bank-tabs">
+                <button class="bank-tab active" onclick="selBankTab(this,'bdo','cb')">BDO</button>
+                <button class="bank-tab" onclick="selBankTab(this,'bpi','cb')">BPI</button>
+                <button class="bank-tab" onclick="selBankTab(this,'metro','cb')">Metrobank</button>
+              </div>
+              <div class="bank-details" id="cb-bank-bdo">
+                <div class="bank-row"><div><div class="bank-row-lbl">Account Name</div><div class="bank-row-val">WildNest Resort Inc.</div></div><button class="bank-copy-btn">Copy</button></div>
+                <div class="bank-row"><div><div class="bank-row-lbl">Account Number</div><div class="bank-row-val">0088 - 8800 - 2026</div></div><button class="bank-copy-btn">Copy</button></div>
+                <div class="bank-row"><div><div class="bank-row-lbl">Bank</div><div class="bank-row-val">BDO Unibank</div></div></div>
+                <div class="bank-row"><div><div class="bank-row-lbl">Branch</div><div class="bank-row-val">Carmen, Cebu Branch</div></div></div>
+              </div>
+              <div class="bank-upload">
+                <div class="bank-upload-icon">🏦</div>
+                <div class="bank-upload-txt">Enter your transfer reference number</div>
+                <div class="pay-ref-box">
+                  <div class="fg full"><input type="text" class="f-inp" placeholder="Example: BDO-TRX-88214567"/></div>
+                  <div class="pay-ref-sample">Sample format: BDO-TRX-88214567 or BPI-REF-2026-4412</div>
+                  <div class="pay-ref-note">No photo upload is required for the demo. Keep the bank reference ready for reception verification if asked.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAY AT RESORT PANEL -->
+          <div class="pay-detail-panel" id="cb-pay-resort">
+            <div class="pay-panel-inner">
+              <div class="pay-panel-title">🏨 Pay at Resort</div>
+              <div class="resort-pay">
+                <div class="resort-info-box"><div class="resort-info-icon">✅</div><div><div class="resort-info-title">No upfront payment required</div><div class="resort-info-desc">Your reservation will be held with a booking confirmation only. Full payment is collected at the resort upon check-in or arrival at the Experience Hub.</div></div></div>
+                <div class="resort-methods">
+                  <div class="resort-method"><div class="resort-method-icon">💵</div><div class="resort-method-name">Cash</div><div class="resort-method-note">PHP accepted</div></div>
+                  <div class="resort-method"><div class="resort-method-icon">💳</div><div class="resort-method-name">Credit Card</div><div class="resort-method-note">Visa, MC, JCB</div></div>
+                  <div class="resort-method"><div class="resort-method-icon">📱</div><div class="resort-method-name">GCash / Maya</div><div class="resort-method-note">On-site QR</div></div>
+                  <div class="resort-method"><div class="resort-method-icon">🏦</div><div class="resort-method-name">Debit Card</div><div class="resort-method-note">Major networks</div></div>
+                </div>
+                <div class="resort-hold-notice"><span style="font-size:16px">⚠️</span><span>A valid booking confirmation is required to hold your reservation. Unclaimed bookings may be released 30 minutes past your stated arrival time without prior notice.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider-label">Booking Review</div>
+          <div class="review-block">
+            <div class="review-head">🛏️ Cabin Stay</div>
+            <div class="review-body">
+              <div class="r-row"><span class="r-lbl">Cabin</span><span class="r-val" id="cb-rv-cabin">—</span></div>
+              <div class="r-row"><span class="r-lbl">Check-in</span><span class="r-val" id="cb-rv-ci">—</span></div>
+              <div class="r-row"><span class="r-lbl">Check-out</span><span class="r-val" id="cb-rv-co">—</span></div>
+              <div class="r-row"><span class="r-lbl">Arrival Time</span><span class="r-val" id="cb-rv-time">2:00 PM</span></div>
+              <div class="r-row"><span class="r-lbl">Duration</span><span class="r-val" id="cb-rv-nights">—</span></div>
+              <div class="r-row"><span class="r-lbl">Guests</span><span class="r-val" id="cb-rv-guests">2 Adults</span></div>
+              <div class="r-row"><span class="r-lbl">Resort fee</span><span class="r-val">₱200</span></div>
+              <div class="r-row"><span class="r-lbl">Conservation fee</span><span class="r-val">₱200</span></div>
+            </div>
+          </div>
+          <div class="review-total"><span class="rt-lbl">Total amount due</span><span class="rt-val" id="cb-rv-total">₱0</span></div>
+          <div class="terms-row"><input type="checkbox"/><span class="terms-txt">I agree to the <a href="#">WildNest Terms &amp; Conditions</a> and Cancellation Policy.</span></div>
+          <div class="email-notice" style="margin-top:14px"><span style="font-size:16px">📧</span><span>Confirmation email with Booking ID and QR Code will be sent to your email upon confirming.</span></div>
+          <button class="btn-confirm" onclick="showConfirmed('cb')">✓ &nbsp;Confirm Cabin Booking</button>
+        </div>
+      </div>
+      <div class="step-nav" style="border:none;padding-top:0"><button class="btn-back" onclick="cbStep(3)">← Back</button><span></span></div>
+    </div>
+
+    <!-- CONFIRMED -->
+    <div class="booking-step" id="cb-s5">
+      <div class="fs-wrap"><div class="fs-body"><div class="conf-wrap">
+        <div class="conf-icon">✓</div>
+        <div class="conf-title">Cabin Reserved!</div>
+        <div class="conf-sub">Your WildNest cabin stay is confirmed. Present your Booking ID and QR Code upon check-in at the resort entrance.</div>
+        <div class="bid-box"><div><div class="bid-lbl">Your Booking ID</div><span class="bid-val" id="cb-bid">WN-2026-0000</span></div><button class="bid-copy" onclick="copyBID('cb-bid')">📋 Copy ID</button></div>
+        <div class="qr-box"><div class="qr-lbl">📱 Check-in QR Code</div><div class="qr-ph">QR Code<br/>Generated on confirm</div><div class="qr-actions"><button class="btn-save-qr">💾 Save QR as PNG</button><button class="btn-print">🖨️ Print Details</button></div></div>
+        <div class="email-sent"><span class="es-icon">📧</span><div><div class="es-title">Confirmation Email Sent</div><div class="es-detail">Check your inbox for full booking details</div></div></div>
+        <div class="conf-actions"><button class="btn-portal">🏠 Guest Portal</button><button class="btn-newbook" onclick="location.reload()">+ New Booking</button></div>
+      </div></div></div>
+    </div>
+  </div><!-- /tab-cabin -->
+
+
+  <!-- ══════════════════════════════════════════
+       TAB: DAY VISIT
+  ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-day">
+    <div class="step-bar" id="sb-day">
+      <div class="s-item"><div class="s-num active" id="dv-n1">1</div><span class="s-lbl active" id="dv-l1">Tickets</span></div>
+      <div class="s-conn" id="dv-c1"></div>
+      <div class="s-item"><div class="s-num wait" id="dv-n2">2</div><span class="s-lbl" id="dv-l2">Zones</span></div>
+      <div class="s-conn" id="dv-c2"></div>
+      <div class="s-item"><div class="s-num wait" id="dv-n3">3</div><span class="s-lbl" id="dv-l3">Guest Info</span></div>
+      <div class="s-conn" id="dv-c3"></div>
+      <div class="s-item"><div class="s-num wait" id="dv-n4">4</div><span class="s-lbl" id="dv-l4">Payment</span></div>
+    </div>
+
+    <!-- DV STEP 1 -->
+    <div class="booking-step active" id="dv-s1">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">📅</div><div><div class="fs-title">Visit Date &amp; Time</div><div class="fs-sub">Day visit hours: 7:00 AM — 5:00 PM · Last entry 3:00 PM</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">Visit Date</label><input type="date" id="dv-date" class="f-inp" style="background:var(--cream);cursor:pointer"/></div>
+            <div class="fg"><label class="f-lbl">Exact Entry Time</label><input type="time" id="dv-time" data-booking-time="dv" class="f-inp" value="11:00"/></div>
+            <div class="fg full"><label class="f-lbl">Suggested Times</label>
+              <div class="slot-grid">
+                <div class="slot" onclick="selSlot(this,'dv')">7:00 AM</div>
+                <div class="slot" onclick="selSlot(this,'dv')">9:00 AM</div>
+                <div class="slot" onclick="selSlot(this,'dv')">11:00 AM</div>
+                <div class="slot" onclick="selSlot(this,'dv')">1:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'dv')">3:00 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🎫</div><div><div class="fs-title">Ticket Type</div><div class="fs-sub">Per person · Includes general park access · Zones purchased separately</div></div></div>
+        <div class="fs-body">
+          <div class="ticket-grid">
+            <div class="tkt-card" onclick="selTkt(this,'dv','Adult',750)"><div class="tkt-icon">🧑</div><div class="tkt-name">Adult</div><div class="tkt-price">₱750</div><div class="tkt-note">Age 13+</div></div>
+            <div class="tkt-card" onclick="selTkt(this,'dv','Child',450)"><div class="tkt-icon">🧒</div><div class="tkt-name">Child</div><div class="tkt-price">₱450</div><div class="tkt-note">Age 4–12</div></div>
+            <div class="tkt-card" onclick="selTkt(this,'dv','Toddler',0)"><div class="tkt-icon">👶</div><div class="tkt-name">Toddler</div><div class="tkt-price">Free</div><div class="tkt-note">Age 0–3</div></div>
+          </div>
+          <div class="guest-grid">
+            <div class="guest-tile"><div><div class="gt-type">Adults</div><div class="gt-age">₱750 / person</div></div><div class="counter"><button class="c-btn" onclick="chg('dv-adults',-1)">−</button><span class="c-val" id="dv-adults">2</span><button class="c-btn" onclick="chg('dv-adults',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Children</div><div class="gt-age">₱450 / person</div></div><div class="counter"><button class="c-btn" onclick="chg('dv-children',-1)">−</button><span class="c-val" id="dv-children">0</span><button class="c-btn" onclick="chg('dv-children',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Toddlers</div><div class="gt-age">Free entry</div></div><div class="counter"><button class="c-btn" onclick="chg('dv-toddlers',-1)">−</button><span class="c-val" id="dv-toddlers">0</span><button class="c-btn" onclick="chg('dv-toddlers',1)">+</button></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav"><span class="step-meta">Step 1 of 4 — date &amp; tickets</span><button class="btn-next" onclick="dvStep(2)">Continue — Select Zones →</button></div>
+    </div>
+
+    <!-- DV STEP 2 -->
+    <div class="booking-step" id="dv-s2">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🗺️</div><div><div class="fs-title">Wildlife Zones</div><div class="fs-sub">8 zones available — select any combination · Access fees are per person · per zone</div></div></div>
+        <div class="fs-body">
+          <div class="zone-actions">
+            <button class="z-action" onclick="selAllZones(true,'dv')">Select All Zones</button>
+            <button class="z-action" onclick="selAllZones(false,'dv')">Clear Selection</button>
+          </div>
+          <div class="zone-grid" id="dv-zone-grid">
+            <div class="z-card" onclick="togZone(this,'dv','Golden Savanna',1200)"><div class="z-chk">✓</div><span class="z-emoji">🦁</span><div class="z-name">Golden Savanna</div><div class="z-animal">Lions &amp; Zebras</div><div class="z-fee">₱1,200</div></div>
+            <div class="z-card" onclick="togZone(this,'dv','Predator Ridge',1000)"><div class="z-chk">✓</div><span class="z-emoji">🦛</span><div class="z-name">Predator Ridge</div><div class="z-animal">Hippos &amp; Crocodiles</div><div class="z-fee">₱1,000</div></div>
+            <div class="z-card" onclick="togZone(this,'dv','Aviary Dome',1500)"><div class="z-chk">✓</div><span class="z-emoji">🐒</span><div class="z-name">Aviary Dome</div><div class="z-animal">Lemurs &amp; Rare Monkeys</div><div class="z-fee">₱1,500</div></div>
+            <div class="z-card" onclick="togZone(this,'dv','Aquatic Zone',800)"><div class="z-chk">✓</div><span class="z-emoji">🦜</span><div class="z-name">Aquatic Zone</div><div class="z-animal">Exotic Tropical Birds</div><div class="z-fee">₱800</div></div>
+            <div class="z-card" onclick="togZone(this,'dv','Nocturnal Trail',900)"><div class="z-chk">✓</div><span class="z-emoji">🐍</span><div class="z-name">Nocturnal Trail</div><div class="z-animal">Pythons &amp; Monitor Lizards</div><div class="z-fee">₱900</div></div>
+            <div class="z-card" onclick="togZone(this,'dv','Jungle Canopy',1800)"><div class="z-chk">✓</div><span class="z-emoji">🐘</span><div class="z-name">Jungle Canopy</div><div class="z-animal">African Elephant Herd</div><div class="z-fee">₱1,800</div></div>
+            <div class="z-card" onclick="togZone(this,'dv','Reptile Zone',1600)"><div class="z-chk">✓</div><span class="z-emoji">🐆</span><div class="z-name">Reptile Zone</div><div class="z-animal">Leopards &amp; Tigers</div><div class="z-fee">₱1,600</div></div>
+            <div class="z-card" onclick="togZone(this,'dv','Conservation Hub',1200)"><div class="z-chk">✓</div><span class="z-emoji">🦉</span><div class="z-name">Conservation Hub</div><div class="z-animal">Owls &amp; Night-active Mammals</div><div class="z-fee">₱1,200</div></div>
+          </div>
+          <div class="info-tip" style="margin-top:14px"><span class="info-tip-icon">💡</span><span>Zone fees are charged per person. Children at 50% rate. Toddlers free for all zones.</span></div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="dvStep(1)">← Back</button><span class="step-meta">Step 2 of 4 — zones &amp; add-ons</span><button class="btn-next" onclick="dvStep(3)">Continue — Guest Info →</button></div>
+    </div>
+
+    <!-- DV STEP 3 -->
+    <div class="booking-step" id="dv-s3">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">👤</div><div><div class="fs-title">Primary Guest Information</div><div class="fs-sub">Lead guest must be 18 or older · Details used for gate entry</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">First Name</label><input type="text" class="f-inp" placeholder="Juan"/></div>
+            <div class="fg"><label class="f-lbl">Last Name</label><input type="text" class="f-inp" placeholder="Dela Cruz"/></div>
+            <div class="fg"><label class="f-lbl">Email Address</label><input type="email" class="f-inp" placeholder="juan@email.com"/></div>
+            <div class="fg"><label class="f-lbl">Mobile Number</label><input type="tel" class="f-inp" placeholder="09XX XXX XXXX"/></div>
+            <div class="fg"><label class="f-lbl">Nationality</label><select class="f-sel"><option>Filipino</option><option>Foreign national</option></select></div>
+            <div class="fg"><label class="f-lbl">Valid ID Type</label><select class="f-sel"><option>Philippine Passport</option><option>Driver's License</option><option>PhilSys / National ID</option><option>UMID</option><option>Foreign Passport</option></select></div>
+            <div class="fg full"><label class="f-lbl">Special Requests (optional)</label><textarea class="f-ta" placeholder="Accessibility needs, group notes, or other requests..."></textarea></div>
+          </div>
+          <div class="info-tip"><span class="info-tip-icon">📧</span><span>Confirmation email with QR Code for gate entry will be sent to the email above.</span></div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="dvStep(2)">← Back</button><span class="step-meta">Step 3 of 4 — guest details</span><button class="btn-next" onclick="dvStep(4)">Continue — Payment →</button></div>
+    </div>
+
+    <!-- DV STEP 4 -->
+    <div class="booking-step" id="dv-s4">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">💳</div><div><div class="fs-title">Payment &amp; Confirmation</div><div class="fs-sub">All transactions are secured and encrypted · SSL protected</div></div></div>
+        <div class="fs-body">
+          <div class="pay-grid">
+            <div class="pay-card selected" onclick="selPay(this,'card','dv')"><span class="pay-ico">💳</span><div><div class="pay-name">Credit / Debit Card</div><div class="pay-sub">Visa, Mastercard, JCB</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'gcash','dv')"><span class="pay-ico">📱</span><div><div class="pay-name">GCash / Maya</div><div class="pay-sub">E-wallet transfer</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'bank','dv')"><span class="pay-ico">🏦</span><div><div class="pay-name">Bank Transfer</div><div class="pay-sub">BDO, BPI, Metrobank</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'resort','dv')"><span class="pay-ico">🏨</span><div><div class="pay-name">Pay at Resort</div><div class="pay-sub">Cash or card on arrival</div></div><div class="pay-dot"></div></div>
+          </div>
+          <div class="pay-detail-panel show" id="dv-pay-card"><div class="pay-panel-inner"><div class="pay-panel-title">💳 Card Details</div><div class="card-fields"><div class="card-brand-row"><span class="card-brand">VISA</span><span class="card-brand">MC</span><span class="card-brand">JCB</span></div><div class="fg"><label class="f-lbl">Card Number</label><input type="text" class="f-inp" placeholder="4111  1111  1111  1111"/></div><div class="card-row"><div class="fg"><label class="f-lbl">Cardholder Name</label><input type="text" class="f-inp" placeholder="JUAN DELA CRUZ"/></div><div class="fg"><label class="f-lbl">Expiry</label><input type="text" class="f-inp" placeholder="12 / 28"/></div><div class="fg"><label class="f-lbl">CVV</label><input type="text" class="f-inp" placeholder="123"/></div></div><div class="card-secured">🔒 &nbsp;Demo sample: 4111 1111 1111 1111 · Exp 12/28 · CVV 123</div></div></div></div>
+          <div class="pay-detail-panel" id="dv-pay-gcash"><div class="pay-panel-inner"><div class="pay-panel-title">📱 GCash / Maya Transfer</div><div class="ewallet-panel"><div class="ewallet-qr">QR Code<br/>Scan to pay</div><div class="ewallet-number">0917 - 999 - WILD</div><div class="ewallet-name">WildNest Resort Inc.</div><div class="ewallet-steps"><div class="ewallet-step"><div class="ewallet-step-num">1</div><span>Open GCash or Maya → Send Money</span></div><div class="ewallet-step"><div class="ewallet-step-num">2</div><span>Enter <strong>0917-999-WILD</strong> or scan QR</span></div><div class="ewallet-step"><div class="ewallet-step-num">3</div><span>Enter the exact total and add your reference in the note</span></div></div><div class="pay-ref-box"><div class="fg"><label class="f-lbl">GCash / Maya Reference Number</label><input type="text" class="f-inp" placeholder="Example: GCash-2026-001245"/></div><div class="pay-ref-sample">Sample format: GCash-2026-001245 or Maya-88014592</div><div class="pay-ref-note">No photo upload is required for the demo. Reception can verify this reference later if needed.</div></div></div></div></div>
+          <div class="pay-detail-panel" id="dv-pay-bank"><div class="pay-panel-inner"><div class="pay-panel-title">🏦 Bank Transfer Details</div><div class="bank-tabs"><button class="bank-tab active" onclick="selBankTab(this,'bdo','dv')">BDO</button><button class="bank-tab" onclick="selBankTab(this,'bpi','dv')">BPI</button><button class="bank-tab" onclick="selBankTab(this,'metro','dv')">Metrobank</button></div><div class="bank-details"><div class="bank-row"><div><div class="bank-row-lbl">Account Name</div><div class="bank-row-val">WildNest Resort Inc.</div></div><button class="bank-copy-btn">Copy</button></div><div class="bank-row"><div><div class="bank-row-lbl">Account Number</div><div class="bank-row-val">0088 - 8800 - 2026</div></div><button class="bank-copy-btn">Copy</button></div><div class="bank-row"><div><div class="bank-row-lbl">Bank</div><div class="bank-row-val">BDO Unibank</div></div></div></div><div class="bank-upload"><div class="bank-upload-icon">🏦</div><div class="bank-upload-txt">Enter your transfer reference number</div><div class="pay-ref-box"><div class="fg full"><input type="text" class="f-inp" placeholder="Example: BDO-TRX-88214567"/></div><div class="pay-ref-sample">Sample format: BDO-TRX-88214567 or BPI-REF-2026-4412</div><div class="pay-ref-note">No photo upload is required for the demo. Keep the bank reference ready for reception verification if asked.</div></div></div></div></div>
+          <div class="pay-detail-panel" id="dv-pay-resort"><div class="pay-panel-inner"><div class="pay-panel-title">🏨 Pay at Resort</div><div class="resort-pay"><div class="resort-info-box"><div class="resort-info-icon">✅</div><div><div class="resort-info-title">No upfront payment required</div><div class="resort-info-desc">Pay at the gate on your visit day. Full payment collected before entry at the main gate.</div></div></div><div class="resort-methods"><div class="resort-method"><div class="resort-method-icon">💵</div><div class="resort-method-name">Cash</div><div class="resort-method-note">PHP accepted</div></div><div class="resort-method"><div class="resort-method-icon">💳</div><div class="resort-method-name">Credit Card</div><div class="resort-method-note">Visa, MC, JCB</div></div><div class="resort-method"><div class="resort-method-icon">📱</div><div class="resort-method-name">GCash / Maya</div><div class="resort-method-note">On-site QR</div></div><div class="resort-method"><div class="resort-method-icon">🏦</div><div class="resort-method-name">Debit Card</div><div class="resort-method-note">Major networks</div></div></div><div class="resort-hold-notice"><span style="font-size:16px">⚠️</span><span>Your reservation is held with your booking confirmation. Present your QR Code at the gate.</span></div></div></div></div>
+          <div class="divider-label">Booking Review</div>
+          <div class="review-block">
+            <div class="review-head">☀️ Day Visit</div>
+            <div class="review-body">
+              <div class="r-row"><span class="r-lbl">Visit Date</span><span class="r-val" id="dv-rv-date">—</span></div>
+              <div class="r-row"><span class="r-lbl">Entry Time</span><span class="r-val" id="dv-rv-time">11:00 AM</span></div>
+              <div class="r-row"><span class="r-lbl">Guests</span><span class="r-val" id="dv-rv-guests">2 Adults</span></div>
+              <div class="r-row"><span class="r-lbl">Conservation fee</span><span class="r-val">₱200</span></div>
+            </div>
+          </div>
+          <div class="review-total"><span class="rt-lbl">Total amount due</span><span class="rt-val" id="dv-rv-total">₱0</span></div>
+          <div class="terms-row"><input type="checkbox"/><span class="terms-txt">I agree to the <a href="#">WildNest Terms &amp; Conditions</a> and Cancellation Policy.</span></div>
+          <div class="email-notice" style="margin-top:14px"><span style="font-size:16px">📧</span><span>Confirmation email with QR Code for gate entry will be sent upon confirming.</span></div>
+          <button class="btn-confirm" onclick="showConfirmed('dv')">✓ &nbsp;Confirm Day Visit Booking</button>
+        </div>
+      </div>
+      <div class="step-nav" style="border:none;padding-top:0"><button class="btn-back" onclick="dvStep(3)">← Back</button><span></span></div>
+    </div>
+
+    <!-- DV CONFIRMED -->
+    <div class="booking-step" id="dv-s5">
+      <div class="fs-wrap"><div class="fs-body"><div class="conf-wrap">
+        <div class="conf-icon">✓</div>
+        <div class="conf-title">Day Visit Confirmed!</div>
+        <div class="conf-sub">Your WildNest day visit is confirmed. Present your QR Code at the main gate on your visit day.</div>
+        <div class="bid-box"><div><div class="bid-lbl">Your Booking ID</div><span class="bid-val" id="dv-bid">WN-2026-0000</span></div><button class="bid-copy" onclick="copyBID('dv-bid')">📋 Copy ID</button></div>
+        <div class="qr-box"><div class="qr-lbl">📱 Gate Entry QR Code</div><div class="qr-ph">QR Code<br/>Generated on confirm</div><div class="qr-actions"><button class="btn-save-qr">💾 Save QR as PNG</button><button class="btn-print">🖨️ Print Details</button></div></div>
+        <div class="email-sent"><span class="es-icon">📧</span><div><div class="es-title">Confirmation Email Sent</div><div class="es-detail">Check your inbox for details</div></div></div>
+        <div class="conf-actions"><button class="btn-portal">🏠 Guest Portal</button><button class="btn-newbook" onclick="location.reload()">+ New Booking</button></div>
+      </div></div></div>
+    </div>
+  </div><!-- /tab-day -->
+
+
+  <!-- ══════════════════════════════════════════
+       TAB: EXPERIENCE ONLY
+  ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-exp">
+    <div class="step-bar" id="sb-exp">
+      <div class="s-item"><div class="s-num active" id="eo-n1">1</div><span class="s-lbl active" id="eo-l1">Experience</span></div>
+      <div class="s-conn" id="eo-c1"></div>
+      <div class="s-item"><div class="s-num wait" id="eo-n2">2</div><span class="s-lbl" id="eo-l2">Add-ons</span></div>
+      <div class="s-conn" id="eo-c2"></div>
+      <div class="s-item"><div class="s-num wait" id="eo-n3">3</div><span class="s-lbl" id="eo-l3">Guest Info</span></div>
+      <div class="s-conn" id="eo-c3"></div>
+      <div class="s-item"><div class="s-num wait" id="eo-n4">4</div><span class="s-lbl" id="eo-l4">Payment</span></div>
+    </div>
+
+    <!-- EO STEP 1 -->
+    <div class="booking-step active" id="eo-s1">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">📅</div><div><div class="fs-title">Select Date &amp; Guests</div><div class="fs-sub">Experience availability is subject to weather and animal conditions</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">Experience Date</label><input type="date" id="eo-date" class="f-inp" style="background:var(--cream);cursor:pointer"/></div>
+            <div class="fg"><label class="f-lbl">Exact Session Time</label><input type="time" id="eo-time" data-booking-time="eo" class="f-inp" value="09:00"/></div>
+            <div class="fg full"><label class="f-lbl">Suggested Times</label>
+              <div class="slot-grid">
+                <div class="slot" onclick="selSlot(this,'eo')">7:30 AM</div>
+                <div class="slot" onclick="selSlot(this,'eo')">9:00 AM</div>
+                <div class="slot" onclick="selSlot(this,'eo')">1:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'eo')">5:30 PM</div>
+                <div class="slot" onclick="selSlot(this,'eo')">7:30 PM</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:16px">
+          <div class="guest-grid">
+            <div class="guest-tile"><div><div class="gt-type">Adults</div><div class="gt-age">Age 13+</div></div><div class="counter"><button class="c-btn" onclick="chg('eo-adults',-1)">−</button><span class="c-val" id="eo-adults">2</span><button class="c-btn" onclick="chg('eo-adults',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Children</div><div class="gt-age">Age 4–12</div></div><div class="counter"><button class="c-btn" onclick="chg('eo-children',-1)">−</button><span class="c-val" id="eo-children">0</span><button class="c-btn" onclick="chg('eo-children',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Toddlers</div><div class="gt-age">Age 0–3 · Free</div></div><div class="counter"><button class="c-btn" onclick="chg('eo-toddlers',-1)">−</button><span class="c-val" id="eo-toddlers">0</span><button class="c-btn" onclick="chg('eo-toddlers',1)">+</button></div></div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🌿</div><div><div class="fs-title">Select Experiences</div><div class="fs-sub">5 guided experiences available · Prices are per person · Select any combination</div></div></div>
+        <div class="fs-body">
+          <div class="exp-list">
+            <div class="e-card" onclick="togExpAddon(this,'eo','Animal Feeding Tour',500)"><div class="e-icon">🍖</div><div class="e-info"><div class="e-name">Animal Feeding Tour</div><div class="e-detail">45 min · Morning rounds with a zookeeper · Savanna Zone</div></div><div class="e-right"><div class="e-price">₱500</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'eo','Night Safari Walk',800)"><div class="e-icon">🌙</div><div class="e-info"><div class="e-name">Night Safari Walk</div><div class="e-detail">2 hrs · After-dark guided wildlife trail</div></div><div class="e-right"><div class="e-price">₱800</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'eo','Keeper Experience',1200)"><div class="e-icon">🦅</div><div class="e-info"><div class="e-name">Keeper Experience</div><div class="e-detail">1 hr · Behind-the-scenes animal care session</div></div><div class="e-right"><div class="e-price">₱1,200</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'eo','Sunrise Safari Walk',600)"><div class="e-icon">🌅</div><div class="e-info"><div class="e-name">Sunrise Safari Walk</div><div class="e-detail">Early morning guided walk through active habitats</div></div><div class="e-right"><div class="e-price">₱600</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'eo','Photo Encounter',3500)"><div class="e-icon">📸</div><div class="e-info"><div class="e-name">Photo Encounter</div><div class="e-detail">30 min · Up-close wildlife photography session</div></div><div class="e-right"><div class="e-price">₱3,500</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav"><span class="step-meta">Step 1 of 4 — date &amp; experience selection</span><button class="btn-next" onclick="eoStep(2)">Continue — Add-ons →</button></div>
+    </div>
+
+    <!-- EO STEP 2 -->
+    <div class="booking-step" id="eo-s2">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">✨</div><div><div class="fs-title">Experience Add-ons</div><div class="fs-sub">Optional extras to complement your wildlife encounter</div></div></div>
+        <div class="fs-body">
+          <div class="addon-grid">
+            <div class="a-card" onclick="togAddon(this,'eo','Gourmet Picnic',4500)"><span class="a-icon">🧺</span><div class="a-name">Gourmet Picnic</div><div class="a-desc">Artisan basket for two with local wine</div><div class="a-price">+₱4,500</div></div>
+            <div class="a-card" onclick="togAddon(this,'eo','Photography Pro Kit',1800)"><span class="a-icon">📷</span><div class="a-name">Photography Kit</div><div class="a-desc">Camera, lens &amp; waterproof bag rental</div><div class="a-price">+₱1,800</div></div>
+            <div class="a-card" onclick="togAddon(this,'eo','Conservation Talk',250)"><span class="a-icon">🎤</span><div class="a-name">Conservation Talk</div><div class="a-desc">1 hr talk at Vet Center · All ages</div><div class="a-price">+₱250/person</div></div>
+            <div class="a-card" onclick="togAddon(this,'eo','Stargazing Kit',1200)"><span class="a-icon">🔭</span><div class="a-name">Stargazing Kit</div><div class="a-desc">Telescope rental and sky map</div><div class="a-price">+₱1,200</div></div>
+            <div class="a-card" onclick="togAddon(this,'eo','Airport Transfer',2800)"><span class="a-icon">🚐</span><div class="a-name">Airport Transfer</div><div class="a-desc">Per way · resort arranged</div><div class="a-price">+₱2,800/way</div></div>
+            <div class="a-card" onclick="togAddon(this,'eo','Travel Insurance',450)"><span class="a-icon">🛡️</span><div class="a-name">Travel Insurance</div><div class="a-desc">Per person coverage</div><div class="a-price">+₱450/person</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="eoStep(1)">← Back</button><span class="step-meta">Step 2 of 4 — optional add-ons</span><button class="btn-next" onclick="eoStep(3)">Continue — Guest Info →</button></div>
+    </div>
+
+    <!-- EO STEP 3 -->
+    <div class="booking-step" id="eo-s3">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">👤</div><div><div class="fs-title">Primary Guest Information</div><div class="fs-sub">Lead guest must be 18 or older</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">First Name</label><input type="text" class="f-inp" placeholder="Juan"/></div>
+            <div class="fg"><label class="f-lbl">Last Name</label><input type="text" class="f-inp" placeholder="Dela Cruz"/></div>
+            <div class="fg"><label class="f-lbl">Email Address</label><input type="email" class="f-inp" placeholder="juan@email.com"/></div>
+            <div class="fg"><label class="f-lbl">Mobile Number</label><input type="tel" class="f-inp" placeholder="09XX XXX XXXX"/></div>
+            <div class="fg"><label class="f-lbl">Nationality</label><select class="f-sel"><option>Filipino</option><option>Foreign national</option></select></div>
+            <div class="fg"><label class="f-lbl">Valid ID Type</label><select class="f-sel"><option>Philippine Passport</option><option>Driver's License</option><option>PhilSys / National ID</option><option>UMID</option><option>Foreign Passport</option></select></div>
+            <div class="fg full"><label class="f-lbl">Special Requests (optional)</label><textarea class="f-ta" placeholder="Any accessibility needs or special requests..."></textarea></div>
+          </div>
+          <div class="info-tip"><span class="info-tip-icon">📧</span><span>Confirmation email with QR Code will be sent to the email address above.</span></div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="eoStep(2)">← Back</button><span class="step-meta">Step 3 of 4 — guest details</span><button class="btn-next" onclick="eoStep(4)">Continue — Payment →</button></div>
+    </div>
+
+    <!-- EO STEP 4 -->
+    <div class="booking-step" id="eo-s4">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">💳</div><div><div class="fs-title">Payment &amp; Confirmation</div><div class="fs-sub">All transactions are secured and encrypted</div></div></div>
+        <div class="fs-body">
+          <div class="pay-grid">
+            <div class="pay-card selected" onclick="selPay(this,'card','eo')"><span class="pay-ico">💳</span><div><div class="pay-name">Credit / Debit Card</div><div class="pay-sub">Visa, Mastercard, JCB</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'gcash','eo')"><span class="pay-ico">📱</span><div><div class="pay-name">GCash / Maya</div><div class="pay-sub">E-wallet transfer</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'bank','eo')"><span class="pay-ico">🏦</span><div><div class="pay-name">Bank Transfer</div><div class="pay-sub">BDO, BPI, Metrobank</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'resort','eo')"><span class="pay-ico">🏨</span><div><div class="pay-name">Pay at Resort</div><div class="pay-sub">Cash or card on arrival</div></div><div class="pay-dot"></div></div>
+          </div>
+          <div class="pay-detail-panel show" id="eo-pay-card"><div class="pay-panel-inner"><div class="pay-panel-title">💳 Card Details</div><div class="card-fields"><div class="card-brand-row"><span class="card-brand">VISA</span><span class="card-brand">MC</span><span class="card-brand">JCB</span></div><div class="fg"><label class="f-lbl">Card Number</label><input type="text" class="f-inp" placeholder="4111  1111  1111  1111"/></div><div class="card-row"><div class="fg"><label class="f-lbl">Cardholder Name</label><input type="text" class="f-inp" placeholder="JUAN DELA CRUZ"/></div><div class="fg"><label class="f-lbl">Expiry</label><input type="text" class="f-inp" placeholder="12 / 28"/></div><div class="fg"><label class="f-lbl">CVV</label><input type="text" class="f-inp" placeholder="123"/></div></div><div class="card-secured">🔒 &nbsp;Demo sample: 4111 1111 1111 1111 · Exp 12/28 · CVV 123</div></div></div></div>
+          <div class="pay-detail-panel" id="eo-pay-gcash"><div class="pay-panel-inner"><div class="pay-panel-title">📱 GCash / Maya Transfer</div><div class="ewallet-panel"><div class="ewallet-qr">QR Code<br/>Scan to pay</div><div class="ewallet-number">0917 - 999 - WILD</div><div class="ewallet-name">WildNest Resort Inc.</div><div class="ewallet-steps"><div class="ewallet-step"><div class="ewallet-step-num">1</div><span>Open GCash or Maya → Send Money</span></div><div class="ewallet-step"><div class="ewallet-step-num">2</div><span>Enter <strong>0917-999-WILD</strong> or scan QR</span></div><div class="ewallet-step"><div class="ewallet-step-num">3</div><span>Enter the exact total and add your reference in the note</span></div></div><div class="pay-ref-box"><div class="fg"><label class="f-lbl">GCash / Maya Reference Number</label><input type="text" class="f-inp" placeholder="Example: GCash-2026-001245"/></div><div class="pay-ref-sample">Sample format: GCash-2026-001245 or Maya-88014592</div><div class="pay-ref-note">No photo upload is required for the demo. Reception can verify this reference later if needed.</div></div></div></div></div>
+          <div class="pay-detail-panel" id="eo-pay-bank"><div class="pay-panel-inner"><div class="pay-panel-title">🏦 Bank Transfer Details</div><div class="bank-tabs"><button class="bank-tab active" onclick="selBankTab(this,'bdo','eo')">BDO</button><button class="bank-tab" onclick="selBankTab(this,'bpi','eo')">BPI</button><button class="bank-tab" onclick="selBankTab(this,'metro','eo')">Metrobank</button></div><div class="bank-details"><div class="bank-row"><div><div class="bank-row-lbl">Account Name</div><div class="bank-row-val">WildNest Resort Inc.</div></div><button class="bank-copy-btn">Copy</button></div><div class="bank-row"><div><div class="bank-row-lbl">Account Number</div><div class="bank-row-val">0088 - 8800 - 2026</div></div><button class="bank-copy-btn">Copy</button></div><div class="bank-row"><div><div class="bank-row-lbl">Bank</div><div class="bank-row-val">BDO Unibank</div></div></div></div><div class="bank-upload"><div class="bank-upload-icon">🏦</div><div class="bank-upload-txt">Enter your transfer reference number</div><div class="pay-ref-box"><div class="fg full"><input type="text" class="f-inp" placeholder="Example: BDO-TRX-88214567"/></div><div class="pay-ref-sample">Sample format: BDO-TRX-88214567 or BPI-REF-2026-4412</div><div class="pay-ref-note">No photo upload is required for the demo. Keep the bank reference ready for reception verification if asked.</div></div></div></div></div>
+          <div class="pay-detail-panel" id="eo-pay-resort"><div class="pay-panel-inner"><div class="pay-panel-title">🏨 Pay at Resort</div><div class="resort-pay"><div class="resort-info-box"><div class="resort-info-icon">✅</div><div><div class="resort-info-title">No upfront payment required</div><div class="resort-info-desc">Pay at the Experience Hub on arrival. All methods accepted.</div></div></div><div class="resort-methods"><div class="resort-method"><div class="resort-method-icon">💵</div><div class="resort-method-name">Cash</div><div class="resort-method-note">PHP accepted</div></div><div class="resort-method"><div class="resort-method-icon">💳</div><div class="resort-method-name">Credit Card</div><div class="resort-method-note">Visa, MC, JCB</div></div><div class="resort-method"><div class="resort-method-icon">📱</div><div class="resort-method-name">GCash / Maya</div><div class="resort-method-note">On-site QR</div></div><div class="resort-method"><div class="resort-method-icon">🏦</div><div class="resort-method-name">Debit Card</div><div class="resort-method-note">Major networks</div></div></div><div class="resort-hold-notice"><span style="font-size:16px">⚠️</span><span>Present your QR Code at the Experience Hub. Unclaimed spots released 15 minutes past start time.</span></div></div></div></div>
+          <div class="divider-label">Booking Review</div>
+          <div class="review-block">
+            <div class="review-head">🌿 Experience Only</div>
+            <div class="review-body">
+              <div class="r-row"><span class="r-lbl">Date</span><span class="r-val" id="eo-rv-date">—</span></div>
+              <div class="r-row"><span class="r-lbl">Session Time</span><span class="r-val" id="eo-rv-time">9:00 AM</span></div>
+              <div class="r-row"><span class="r-lbl">Guests</span><span class="r-val" id="eo-rv-guests">2 Adults</span></div>
+              <div class="r-row"><span class="r-lbl">Conservation fee</span><span class="r-val">₱200</span></div>
+            </div>
+          </div>
+          <div class="review-total"><span class="rt-lbl">Total amount due</span><span class="rt-val" id="eo-rv-total">₱0</span></div>
+          <div class="terms-row"><input type="checkbox"/><span class="terms-txt">I agree to the <a href="#">WildNest Terms &amp; Conditions</a> and acknowledge that wildlife experiences are subject to animal health and weather conditions.</span></div>
+          <div class="email-notice" style="margin-top:14px"><span style="font-size:16px">📧</span><span>Confirmation with Booking ID and QR Code will be sent to your email upon confirming.</span></div>
+          <button class="btn-confirm" onclick="showConfirmed('eo')">✓ &nbsp;Confirm Experience Booking</button>
+        </div>
+      </div>
+      <div class="step-nav" style="border:none;padding-top:0"><button class="btn-back" onclick="eoStep(3)">← Back</button><span></span></div>
+    </div>
+
+    <!-- EO CONFIRMED -->
+    <div class="booking-step" id="eo-s5">
+      <div class="fs-wrap"><div class="fs-body"><div class="conf-wrap">
+        <div class="conf-icon">✓</div>
+        <div class="conf-title">Experience Booked!</div>
+        <div class="conf-sub">Your WildNest wildlife experience is confirmed. Show your QR Code upon arrival at the Experience Hub.</div>
+        <div class="bid-box"><div><div class="bid-lbl">Your Booking ID</div><span class="bid-val" id="eo-bid">WN-2026-0000</span></div><button class="bid-copy" onclick="copyBID('eo-bid')">📋 Copy ID</button></div>
+        <div class="qr-box"><div class="qr-lbl">📱 Experience QR Code</div><div class="qr-ph">QR Code<br/>Generated on confirm</div><div class="qr-actions"><button class="btn-save-qr">💾 Save QR as PNG</button><button class="btn-print">🖨️ Print Details</button></div></div>
+        <div class="email-sent"><span class="es-icon">📧</span><div><div class="es-title">Confirmation Email Sent</div><div class="es-detail">Check your inbox for details</div></div></div>
+        <div class="conf-actions"><button class="btn-portal">🏠 Guest Portal</button><button class="btn-newbook" onclick="location.reload()">+ New Booking</button></div>
+      </div></div></div>
+    </div>
+  </div><!-- /tab-exp -->
+
+
+  <!-- ══════════════════════════════════════════
+       TAB: FULL STAY + EXPERIENCE
+  ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-full">
+    <div class="step-bar" id="sb-full">
+      <div class="s-item"><div class="s-num active" id="fs-n1">1</div><span class="s-lbl active" id="fs-l1">Stay</span></div>
+      <div class="s-conn" id="fs-c1"></div>
+      <div class="s-item"><div class="s-num wait" id="fs-n2">2</div><span class="s-lbl" id="fs-l2">Experiences</span></div>
+      <div class="s-conn" id="fs-c2"></div>
+      <div class="s-item"><div class="s-num wait" id="fs-n3">3</div><span class="s-lbl" id="fs-l3">Guest Info</span></div>
+      <div class="s-conn" id="fs-c3"></div>
+      <div class="s-item"><div class="s-num wait" id="fs-n4">4</div><span class="s-lbl" id="fs-l4">Payment</span></div>
+    </div>
+
+    <!-- FS STEP 1 -->
+    <div class="booking-step active" id="fs-s1">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">📅</div><div><div class="fs-title">Select Your Dates</div><div class="fs-sub">Minimum 1 night · Free cancellation up to 48 hours before check-in</div></div></div>
+        <div class="fs-body">
+          <div class="date-row">
+            <div class="d-field"><label>Check-in</label><input type="date" id="fs-ci" onchange="calcNights('fs')"/></div>
+            <div class="nights-pill"><span class="nights-n" id="fs-nights">—</span><span class="nights-l">nights</span></div>
+            <div class="d-field"><label>Check-out</label><input type="date" id="fs-co" onchange="calcNights('fs')"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🕒</div><div><div class="fs-title">Arrival Time</div><div class="fs-sub">Choose the exact time you plan to arrive for the stay portion</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">Exact Arrival Time</label><input type="time" id="fs-time" data-booking-time="fs" class="f-inp" value="14:00"/></div>
+            <div class="fg"><label class="f-lbl">Suggested Arrival Window</label><input type="text" class="f-inp" value="2:00 PM to 6:00 PM" readonly/></div>
+            <div class="fg full"><label class="f-lbl">Suggested Times</label>
+              <div class="slot-grid">
+                <div class="slot" onclick="selSlot(this,'fs')">10:00 AM</div>
+                <div class="slot" onclick="selSlot(this,'fs')">12:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'fs')">2:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'fs')">4:00 PM</div>
+                <div class="slot" onclick="selSlot(this,'fs')">6:00 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">👥</div><div><div class="fs-title">Guests</div><div class="fs-sub">Number of guests for the cabin stay</div></div></div>
+        <div class="fs-body">
+          <div class="guest-grid">
+            <div class="guest-tile"><div><div class="gt-type">Adults</div><div class="gt-age">Age 13+</div></div><div class="counter"><button class="c-btn" onclick="chg('fs-adults',-1)">−</button><span class="c-val" id="fs-adults">2</span><button class="c-btn" onclick="chg('fs-adults',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Children</div><div class="gt-age">Age 4–12 · ₱500 each</div></div><div class="counter"><button class="c-btn" onclick="chg('fs-children',-1)">−</button><span class="c-val" id="fs-children">0</span><button class="c-btn" onclick="chg('fs-children',1)">+</button></div></div>
+            <div class="guest-tile"><div><div class="gt-type">Toddlers</div><div class="gt-age">Age 0–3 · Free</div></div><div class="counter"><button class="c-btn" onclick="chg('fs-toddlers',-1)">−</button><span class="c-val" id="fs-toddlers">0</span><button class="c-btn" onclick="chg('fs-toddlers',1)">+</button></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🏕️</div><div><div class="fs-title">Choose Your Cabin</div><div class="fs-sub">All 10 cabins available — select one to continue</div></div></div>
+        <div class="fs-body">
+          <div class="cabin-grid">
+            <div class="c-card" onclick="selCabin(this,'River Shell',14500,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pod">Signature Pod</div><div class="c-avail">Available</div><div class="c-name">River Shell</div><div class="c-meta">2 guests · Teardrop pod · River overlook</div><div class="c-price">₱14,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Forest Nest',18200,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pod">Canopy Retreat</div><div class="c-avail">Available</div><div class="c-name">Forest Nest</div><div class="c-meta">2 guests · Deep forest canopy</div><div class="c-price">₱18,200<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Cliff Edge',22800,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-glass">Panorama Deck</div><div class="c-avail">Available</div><div class="c-name">Cliff Edge</div><div class="c-meta">2 guests · Panoramic · Glass-bottom balcony</div><div class="c-price">₱22,800<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Glass Manor',35000,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pres">Grand Manor</div><div class="c-avail">Available</div><div class="c-name">Glass Manor</div><div class="c-meta">4 guests · Premium villa · 360° views</div><div class="c-price">₱35,000<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Safari Tent Alpha',5200,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-suite">Safari Suite</div><div class="c-avail">Available</div><div class="c-name">Safari Tent Alpha</div><div class="c-meta">2 guests · Savanna view</div><div class="c-price">₱5,200<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Lakeside Lodge',6500,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-villa">Lakeside Lodge</div><div class="c-avail">Available</div><div class="c-name">Lakeside Lodge</div><div class="c-meta">3 guests · Waterfront</div><div class="c-price">₱6,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Treetop Treehouse',4500,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-suite">Treehouse Escape</div><div class="c-avail">Available</div><div class="c-name">Treetop Treehouse</div><div class="c-meta">2 guests · Forest view</div><div class="c-price">₱4,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Eco Bungalow',2500,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pod">Eco Bungalow</div><div class="c-avail">Available</div><div class="c-name">Eco Bungalow</div><div class="c-meta">2 guests · Solar-powered</div><div class="c-price">₱2,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Forest Cabin A',3500,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-suite">Forest Cabin</div><div class="c-avail">Available</div><div class="c-name">Forest Cabin A</div><div class="c-meta">4 guests · Nature trail access</div><div class="c-price">₱3,500<sub>/night</sub></div></div>
+            <div class="c-card" onclick="selCabin(this,'Sanctuary Villa',11000,'fs')"><div class="c-sel-badge">✓</div><div class="c-tier tier-pres">Sanctuary Villa</div><div class="c-avail">Available</div><div class="c-name">Sanctuary Villa</div><div class="c-meta">6 guests · Private pool</div><div class="c-price">₱11,000<sub>/night</sub></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav"><span class="step-meta">Step 1 of 4 — stay details &amp; cabin</span><button class="btn-next" onclick="fsStep(2)">Continue — Experiences →</button></div>
+    </div>
+
+    <!-- FS STEP 2 -->
+    <div class="booking-step" id="fs-s2">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">🌿</div><div><div class="fs-title">Add Experiences to Your Stay</div><div class="fs-sub">5 guided experiences · Priced per person · Select any combination</div></div></div>
+        <div class="fs-body">
+          <div class="exp-list">
+            <div class="e-card" onclick="togExpAddon(this,'fs','Animal Feeding Tour',500)"><div class="e-icon">🍖</div><div class="e-info"><div class="e-name">Animal Feeding Tour</div><div class="e-detail">45 min · Morning rounds with a zookeeper · Savanna Zone</div></div><div class="e-right"><div class="e-price">₱500</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'fs','Night Safari Walk',800)"><div class="e-icon">🌙</div><div class="e-info"><div class="e-name">Night Safari Walk</div><div class="e-detail">2 hrs · After-dark guided wildlife trail</div></div><div class="e-right"><div class="e-price">₱800</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'fs','Keeper Experience',1200)"><div class="e-icon">🦅</div><div class="e-info"><div class="e-name">Keeper Experience</div><div class="e-detail">1 hr · Behind-the-scenes animal care session</div></div><div class="e-right"><div class="e-price">₱1,200</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'fs','Sunrise Safari Walk',600)"><div class="e-icon">🌅</div><div class="e-info"><div class="e-name">Sunrise Safari Walk</div><div class="e-detail">Early morning guided walk through active habitats</div></div><div class="e-right"><div class="e-price">₱600</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+            <div class="e-card" onclick="togExpAddon(this,'fs','Photo Encounter',3500)"><div class="e-icon">📸</div><div class="e-info"><div class="e-name">Photo Encounter</div><div class="e-detail">30 min · Up-close wildlife photography session</div></div><div class="e-right"><div class="e-price">₱3,500</div><div class="e-unit">/person</div></div><div class="e-chk">✓</div></div>
+          </div>
+          <div class="divider-label">Cabin Add-ons</div>
+          <div class="addon-grid">
+            <div class="a-card" onclick="togAddon(this,'fs','Gourmet Picnic',4500)"><span class="a-icon">🧺</span><div class="a-name">Gourmet Picnic</div><div class="a-desc">Artisan basket for two with local wine</div><div class="a-price">+₱4,500</div></div>
+            <div class="a-card" onclick="togAddon(this,'fs','Stargazing Kit',1200)"><span class="a-icon">🔭</span><div class="a-name">Stargazing Kit</div><div class="a-desc">Telescope rental and sky map</div><div class="a-price">+₱1,200</div></div>
+            <div class="a-card" onclick="togAddon(this,'fs','Welcome Basket',350)"><span class="a-icon">🎁</span><div class="a-name">Welcome Basket</div><div class="a-desc">Tropical fruits &amp; local delicacies</div><div class="a-price">+₱350</div></div>
+            <div class="a-card" onclick="togAddon(this,'fs','Breakfast for 2',600)"><span class="a-icon">🍳</span><div class="a-name">Breakfast for 2</div><div class="a-desc">Filipino breakfast to your cabin</div><div class="a-price">+₱600/day</div></div>
+            <div class="a-card" onclick="togAddon(this,'fs','Romantic Setup',1200)"><span class="a-icon">💑</span><div class="a-name">Romantic Setup</div><div class="a-desc">Rose petals, candles &amp; sparkling wine</div><div class="a-price">+₱1,200</div></div>
+            <div class="a-card" onclick="togAddon(this,'fs','Airport Transfer',2800)"><span class="a-icon">🚐</span><div class="a-name">Airport Transfer</div><div class="a-desc">Per way · resort arranged</div><div class="a-price">+₱2,800/way</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="fsStep(1)">← Back</button><span class="step-meta">Step 2 of 4 — experiences &amp; add-ons</span><button class="btn-next" onclick="fsStep(3)">Continue — Guest Info →</button></div>
+    </div>
+
+    <!-- FS STEP 3 -->
+    <div class="booking-step" id="fs-s3">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">👤</div><div><div class="fs-title">Primary Guest Information</div><div class="fs-sub">Lead guest must be 18 or older · Details used for check-in</div></div></div>
+        <div class="fs-body">
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">First Name</label><input type="text" class="f-inp" placeholder="Juan"/></div>
+            <div class="fg"><label class="f-lbl">Last Name</label><input type="text" class="f-inp" placeholder="Dela Cruz"/></div>
+            <div class="fg"><label class="f-lbl">Email Address</label><input type="email" class="f-inp" placeholder="juan@email.com"/></div>
+            <div class="fg"><label class="f-lbl">Mobile Number</label><input type="tel" class="f-inp" placeholder="09XX XXX XXXX"/></div>
+            <div class="fg"><label class="f-lbl">Nationality</label><select class="f-sel"><option>Filipino</option><option>Foreign national</option></select></div>
+            <div class="fg"><label class="f-lbl">Valid ID Type</label><select class="f-sel"><option>Philippine Passport</option><option>Driver's License</option><option>PhilSys / National ID</option><option>UMID</option><option>Foreign Passport</option></select></div>
+          </div>
+          <div class="divider-label">Arrival Support Details</div>
+          <div class="field-grid">
+            <div class="fg"><label class="f-lbl">Mode of Transport</label><select class="f-sel"><option>Private vehicle</option><option>Hired van / bus</option><option>Taxi / TNVS</option><option>Public transport</option></select></div>
+            <div class="fg"><label class="f-lbl">Arrival Reminder</label><input type="text" class="f-inp" value="Reception will validate your chosen arrival time." readonly/></div>
+            <div class="fg full"><label class="f-lbl">Special Requests (optional)</label><textarea class="f-ta" placeholder="Any special requests, dietary needs, or accessibility requirements..."></textarea></div>
+          </div>
+          <div class="info-tip"><span class="info-tip-icon">📧</span><span>A booking confirmation email with your Booking ID and QR Code will be sent to the email address provided above.</span></div>
+        </div>
+      </div>
+      <div class="step-nav"><button class="btn-back" onclick="fsStep(2)">← Back</button><span class="step-meta">Step 3 of 4 — guest details</span><button class="btn-next" onclick="fsStep(4)">Continue — Payment →</button></div>
+    </div>
+
+    <!-- FS STEP 4 -->
+    <div class="booking-step" id="fs-s4">
+      <div class="fs-wrap">
+        <div class="fs-head"><div class="fs-icon">💳</div><div><div class="fs-title">Payment &amp; Confirmation</div><div class="fs-sub">All transactions are secured and encrypted · SSL protected</div></div></div>
+        <div class="fs-body">
+          <div class="pay-grid">
+            <div class="pay-card selected" onclick="selPay(this,'card','fs')"><span class="pay-ico">💳</span><div><div class="pay-name">Credit / Debit Card</div><div class="pay-sub">Visa, Mastercard, JCB</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'gcash','fs')"><span class="pay-ico">📱</span><div><div class="pay-name">GCash / Maya</div><div class="pay-sub">E-wallet transfer</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'bank','fs')"><span class="pay-ico">🏦</span><div><div class="pay-name">Bank Transfer</div><div class="pay-sub">BDO, BPI, Metrobank</div></div><div class="pay-dot"></div></div>
+            <div class="pay-card" onclick="selPay(this,'resort','fs')"><span class="pay-ico">🏨</span><div><div class="pay-name">Pay at Resort</div><div class="pay-sub">Cash or card on arrival</div></div><div class="pay-dot"></div></div>
+          </div>
+          <div class="pay-detail-panel show" id="fs-pay-card"><div class="pay-panel-inner"><div class="pay-panel-title">💳 Card Details</div><div class="card-fields"><div class="card-brand-row"><span class="card-brand">VISA</span><span class="card-brand">MC</span><span class="card-brand">JCB</span></div><div class="fg"><label class="f-lbl">Card Number</label><input type="text" class="f-inp" placeholder="4111  1111  1111  1111"/></div><div class="card-row"><div class="fg"><label class="f-lbl">Cardholder Name</label><input type="text" class="f-inp" placeholder="JUAN DELA CRUZ"/></div><div class="fg"><label class="f-lbl">Expiry</label><input type="text" class="f-inp" placeholder="12 / 28"/></div><div class="fg"><label class="f-lbl">CVV</label><input type="text" class="f-inp" placeholder="123"/></div></div><div class="card-secured">🔒 &nbsp;Demo sample: 4111 1111 1111 1111 · Exp 12/28 · CVV 123</div></div></div></div>
+          <div class="pay-detail-panel" id="fs-pay-gcash"><div class="pay-panel-inner"><div class="pay-panel-title">📱 GCash / Maya Transfer</div><div class="ewallet-panel"><div class="ewallet-qr">QR Code<br/>Scan to pay</div><div class="ewallet-number">0917 - 999 - WILD</div><div class="ewallet-name">WildNest Resort Inc.</div><div class="ewallet-steps"><div class="ewallet-step"><div class="ewallet-step-num">1</div><span>Open GCash or Maya → Send Money</span></div><div class="ewallet-step"><div class="ewallet-step-num">2</div><span>Enter <strong>0917-999-WILD</strong> or scan QR</span></div><div class="ewallet-step"><div class="ewallet-step-num">3</div><span>Enter exact total and add your reference in the note</span></div></div><div class="pay-ref-box"><div class="fg"><label class="f-lbl">GCash / Maya Reference Number</label><input type="text" class="f-inp" placeholder="Example: GCash-2026-001245"/></div><div class="pay-ref-sample">Sample format: GCash-2026-001245 or Maya-88014592</div><div class="pay-ref-note">No photo upload is required for the demo. Reception can verify this reference later if needed.</div></div></div></div></div>
+          <div class="pay-detail-panel" id="fs-pay-bank"><div class="pay-panel-inner"><div class="pay-panel-title">🏦 Bank Transfer Details</div><div class="bank-tabs"><button class="bank-tab active" onclick="selBankTab(this,'bdo','fs')">BDO</button><button class="bank-tab" onclick="selBankTab(this,'bpi','fs')">BPI</button><button class="bank-tab" onclick="selBankTab(this,'metro','fs')">Metrobank</button></div><div class="bank-details"><div class="bank-row"><div><div class="bank-row-lbl">Account Name</div><div class="bank-row-val">WildNest Resort Inc.</div></div><button class="bank-copy-btn">Copy</button></div><div class="bank-row"><div><div class="bank-row-lbl">Account Number</div><div class="bank-row-val">0088 - 8800 - 2026</div></div><button class="bank-copy-btn">Copy</button></div><div class="bank-row"><div><div class="bank-row-lbl">Bank</div><div class="bank-row-val">BDO Unibank</div></div></div></div><div class="bank-upload"><div class="bank-upload-icon">🏦</div><div class="bank-upload-txt">Enter your transfer reference number</div><div class="pay-ref-box"><div class="fg full"><input type="text" class="f-inp" placeholder="Example: BDO-TRX-88214567"/></div><div class="pay-ref-sample">Sample format: BDO-TRX-88214567 or BPI-REF-2026-4412</div><div class="pay-ref-note">No photo upload is required for the demo. Keep the bank reference ready for reception verification if asked.</div></div></div></div></div>
+          <div class="pay-detail-panel" id="fs-pay-resort"><div class="pay-panel-inner"><div class="pay-panel-title">🏨 Pay at Resort</div><div class="resort-pay"><div class="resort-info-box"><div class="resort-info-icon">✅</div><div><div class="resort-info-title">No upfront payment required</div><div class="resort-info-desc">Full payment collected at check-in. All methods accepted at the resort.</div></div></div><div class="resort-methods"><div class="resort-method"><div class="resort-method-icon">💵</div><div class="resort-method-name">Cash</div><div class="resort-method-note">PHP accepted</div></div><div class="resort-method"><div class="resort-method-icon">💳</div><div class="resort-method-name">Credit Card</div><div class="resort-method-note">Visa, MC, JCB</div></div><div class="resort-method"><div class="resort-method-icon">📱</div><div class="resort-method-name">GCash / Maya</div><div class="resort-method-note">On-site QR</div></div><div class="resort-method"><div class="resort-method-icon">🏦</div><div class="resort-method-name">Debit Card</div><div class="resort-method-note">Major networks</div></div></div><div class="resort-hold-notice"><span style="font-size:16px">⚠️</span><span>Reservation held with booking confirmation. Unclaimed bookings released 30 minutes past stated arrival time.</span></div></div></div></div>
+          <div class="divider-label">Booking Review</div>
+          <div class="review-block">
+            <div class="review-head">⭐ Full Stay + Experience</div>
+            <div class="review-body">
+              <div class="r-row"><span class="r-lbl">Cabin</span><span class="r-val" id="fs-rv-cabin">—</span></div>
+              <div class="r-row"><span class="r-lbl">Check-in</span><span class="r-val" id="fs-rv-ci">—</span></div>
+              <div class="r-row"><span class="r-lbl">Check-out</span><span class="r-val" id="fs-rv-co">—</span></div>
+              <div class="r-row"><span class="r-lbl">Arrival Time</span><span class="r-val" id="fs-rv-time">2:00 PM</span></div>
+              <div class="r-row"><span class="r-lbl">Duration</span><span class="r-val" id="fs-rv-nights">—</span></div>
+              <div class="r-row"><span class="r-lbl">Guests</span><span class="r-val" id="fs-rv-guests">2 Adults</span></div>
+              <div class="r-row"><span class="r-lbl">Resort fee</span><span class="r-val">₱200</span></div>
+              <div class="r-row"><span class="r-lbl">Conservation fee</span><span class="r-val">₱200</span></div>
+            </div>
+          </div>
+          <div class="review-total"><span class="rt-lbl">Total amount due</span><span class="rt-val" id="fs-rv-total">₱0</span></div>
+          <div class="terms-row"><input type="checkbox"/><span class="terms-txt">I agree to the <a href="#">WildNest Terms &amp; Conditions</a> and Cancellation Policy.</span></div>
+          <div class="email-notice" style="margin-top:14px"><span style="font-size:16px">📧</span><span>Confirmation email with Booking ID and QR Code will be sent to your email upon confirming.</span></div>
+          <button class="btn-confirm" onclick="showConfirmed('fs')">✓ &nbsp;Confirm Full Stay Booking</button>
+        </div>
+      </div>
+      <div class="step-nav" style="border:none;padding-top:0"><button class="btn-back" onclick="fsStep(3)">← Back</button><span></span></div>
+    </div>
+
+    <!-- FS CONFIRMED -->
+    <div class="booking-step" id="fs-s5">
+      <div class="fs-wrap"><div class="fs-body"><div class="conf-wrap">
+        <div class="conf-icon">✓</div>
+        <div class="conf-title">Full Stay Confirmed!</div>
+        <div class="conf-sub">Your WildNest full stay and experience package is confirmed. Present your QR Code at the resort entrance on check-in day.</div>
+        <div class="bid-box"><div><div class="bid-lbl">Your Booking ID</div><span class="bid-val" id="fs-bid">WN-2026-0000</span></div><button class="bid-copy" onclick="copyBID('fs-bid')">📋 Copy ID</button></div>
+        <div class="qr-box"><div class="qr-lbl">📱 Check-in QR Code</div><div class="qr-ph">QR Code<br/>Generated on confirm</div><div class="qr-actions"><button class="btn-save-qr">💾 Save QR as PNG</button><button class="btn-print">🖨️ Print Details</button></div></div>
+        <div class="email-sent"><span class="es-icon">📧</span><div><div class="es-title">Confirmation Email Sent</div><div class="es-detail">Check your inbox for full booking details</div></div></div>
+        <div class="conf-actions"><button class="btn-portal">🏠 Guest Portal</button><button class="btn-newbook" onclick="location.reload()">+ New Booking</button></div>
+      </div></div></div>
+    </div>
+  </div><!-- /tab-full -->
+
+  </div><!-- /booking-left -->
+
+  <!-- ════ SUMMARY SIDEBAR ════ -->
+  <div class="booking-right">
+    <div class="summary-card">
+      <div class="sum-head">
+        <div class="sum-title">Booking Summary</div>
+        <div class="sum-tag">Live estimate · Adjust as you go</div>
+      </div>
+      <div class="sum-body" id="sum-body">
+        <div class="sum-empty"><span class="sum-empty-icon">🌿</span>Select a cabin, ticket, or experience to see your booking summary here</div>
+      </div>
+      <div class="sum-foot">
+        <div class="sum-badges">
+          <div class="sum-badge"><span class="sum-badge-icon">🔒</span> SSL secured · Encrypted checkout</div>
+          <div class="sum-badge"><span class="sum-badge-icon">✅</span> Free cancellation up to 48 hrs</div>
+          <div class="sum-badge"><span class="sum-badge-icon">📧</span> Instant confirmation email</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<script>
+/* ══════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════ */
+const S = {
+  cb: {cabin:'',price:0,nights:0,checkin:'',checkout:'',arrival:'',transport:'',addons:[]},
+  dv: {adults:2,children:0,toddlers:0,date:'',slot:'',zones:[],addons:[]},
+  eo: {date:'',slot:'',adults:2,experiences:[],addons:[]},
+  fs: {cabin:'',price:0,nights:0,checkin:'',checkout:'',arrival:'',transport:'',experiences:[],addons:[]}
+};
+
+function formatReviewTime(raw){
+  const value=(raw||'').trim();
+  if(!value) return '—';
+  const match=value.match(/^(\d{1,2}):(\d{2})$/);
+  if(!match) return value;
+  let hour=parseInt(match[1],10);
+  const minute=match[2];
+  const suffix=hour>=12?'PM':'AM';
+  hour=hour%12||12;
+  return `${hour}:${minute} ${suffix}`;
+}
+
+function toTimeInputValue(raw){
+  const value=(raw||'').trim().toUpperCase();
+  if(!value) return '';
+  const match=value.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+  if(!match) return '';
+  let hour=parseInt(match[1],10);
+  const minute=match[2];
+  const suffix=match[3];
+  if(suffix==='AM'){
+    if(hour===12) hour=0;
+  } else if(hour!==12){
+    hour+=12;
+  }
+  return `${hour.toString().padStart(2,'0')}:${minute}`;
+}
+
+/* ══════════════════════════════════════════════════
+   TAB SWITCHING
+══════════════════════════════════════════════════ */
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  resetSummary();
+}
+
+/* ══════════════════════════════════════════════════
+   STEP NAVIGATION
+══════════════════════════════════════════════════ */
+const stepCfg = {
+  cb:{pfx:'cb',max:5},dv:{pfx:'dv',max:5},eo:{pfx:'eo',max:5},fs:{pfx:'fs',max:5}
+};
+
+function goStep(p,n){
+  const pfx=p;
+  for(let i=1;i<=5;i++){
+    const s=document.getElementById(pfx+'-s'+i);
+    if(s) s.classList.toggle('active',i===n);
+  }
+  updateStepBar(p,n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function cbStep(n){goStep('cb',n);if(n===4)fillCBReview();}
+function dvStep(n){goStep('dv',n);if(n===4)fillDVReview();}
+function eoStep(n){goStep('eo',n);if(n===4)fillEOReview();}
+function fsStep(n){goStep('fs',n);if(n===4)fillFSReview();}
+
+function updateStepBar(p,n){
+  const labels={cb:['Cabin','Add-ons','Guest Info','Payment'],dv:['Tickets','Zones','Guest Info','Payment'],eo:['Experience','Add-ons','Guest Info','Payment'],fs:['Stay','Experiences','Guest Info','Payment']};
+  const lbls=labels[p];
+  if(!lbls) return;
+  for(let i=1;i<=4;i++){
+    const num=document.getElementById(p+'-n'+i);
+    const lbl=document.getElementById(p+'-l'+i);
+    const conn=document.getElementById(p+'-c'+i);
+    if(num){num.className='s-num '+(i<n?'done':i===n?'active':'wait');}
+    if(lbl){lbl.className='s-lbl'+(i===n?' active':'');lbl.textContent=lbls[i-1];}
+    if(conn&&i<4) conn.className='s-conn'+(i<n?' done':'');
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   COUNTERS
+══════════════════════════════════════════════════ */
+function chg(id,delta){
+  const el=document.getElementById(id);
+  if(!el) return;
+  let v=parseInt(el.textContent)+delta;
+  if(v<0)v=0;
+  el.textContent=v;
+  updateSummary(id.split('-')[0]);
+}
+
+/* ══════════════════════════════════════════════════
+   CABIN SELECTION
+══════════════════════════════════════════════════ */
+function selCabin(el,name,price,p){
+  el.closest('.cabin-grid').querySelectorAll('.c-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  S[p].cabin=name;
+  S[p].price=price;
+  updateSummary(p);
+}
+
+/* ══════════════════════════════════════════════════
+   NIGHTS CALCULATION
+══════════════════════════════════════════════════ */
+function calcNights(p){
+  const ci=document.getElementById(p+'-ci');
+  const co=document.getElementById(p+'-co');
+  const disp=document.getElementById(p+'-nights');
+  if(!ci||!co||!disp) return;
+  const a=new Date(ci.value), b=new Date(co.value);
+  if(ci.value&&co.value&&b>a){
+    const n=Math.round((b-a)/86400000);
+    disp.textContent=n;
+    S[p].nights=n;
+    S[p].checkin=ci.value;
+    S[p].checkout=co.value;
+  } else {
+    disp.textContent='—';
+    S[p].nights=0;
+  }
+  updateSummary(p);
+}
+
+/* ══════════════════════════════════════════════════
+   ADD-ON TOGGLE
+══════════════════════════════════════════════════ */
+function togAddon(el,p,name,price){
+  el.classList.toggle('selected');
+  const arr=S[p].addons;
+  const idx=arr.findIndex(a=>a.name===name);
+  if(idx>=0) arr.splice(idx,1);
+  else arr.push({name,price});
+  updateSummary(p);
+}
+
+/* ══════════════════════════════════════════════════
+   EXPERIENCE TOGGLE (with price tracking)
+══════════════════════════════════════════════════ */
+function togExpAddon(el,p,name,price){
+  el.classList.toggle('selected');
+  const arr=S[p].experiences||(S[p].experiences=[]);
+  const idx=arr.findIndex(a=>a.name===name);
+  if(idx>=0) arr.splice(idx,1);
+  else arr.push({name,price});
+  updateSummary(p);
+}
+
+/* ══════════════════════════════════════════════════
+   SLOT / TICKET SELECTION
+══════════════════════════════════════════════════ */
+function selSlot(el,p){
+  el.closest('.slot-grid').querySelectorAll('.slot').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  if(S[p]) S[p].slot=(el.textContent||'').trim();
+  const input=document.querySelector('[data-booking-time="'+p+'"]');
+  if(input){
+    const normalized=toTimeInputValue((el.textContent||'').trim());
+    if(normalized){
+      input.value=normalized;
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+      input.dispatchEvent(new Event('change',{bubbles:true}));
+    }
+  }
+  updateSummary(p);
+}
+function selTkt(el,p,type,price){
+  el.closest('.ticket-grid').querySelectorAll('.tkt-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ══════════════════════════════════════════════════
+   ZONE TOGGLE
+══════════════════════════════════════════════════ */
+function togZone(el,p,name,fee){
+  el.classList.toggle('selected');
+  if(!S[p].zones) S[p].zones=[];
+  const idx=S[p].zones.findIndex(z=>z.name===name);
+  if(idx>=0) S[p].zones.splice(idx,1);
+  else S[p].zones.push({name,fee});
+  updateSummary(p);
+}
+function selAllZones(sel,p){
+  const grid=document.getElementById(p+'-zone-grid');
+  if(!grid) return;
+  grid.querySelectorAll('.z-card').forEach(z=>{
+    const on=z.classList.contains('selected');
+    if(sel&&!on){z.click();}
+    else if(!sel&&on){z.click();}
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   PAYMENT PANEL
+══════════════════════════════════════════════════ */
+function selPay(el,type,p){
+  const grid=el.closest('.pay-grid');
+  grid.querySelectorAll('.pay-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  ['card','gcash','bank','resort'].forEach(t=>{
+    const panel=document.getElementById(p+'-pay-'+t);
+    if(panel) panel.classList.toggle('show',t===type);
+  });
+}
+
+/* Bank sub-tabs */
+function selBankTab(btn,bank,p){
+  btn.closest('.bank-tabs').querySelectorAll('.bank-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const bankData={
+    bdo:{name:'WildNest Resort Inc.',num:'0088 - 8800 - 2026',bank:'BDO Unibank',branch:'Carmen, Cebu Branch'},
+    bpi:{name:'WildNest Resort Inc.',num:'3322 - 5500 - 0088',bank:'Bank of the Philippine Islands',branch:'Mandaue City Branch'},
+    metro:{name:'WildNest Resort Inc.',num:'7788 - 2200 - 4455',bank:'Metrobank',branch:'Cebu Main Branch'}
+  };
+  const d=bankData[bank];
+  const container=btn.closest('.pay-panel-inner');
+  const rows=container.querySelector('.bank-details');
+  if(rows&&d){
+    const vals=rows.querySelectorAll('.bank-row-val');
+    if(vals[0]) vals[0].textContent=d.name;
+    if(vals[1]) vals[1].textContent=d.num;
+    if(vals[2]) vals[2].textContent=d.bank;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   REVIEW FILL
+══════════════════════════════════════════════════ */
+function fillCBReview(){
+  const s=S.cb;
+  set('cb-rv-cabin',s.cabin||'—');
+  set('cb-rv-ci',s.checkin||'—');
+  set('cb-rv-co',s.checkout||'—');
+  set('cb-rv-time',formatReviewTime(document.getElementById('cb-time')?.value||''));
+  set('cb-rv-nights',s.nights>0?s.nights+' night'+(s.nights>1?'s':''):'—');
+  const adults=parseInt(document.getElementById('cb-adults')?.textContent)||2;
+  const ch=parseInt(document.getElementById('cb-children')?.textContent)||0;
+  set('cb-rv-guests',adults+' Adult'+(adults!==1?'s':'')+(ch>0?', '+ch+' Child'+(ch>1?'ren':''):''));
+  const addonT=(s.addons||[]).reduce((a,b)=>a+b.price,0);
+  const total=s.price*s.nights+400+addonT;
+  set('cb-rv-total',total>0?'₱'+total.toLocaleString():'₱0');
+}
+
+function fillDVReview(){
+  const d=document.getElementById('dv-date')?.value||'—';
+  S.dv.date=d==='—'?'':d;
+  set('dv-rv-date',d);
+  set('dv-rv-time',formatReviewTime(document.getElementById('dv-time')?.value||''));
+  const adults=parseInt(document.getElementById('dv-adults')?.textContent)||2;
+  const ch=parseInt(document.getElementById('dv-children')?.textContent)||0;
+  set('dv-rv-guests',adults+' Adult'+(adults!==1?'s':'')+(ch>0?', '+ch+' Child'+(ch>1?'ren':''):''));
+  const ticketT=adults*750+ch*450;
+  const zoneBase=(S.dv.zones||[]).reduce((a,z)=>a+z.fee,0);
+  const zoneT=(zoneBase*adults)+(zoneBase*(ch*0.5));
+  const addonT=(S.dv.addons||[]).reduce((a,b)=>a+b.price,0);
+  const total=ticketT+zoneT+addonT+200;
+  set('dv-rv-total',total>0?'₱'+total.toLocaleString():'₱0');
+}
+
+function fillEOReview(){
+  const d=document.getElementById('eo-date')?.value||'—';
+  S.eo.date=d==='—'?'':d;
+  set('eo-rv-date',d);
+  set('eo-rv-time',formatReviewTime(document.getElementById('eo-time')?.value||''));
+  const adults=parseInt(document.getElementById('eo-adults')?.textContent)||2;
+  const ch=parseInt(document.getElementById('eo-children')?.textContent)||0;
+  set('eo-rv-guests',adults+' Adult'+(adults!==1?'s':'')+(ch>0?', '+ch+' Child'+(ch>1?'ren':''):''));
+  const expT=(S.eo.experiences||[]).reduce((a,e)=>a+e.price,0)*adults;
+  const addonT=(S.eo.addons||[]).reduce((a,b)=>a+b.price,0);
+  const total=expT+addonT+200;
+  set('eo-rv-total',total>0?'₱'+total.toLocaleString():'₱0');
+}
+
+function fillFSReview(){
+  const s=S.fs;
+  set('fs-rv-cabin',s.cabin||'—');
+  set('fs-rv-ci',s.checkin||'—');
+  set('fs-rv-co',s.checkout||'—');
+  set('fs-rv-time',formatReviewTime(document.getElementById('fs-time')?.value||''));
+  set('fs-rv-nights',s.nights>0?s.nights+' night'+(s.nights>1?'s':''):'—');
+  const adults=parseInt(document.getElementById('fs-adults')?.textContent)||2;
+  const ch=parseInt(document.getElementById('fs-children')?.textContent)||0;
+  set('fs-rv-guests',adults+' Adult'+(adults!==1?'s':'')+(ch>0?', '+ch+' Child'+(ch>1?'ren':''):''));
+  const cabinT=s.price*s.nights;
+  const expT=(s.experiences||[]).reduce((a,e)=>a+e.price,0)*adults;
+  const addonT=(s.addons||[]).reduce((a,b)=>a+b.price,0);
+  const total=cabinT+expT+addonT+400;
+  set('fs-rv-total',total>0?'₱'+total.toLocaleString():'₱0');
+}
+
+function set(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+/* ══════════════════════════════════════════════════
+   CONFIRMATION
+══════════════════════════════════════════════════ */
+function showConfirmed(p){
+  const bid='WN-2026-'+(Math.floor(Math.random()*9000)+1000);
+  const bidEl=document.getElementById(p+'-bid');
+  if(bidEl) bidEl.textContent=bid;
+  goStep(p,5);
+}
+
+function copyBID(id){
+  const text=document.getElementById(id)?.textContent||'';
+  navigator.clipboard.writeText(text).then(()=>{
+    document.querySelectorAll('.bid-copy').forEach(b=>{
+      if(b.getAttribute('onclick')?.includes(id)){b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy ID',2000);}
+    });
+  }).catch(()=>{});
+}
+
+/* ══════════════════════════════════════════════════
+   SUMMARY
+══════════════════════════════════════════════════ */
+function updateSummary(p){
+  const body=document.getElementById('sum-body');
+  if(!body) return;
+  const s=S[p];
+
+  if((p==='cb'||p==='fs')&&s&&s.cabin){
+    const nights=s.nights||0;
+    const cabinT=s.price*nights;
+    const fees=400;
+    const addonT=(s.addons||[]).reduce((a,b)=>a+b.price,0);
+    const expT=(s.experiences||[]).reduce((a,e)=>a+e.price,0)*
+      (parseInt(document.getElementById((p==='fs'?'fs':'cb')+'-adults')?.textContent)||2);
+    const total=cabinT+fees+addonT+expT;
+    let addonsHTML='';
+    if(s.addons&&s.addons.length>0){
+      addonsHTML+='<div class="sum-section">Add-ons</div>';
+      s.addons.forEach(a=>{addonsHTML+=`<div class="sum-line"><span class="sum-lbl">${a.name}</span><span class="sum-val">₱${a.price.toLocaleString()}</span></div>`;});
+    }
+    if(s.experiences&&s.experiences.length>0){
+      addonsHTML+='<div class="sum-section">Experiences</div>';
+      s.experiences.forEach(e=>{addonsHTML+=`<div class="sum-line"><span class="sum-lbl">${e.name}</span><span class="sum-val">₱${e.price.toLocaleString()}/pax</span></div>`;});
+    }
+    body.innerHTML=`
+      <div class="sum-section">Cabin</div>
+      <div class="sum-cabin-box">
+        <div class="sum-cabin-name">${s.cabin}</div>
+        <div class="sum-cabin-sub">${nights>0?nights+' night'+(nights>1?'s':''):' Select dates'} · ₱${s.price.toLocaleString()}/night</div>
+        ${nights>0?`<div class="sum-line"><span class="sum-lbl">${nights} × ₱${s.price.toLocaleString()}</span><span class="sum-val">₱${cabinT.toLocaleString()}</span></div>`:''}
+      </div>
+      <div class="sum-line"><span class="sum-lbl">Resort fee</span><span class="sum-val">₱200</span></div>
+      <div class="sum-line"><span class="sum-lbl">Conservation fee</span><span class="sum-val">₱200</span></div>
+      ${addonsHTML}
+      <div class="sum-div"></div>
+      <div class="sum-total"><span class="sum-tlbl">Estimated Total</span><span class="sum-tval">₱${total.toLocaleString()}</span></div>`;
+  } else if(p==='dv'){
+    const adults=parseInt(document.getElementById('dv-adults')?.textContent)||2;
+    const ch=parseInt(document.getElementById('dv-children')?.textContent)||0;
+    const ticketT=adults*750+ch*450;
+    const zoneBase=(S.dv.zones||[]).reduce((a,z)=>a+z.fee,0);
+    const zoneT=(zoneBase*adults)+(zoneBase*(ch*0.5));
+    const addonT=(S.dv.addons||[]).reduce((a,b)=>a+b.price,0);
+    const total=ticketT+zoneT+addonT+200;
+    let zonesHTML='';
+    if(S.dv.zones&&S.dv.zones.length>0){
+      const zoneGuestText=ch>0?(adults+' adults + '+ch+' children (50%)'):(adults+' adults');
+      zonesHTML+='<div class="sum-section">Zones ('+zoneGuestText+')</div>';
+      S.dv.zones.forEach(z=>{
+        const zoneLine=(z.fee*adults)+(z.fee*(ch*0.5));
+        zonesHTML+=`<div class="sum-line"><span class="sum-lbl">${z.name}</span><span class="sum-val">₱${zoneLine.toLocaleString()}</span></div>`;
+      });
+    }
+    body.innerHTML=`
+      <div class="sum-section">Day Visit</div>
+      <div class="sum-cabin-box">
+        <div class="sum-cabin-name">${adults} Adult${adults!==1?'s':''}${ch>0?', '+ch+' Child'+(ch>1?'ren':''):''}</div>
+        <div class="sum-cabin-sub">₱750/adult · ₱450/child</div>
+        <div class="sum-line"><span class="sum-lbl">Entry tickets</span><span class="sum-val">₱${ticketT.toLocaleString()}</span></div>
+      </div>
+      <div class="sum-line"><span class="sum-lbl">Conservation fee</span><span class="sum-val">₱200</span></div>
+      ${zonesHTML}
+      <div class="sum-div"></div>
+      <div class="sum-total"><span class="sum-tlbl">Estimated Total</span><span class="sum-tval">₱${total.toLocaleString()}</span></div>`;
+  } else if(p==='eo'){
+    const adults=parseInt(document.getElementById('eo-adults')?.textContent)||2;
+    const expList=S.eo.experiences||[];
+    const expT=expList.reduce((a,e)=>a+e.price,0)*adults;
+    const addonT=(S.eo.addons||[]).reduce((a,b)=>a+b.price,0);
+    const total=expT+addonT+200;
+    let expHTML='';
+    if(expList.length>0){
+      expHTML+='<div class="sum-section">Experiences (×'+adults+')</div>';
+      expList.forEach(e=>{expHTML+=`<div class="sum-line"><span class="sum-lbl">${e.name}</span><span class="sum-val">₱${(e.price*adults).toLocaleString()}</span></div>`;});
+    }
+    body.innerHTML=`
+      <div class="sum-section">Experience Only</div>
+      <div class="sum-cabin-box">
+        <div class="sum-cabin-name">${adults} Adult${adults!==1?'s':''}</div>
+        <div class="sum-cabin-sub">${expList.length} experience${expList.length!==1?'s':''} selected</div>
+      </div>
+      <div class="sum-line"><span class="sum-lbl">Conservation fee</span><span class="sum-val">₱200</span></div>
+      ${expHTML}
+      <div class="sum-div"></div>
+      <div class="sum-total"><span class="sum-tlbl">Estimated Total</span><span class="sum-tval">₱${total.toLocaleString()}</span></div>`;
+  } else {
+    resetSummary();
+  }
+}
+
+function resetSummary(){
+  const body=document.getElementById('sum-body');
+  if(body) body.innerHTML='<div class="sum-empty"><span class="sum-empty-icon">🌿</span>Select a cabin, ticket, or experience to see your booking summary here</div>';
+}
+
+/* ══════════════════════════════════════════════════
+   MIN DATE
+══════════════════════════════════════════════════ */
+document.querySelectorAll('input[type=date]').forEach(i=>{
+  i.min=new Date().toISOString().split('T')[0];
+});
+</script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,232 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .title { font: 700 34px Georgia, serif; fill: #123c2d; }
+      .subtitle { font: 600 16px "Segoe UI", Arial, sans-serif; fill: #c9971a; }
+      .note { font: 12px "Segoe UI", Arial, sans-serif; fill: #666666; }
+      .table-title { font: 700 15px Georgia, serif; fill: #ffffff; }
+      .cell { font: 12.5px "Segoe UI", Arial, sans-serif; fill: #1f1f1f; }
+      .group { font: 700 13px "Segoe UI", Arial, sans-serif; fill: #123c2d; letter-spacing: 1.2px; }
+      .line { stroke: #5c746a; stroke-width: 2.2; fill: none; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5c746a"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1600" height="1100"/>
+
+  <text x="70" y="72" class="title">WILDNEST</text>
+  <text x="70" y="100" class="subtitle">Clean Print Entity Relationship Diagram (ERD)</text>
+  <text x="70" y="123" class="note">This version is simplified and spaced for easier hard-copy printing.</text>
+
+  <text x="90" y="182" class="group">GUEST AND RESERVATION TABLES</text>
+  <text x="760" y="182" class="group">STAFF AND EXPERIENCE TABLES</text>
+  <text x="1220" y="182" class="group">WILDLIFE TABLES</text>
+
+  <!-- Guests -->
+  <g transform="translate(60,220)">
+    <rect width="260" height="205" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="260" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="260" height="17" fill="#123c2d"/>
+    <text x="130" y="23" text-anchor="middle" class="table-title">tbl_Guests</text>
+    <text x="14" y="60" class="cell">GuestID (PK)</text>
+    <text x="14" y="84" class="cell">FirstName</text>
+    <text x="14" y="108" class="cell">LastName</text>
+    <text x="14" y="132" class="cell">Email</text>
+    <text x="14" y="156" class="cell">Phone</text>
+    <text x="14" y="180" class="cell">Nationality</text>
+  </g>
+
+  <!-- Reservations -->
+  <g transform="translate(390,190)">
+    <rect width="320" height="335" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="320" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="320" height="17" fill="#123c2d"/>
+    <text x="160" y="23" text-anchor="middle" class="table-title">tbl_Reservations</text>
+    <text x="14" y="60" class="cell">ReservationID (PK)</text>
+    <text x="14" y="84" class="cell">GuestID (FK)</text>
+    <text x="14" y="108" class="cell">CabinID (FK)</text>
+    <text x="14" y="132" class="cell">BookingType</text>
+    <text x="14" y="156" class="cell">CheckInDate</text>
+    <text x="14" y="180" class="cell">CheckOutDate</text>
+    <text x="14" y="204" class="cell">VisitDate</text>
+    <text x="14" y="228" class="cell">ArrivalTime</text>
+    <text x="14" y="252" class="cell">NumAdults</text>
+    <text x="14" y="276" class="cell">NumChildren</text>
+    <text x="14" y="300" class="cell">TotalAmount</text>
+    <text x="14" y="324" class="cell">Status</text>
+  </g>
+
+  <!-- Payments -->
+  <g transform="translate(780,210)">
+    <rect width="250" height="188" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="250" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="250" height="17" fill="#123c2d"/>
+    <text x="125" y="23" text-anchor="middle" class="table-title">tbl_Payments</text>
+    <text x="14" y="60" class="cell">PaymentID (PK)</text>
+    <text x="14" y="84" class="cell">ReservationID (FK)</text>
+    <text x="14" y="108" class="cell">Amount</text>
+    <text x="14" y="132" class="cell">PaymentMethod</text>
+    <text x="14" y="156" class="cell">Status</text>
+    <text x="14" y="180" class="cell">PaidAt</text>
+  </g>
+
+  <!-- Cabins -->
+  <g transform="translate(780,450)">
+    <rect width="250" height="162" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="250" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="250" height="17" fill="#123c2d"/>
+    <text x="125" y="23" text-anchor="middle" class="table-title">tbl_Cabins</text>
+    <text x="14" y="60" class="cell">CabinID (PK)</text>
+    <text x="14" y="84" class="cell">CabinName</text>
+    <text x="14" y="108" class="cell">CabinType</text>
+    <text x="14" y="132" class="cell">PricePerNight</text>
+    <text x="14" y="156" class="cell">Status</text>
+  </g>
+
+  <!-- Chat -->
+  <g transform="translate(390,590)">
+    <rect width="280" height="214" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="280" height="17" fill="#123c2d"/>
+    <text x="140" y="23" text-anchor="middle" class="table-title">tbl_Chat</text>
+    <text x="14" y="60" class="cell">ChatID (PK)</text>
+    <text x="14" y="84" class="cell">ReservationID (FK)</text>
+    <text x="14" y="108" class="cell">GuestName</text>
+    <text x="14" y="132" class="cell">SenderRole</text>
+    <text x="14" y="156" class="cell">Message</text>
+    <text x="14" y="180" class="cell">SentAt</text>
+    <text x="14" y="204" class="cell">IsRead</text>
+  </g>
+
+  <!-- Users -->
+  <g transform="translate(60,560)">
+    <rect width="260" height="170" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="260" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="260" height="17" fill="#123c2d"/>
+    <text x="130" y="23" text-anchor="middle" class="table-title">tbl_users</text>
+    <text x="14" y="60" class="cell">UserID (PK)</text>
+    <text x="14" y="84" class="cell">Username</text>
+    <text x="14" y="108" class="cell">PasswordHash</text>
+    <text x="14" y="132" class="cell">Role</text>
+    <text x="14" y="156" class="cell">IsActive</text>
+  </g>
+
+  <!-- Experiences -->
+  <g transform="translate(780,675)">
+    <rect width="250" height="150" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="250" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="250" height="17" fill="#123c2d"/>
+    <text x="125" y="23" text-anchor="middle" class="table-title">tbl_Experiences</text>
+    <text x="14" y="60" class="cell">ExperienceID (PK)</text>
+    <text x="14" y="84" class="cell">ExperienceName</text>
+    <text x="14" y="108" class="cell">Price</text>
+    <text x="14" y="132" class="cell">Status</text>
+  </g>
+
+  <!-- Booking Experiences -->
+  <g transform="translate(1000,650)">
+    <rect width="280" height="132" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="280" height="17" fill="#123c2d"/>
+    <text x="140" y="23" text-anchor="middle" class="table-title">tbl_BookingExperiences</text>
+    <text x="14" y="60" class="cell">BookingExperienceID (PK)</text>
+    <text x="14" y="84" class="cell">ReservationID (FK)</text>
+    <text x="14" y="108" class="cell">ExperienceID (FK)</text>
+  </g>
+
+  <!-- Staff messages -->
+  <g transform="translate(390,850)">
+    <rect width="310" height="166" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="310" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="310" height="17" fill="#123c2d"/>
+    <text x="155" y="23" text-anchor="middle" class="table-title">tbl_staffmessages</text>
+    <text x="14" y="60" class="cell">StaffMessageID (PK)</text>
+    <text x="14" y="84" class="cell">SenderUserID (FK)</text>
+    <text x="14" y="108" class="cell">ReceiverUserID (FK)</text>
+    <text x="14" y="132" class="cell">Message / SentAt / IsRead</text>
+  </g>
+
+  <!-- tour schedules -->
+  <g transform="translate(60,790)">
+    <rect width="260" height="170" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="260" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="260" height="17" fill="#123c2d"/>
+    <text x="130" y="23" text-anchor="middle" class="table-title">tbl_tourschedules</text>
+    <text x="14" y="60" class="cell">TourScheduleID (PK)</text>
+    <text x="14" y="84" class="cell">ReservationID (FK)</text>
+    <text x="14" y="108" class="cell">AssignedGuideUserID (FK)</text>
+    <text x="14" y="132" class="cell">Status</text>
+    <text x="14" y="156" class="cell">ScheduledAt</text>
+  </g>
+
+  <!-- Tour completions -->
+  <g transform="translate(780,875)">
+    <rect width="250" height="144" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="250" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="250" height="17" fill="#123c2d"/>
+    <text x="125" y="23" text-anchor="middle" class="table-title">tbl_tourcompletions</text>
+    <text x="14" y="60" class="cell">TourCompletionID (PK)</text>
+    <text x="14" y="84" class="cell">TourScheduleID (FK)</text>
+    <text x="14" y="108" class="cell">CompletedAt</text>
+    <text x="14" y="132" class="cell">Notes</text>
+  </g>
+
+  <!-- Animals -->
+  <g transform="translate(1220,220)">
+    <rect width="280" height="170" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="280" height="17" fill="#123c2d"/>
+    <text x="140" y="23" text-anchor="middle" class="table-title">tbl_animals</text>
+    <text x="14" y="60" class="cell">AnimalID (PK)</text>
+    <text x="14" y="84" class="cell">AnimalName</text>
+    <text x="14" y="108" class="cell">Species</text>
+    <text x="14" y="132" class="cell">HealthStatus</text>
+    <text x="14" y="156" class="cell">IsEncounterEligible</text>
+  </g>
+
+  <!-- Health -->
+  <g transform="translate(1220,475)">
+    <rect width="280" height="190" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="280" height="17" fill="#123c2d"/>
+    <text x="140" y="23" text-anchor="middle" class="table-title">tbl_healthrecords</text>
+    <text x="14" y="60" class="cell">HealthRecordID (PK)</text>
+    <text x="14" y="84" class="cell">AnimalID (FK)</text>
+    <text x="14" y="108" class="cell">RecordType</text>
+    <text x="14" y="132" class="cell">Notes</text>
+    <text x="14" y="156" class="cell">IsCleared</text>
+    <text x="14" y="180" class="cell">RecordedAt</text>
+  </g>
+
+  <!-- Feedings -->
+  <g transform="translate(1220,810)">
+    <rect width="280" height="144" rx="18" fill="#ffffff" stroke="#184735" stroke-width="2"/>
+    <rect width="280" height="34" rx="18" fill="#123c2d"/>
+    <rect y="17" width="280" height="17" fill="#123c2d"/>
+    <text x="140" y="23" text-anchor="middle" class="table-title">tbl_feedings</text>
+    <text x="14" y="60" class="cell">FeedingID (PK)</text>
+    <text x="14" y="84" class="cell">AnimalID (FK)</text>
+    <text x="14" y="108" class="cell">FeedingTime</text>
+    <text x="14" y="132" class="cell">Status</text>
+  </g>
+
+  <!-- links -->
+  <path d="M320 322 L390 322" class="line" marker-end="url(#arrow)"/>
+  <path d="M710 284 L780 284" class="line" marker-end="url(#arrow)"/>
+  <path d="M710 365 L745 365 L745 530 L780 530" class="line" marker-end="url(#arrow)"/>
+  <path d="M550 525 L550 590" class="line" marker-end="url(#arrow)"/>
+  <path d="M710 470 L830 470 L830 690 L1000 690" class="line" marker-end="url(#arrow)"/>
+  <path d="M1030 750 L960 750 L960 740 L1000 740" class="line" marker-end="url(#arrow)"/>
+  <path d="M320 645 L355 645 L355 933 L390 933" class="line" marker-end="url(#arrow)"/>
+  <path d="M190 730 L190 790" class="line" marker-end="url(#arrow)"/>
+  <path d="M710 445 L40 445 L40 875 L60 875" class="line" marker-end="url(#arrow)"/>
+  <path d="M320 875 L550 875 L550 947 L780 947" class="line" marker-end="url(#arrow)"/>
+  <path d="M1360 390 L1360 475" class="line" marker-end="url(#arrow)"/>
+  <path d="M1360 390 L1520 390 L1520 882 L1500 882" class="line" marker-end="url(#arrow)"/>
+
+  <text x="70" y="1048" class="note">Print recommendation: A3 landscape, color, fit to page.</text>
+  <text x="70" y="1070" class="note">Use this cleaner version for hard copy. It is more formal and easier to read than the rough earlier versions.</text>
+</svg>

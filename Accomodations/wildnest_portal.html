@@ -1,0 +1,1820 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WildNest â€” Guest Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   DESIGN TOKENS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+:root{
+  --forest:#071a0e; --forest-mid:#0d2818; --forest-light:#1B4332; --forest-accent:#0F6E56;
+  --gold:#d4a017; --gold-light:#f0c94a; --gold-dim:rgba(212,160,23,.12); --gold-line:rgba(212,160,23,.22);
+  --cream:#f8f4ef; --sand:#f0ede8; --sand2:#e8e4dc; --white:#fff;
+  --text:#1a1a1a; --muted:#6b6560; --dim:#9b9490;
+  --border:rgba(0,0,0,.08); --border-solid:#ddd;
+  --success:#1a8a5a; --success-bg:#e6f7f0; --warning:#b86e00; --warning-bg:#fef3e2; --danger:#b91c1c; --danger-bg:#fce8e8;
+  --shadow:0 4px 24px rgba(7,26,14,.09); --shadow-lg:0 12px 48px rgba(7,26,14,.14);
+  --r:14px; --r-sm:8px; --r-lg:20px;
+  /* Premium tier tokens */
+  --prem-bg: #050f08;
+  --prem-card: #091510;
+  --prem-border: rgba(212,160,23,.18);
+  --prem-glow: rgba(212,160,23,.06);
+}
+
+/* â”€â”€ ANIMATIONS â”€â”€ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes glowPulse{0%,100%{opacity:.07}50%{opacity:.2}}
+@keyframes scanLine{0%{top:0}100%{top:100%}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes checkDraw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes countUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes premGlow{0%,100%{box-shadow:0 0 40px rgba(212,160,23,.07)}50%{box-shadow:0 0 80px rgba(212,160,23,.18)}}
+@keyframes floatOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.04)}}
+@keyframes borderTrace{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes badgePop{0%{transform:scale(0.7) rotate(-5deg);opacity:0}70%{transform:scale(1.08) rotate(1deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--sand);font-family:'DM Sans',sans-serif;overflow-x:hidden;color:var(--text);}
+a{text-decoration:none;}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   NAV
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.nav{background:var(--forest);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:999;border-bottom:1px solid var(--gold-line);}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-logo-icon{width:32px;height:32px;border-radius:50%;background:var(--forest-light);border:1.5px solid var(--gold-line);display:flex;align-items:center;justify-content:center;}
+.nav-brand{color:var(--cream);font-size:14px;font-weight:600;letter-spacing:2.5px;font-family:'Cormorant Garamond',serif;}
+.nav-right{display:flex;gap:6px;align-items:center;}
+.nav-link{background:none;border:none;color:rgba(248,244,239,.6);font-size:12px;padding:7px 12px;cursor:pointer;border-radius:6px;transition:color .2s;font-family:'DM Sans',sans-serif;}
+.nav-link:hover{color:var(--cream);}
+.btn-book-nav{background:var(--gold);border:none;color:#1a2e0a;font-size:11px;font-weight:600;padding:8px 18px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;}
+.btn-book-nav:hover{background:var(--gold-light);}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   HERO
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.portal-hero{background:linear-gradient(180deg,var(--forest) 0%,var(--forest-mid) 60%,#082010 100%);padding:56px 24px 48px;text-align:center;position:relative;overflow:hidden;}
+.ph-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 85%,rgba(212,160,23,.08),transparent);animation:glowPulse 4s ease-in-out infinite;pointer-events:none;}
+.ph-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;opacity:0;animation:fadeUp .6s ease .1s forwards;}
+.orn-line{height:1px;width:48px;}
+.orn-line.l{background:linear-gradient(90deg,transparent,rgba(212,160,23,.55));}
+.orn-line.r{background:linear-gradient(90deg,rgba(212,160,23,.55),transparent);}
+.orn-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.8;}
+.ph-eyebrow{font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;opacity:0;animation:fadeUp .6s ease .2s forwards;}
+.ph-title{font-size:32px;font-weight:700;color:var(--cream);font-family:'Cormorant Garamond',serif;margin-bottom:6px;opacity:0;animation:scaleIn .8s ease .3s forwards;}
+.ph-title span{background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
+.ph-bar{width:80px;height:1.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:12px auto 14px;opacity:0;animation:fadeIn .4s ease .7s forwards;}
+.ph-sub{font-size:12px;color:rgba(248,244,239,.48);opacity:0;animation:fadeUp .6s ease .5s forwards;max-width:420px;margin:0 auto;}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   VIEWS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.view{display:none;}
+.view.active{display:block;}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   LOOKUP  (shared by limited + premium lookup forms)
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.lookup-wrap{max-width:560px;margin:0 auto;padding:36px 20px 64px;}
+.lookup-card{background:#fff;border-radius:var(--r);border:.5px solid var(--border-solid);overflow:hidden;box-shadow:var(--shadow-lg);animation:fadeUp .55s ease .15s both;}
+.lk-header{background:linear-gradient(135deg,var(--forest),var(--forest-mid));padding:28px;text-align:center;border-bottom:1px solid rgba(212,160,23,.14);}
+.lk-icon{width:56px;height:56px;border-radius:50%;background:rgba(212,160,23,.1);border:1.5px solid rgba(212,160,23,.28);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.lk-title{font-size:18px;font-weight:700;color:var(--cream);font-family:'Cormorant Garamond',serif;margin-bottom:5px;}
+.lk-sub{font-size:11px;color:rgba(248,244,239,.42);line-height:1.75;}
+.lk-body{padding:26px;}
+
+/* Tabs */
+.lk-tabs{display:flex;gap:0;margin-bottom:22px;background:var(--sand);border-radius:9px;padding:3px;}
+.lk-tab{flex:1;background:none;border:none;font-size:11px;font-weight:500;padding:9px;border-radius:7px;cursor:pointer;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.lk-tab.active{background:#fff;color:var(--text);font-weight:600;box-shadow:0 1px 6px rgba(0,0,0,.09);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Fields */
+.fld-group{margin-bottom:16px;}
+.fld-group label{font-size:10px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.9px;}
+.fld-input{width:100%;border:1.5px solid var(--border-solid);border-radius:9px;padding:12px 14px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;transition:border-color .2s,box-shadow .2s;background:#fff;}
+.fld-input:focus{outline:none;border-color:var(--forest-accent);box-shadow:0 0 0 3px rgba(15,110,86,.09);}
+.fld-hint{font-size:9.5px;color:var(--dim);margin-top:5px;line-height:1.5;}
+
+.btn-lookup{width:100%;background:linear-gradient(135deg,var(--forest-light),var(--forest-accent));border:none;color:var(--cream);font-size:13px;font-weight:600;padding:13px;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform .18s,box-shadow .18s;margin-top:4px;letter-spacing:.3px;}
+.btn-lookup:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(27,67,50,.3);}
+
+/* QR scanner */
+.qr-scanner-wrap{margin-bottom:20px;}
+.qr-scanner-btn{width:100%;background:none;border:1.5px dashed rgba(212,160,23,.45);color:var(--gold);font-size:12px;font-weight:600;padding:16px;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:border-color .2s,background .2s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.qr-scanner-btn:hover{border-color:var(--gold);background:rgba(212,160,23,.04);}
+.qr-scanner-area{display:none;background:var(--forest);border-radius:10px;overflow:hidden;margin-top:10px;position:relative;aspect-ratio:1;max-width:240px;margin:10px auto 0;}
+.qr-scanner-area.active{display:block;}
+.qr-corner{position:absolute;width:28px;height:28px;border-color:var(--gold);border-style:solid;border-width:0;}
+.qr-corner.tl{top:10px;left:10px;border-top-width:2.5px;border-left-width:2.5px;}
+.qr-corner.tr{top:10px;right:10px;border-top-width:2.5px;border-right-width:2.5px;}
+.qr-corner.bl{bottom:10px;left:10px;border-bottom-width:2.5px;border-left-width:2.5px;}
+.qr-corner.br{bottom:10px;right:10px;border-bottom-width:2.5px;border-right-width:2.5px;}
+.qr-scan-beam{position:absolute;left:10px;right:10px;height:2px;background:linear-gradient(90deg,transparent,rgba(212,160,23,.9),transparent);animation:scanLine 1.8s ease-in-out infinite;}
+.qr-scanner-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;padding:20px;}
+.qr-scanner-icon{font-size:32px;opacity:.5;}
+.qr-scanner-text{font-size:10px;color:rgba(248,244,239,.45);text-align:center;line-height:1.6;}
+.demo-hint{margin-top:18px;background:rgba(212,160,23,.06);border:1px solid rgba(212,160,23,.2);border-radius:9px;padding:11px 14px;font-size:10px;color:#7a5c10;text-align:center;line-height:1.65;}
+.demo-hint strong{color:var(--gold);}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   LIMITED PORTAL  (basic lookup result â€” single booking only)
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.limited-wrap{max-width:600px;margin:0 auto;padding:32px 20px 72px;}
+
+/* Top notice banner */
+.limited-notice{background:linear-gradient(135deg,#3a2800,#4a3600);border:1px solid rgba(212,160,23,.35);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:22px;animation:fadeUp .4s ease both;}
+.ln-icon{font-size:22px;flex-shrink:0;}
+.ln-text{flex:1;}
+.ln-title{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:2px;}
+.ln-sub{font-size:10.5px;color:rgba(212,160,23,.65);line-height:1.55;}
+.ln-badge{background:var(--gold);color:#1a0a00;font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0;letter-spacing:.6px;text-transform:uppercase;}
+
+/* Booking confirmation card */
+.limited-confirm-card{background:#fff;border-radius:16px;border:.5px solid var(--border-solid);overflow:hidden;box-shadow:var(--shadow-lg);animation:fadeUp .5s ease .1s both;}
+.lcc-top{background:linear-gradient(135deg,var(--forest),#0a2010);padding:24px 26px;display:flex;align-items:center;gap:18px;border-bottom:1px solid rgba(212,160,23,.12);}
+.lcc-icon{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.lcc-head{flex:1;}
+.lcc-type{font-size:9px;color:rgba(212,160,23,.7);text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:4px;}
+.lcc-name{font-size:18px;font-weight:700;color:var(--cream);font-family:'Cormorant Garamond',serif;}
+.lcc-ref{font-size:10px;color:rgba(248,244,239,.38);margin-top:3px;letter-spacing:1px;}
+.lcc-status-pill{font-size:9.5px;font-weight:700;padding:5px 14px;border-radius:22px;flex-shrink:0;}
+.status-confirmed{background:#e1f5ee;color:#085041;}
+.status-upcoming{background:#faeeda;color:#633806;}
+.status-checkedin{background:#e3f4ee;color:#14533d;}
+.status-overdue{background:#fde6da;color:#7c2d12;}
+.status-completed{background:#f0ede8;color:#666;}
+.status-cancelled{background:#fce8e8;color:#501313;}
+
+/* QR section */
+.lcc-qr-zone{padding:22px 26px;border-bottom:1px solid #f0ede8;display:flex;align-items:center;gap:24px;background:linear-gradient(135deg,#faf9f7,#f4f0e9);}
+.lcc-qr{width:90px;height:90px;border:1px solid var(--border-solid);border-radius:10px;padding:4px;background:#fff;flex-shrink:0;}
+.lcc-qr svg{width:100%;height:100%;}
+.lcc-qr-info{flex:1;}
+.qr-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px;font-weight:600;}
+.qr-value{font-size:15px;font-weight:700;color:var(--text);font-family:'Cormorant Garamond',serif;margin-bottom:4px;}
+.qr-sub{font-size:10px;color:var(--dim);}
+
+/* Key details grid */
+.lcc-details{padding:20px 26px;border-bottom:1px solid #f0ede8;}
+.lcc-details-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.lcc-det-item{background:var(--sand);border-radius:9px;padding:12px 14px;}
+.lcc-det-label{font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin-bottom:4px;font-weight:600;}
+.lcc-det-value{font-size:13px;font-weight:600;color:var(--text);}
+.lcc-det-sub{font-size:10px;color:var(--dim);margin-top:1px;}
+.lcc-action-box{background:linear-gradient(135deg,#fff8eb,#f7f1e5);border:1px solid rgba(212,160,23,.24);border-left:4px solid var(--gold);border-radius:12px;padding:14px 16px;}
+.lcc-action-box .lcc-det-label{color:#7a5c10;}
+.lcc-action-box .lcc-det-value{font-size:12.5px;line-height:1.55;}
+
+/* Limited footer â€” upgrade prompt */
+.lcc-footer{padding:18px 26px;background:linear-gradient(135deg,#fbf9f6,#f5f1ea);}
+.lcc-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.lcc-total-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;}
+.lcc-total-value{font-size:20px;font-weight:700;color:var(--forest-light);font-family:'Cormorant Garamond',serif;}
+
+/* Upgrade teaser */
+.upgrade-teaser{background:linear-gradient(135deg,var(--forest),var(--forest-mid));border-radius:12px;padding:18px 20px;border:1px solid rgba(212,160,23,.2);}
+.ut-title{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.ut-features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.ut-feat{font-size:9.5px;background:rgba(255,255,255,.07);color:rgba(248,244,239,.7);padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.1);}
+.btn-limited-back{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(248,244,239,.7);font-size:11px;padding:10px;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px;transition:all .2s;}
+.btn-limited-back:hover{background:rgba(255,255,255,.14);color:var(--cream);}
+
+.limited-actions{display:flex;gap:10px;margin-top:16px;}
+.btn-ltd-proof{flex:1;background:var(--forest-light);border:none;color:var(--cream);font-size:11px;font-weight:600;padding:10px;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;}
+.btn-ltd-proof:hover{background:var(--forest-accent);}
+.btn-ltd-dl{flex:1;background:none;border:1px solid var(--border-solid);color:var(--muted);font-size:11px;font-weight:500;padding:10px;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-ltd-dl:hover{border-color:var(--gold);color:var(--gold);}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   PREMIUM PORTAL  (full dashboard for recognized guests)
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.premium-wrap{max-width:980px;margin:0 auto;padding:0 20px 80px;}
+
+/* â”€â”€ Premium hero bar â”€â”€ */
+.premium-hero-bar{background:linear-gradient(180deg,var(--forest) 0%,var(--forest-mid) 100%);padding:32px 32px 28px;margin-bottom:0;position:relative;overflow:hidden;border-bottom:1px solid rgba(212,160,23,.16);}
+.phb-glow{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 30% 120%,rgba(212,160,23,.07),transparent);pointer-events:none;}
+.phb-inner{position:relative;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+.phb-avatar-wrap{position:relative;flex-shrink:0;}
+.phb-avatar{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,rgba(212,160,23,.2),rgba(212,160,23,.07));border:2px solid rgba(212,160,23,.4);display:flex;align-items:center;justify-content:center;font-size:22px;font-family:'Cormorant Garamond',serif;color:var(--gold);font-weight:700;letter-spacing:0;}
+.phb-tier-ring{position:absolute;inset:-4px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg,#d4a017,#f0c94a,#d4a017) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;}
+.phb-info{flex:1;}
+.phb-eyebrow{font-size:9px;color:rgba(212,160,23,.65);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+.phb-eyebrow::before{content:'';width:18px;height:1px;background:rgba(212,160,23,.4);}
+.phb-name{font-size:24px;font-weight:700;color:var(--cream);font-family:'Cormorant Garamond',serif;margin-bottom:4px;}
+.phb-email{font-size:11px;color:rgba(248,244,239,.38);}
+.phb-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;margin-left:auto;}
+.phb-tier-badge{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(212,160,23,.18),rgba(212,160,23,.08));border:1px solid rgba(212,160,23,.35);border-radius:22px;padding:6px 14px;animation:badgePop .6s ease .4s both;}
+.ptb-star{font-size:13px;}
+.ptb-label{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;}
+.btn-prem-signout{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(248,244,239,.45);font-size:10px;padding:7px 14px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;white-space:nowrap;}
+.btn-prem-signout:hover{border-color:rgba(255,255,255,.3);color:var(--cream);}
+
+/* Stats row */
+.phb-stats{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.06);margin-top:22px;padding-top:0;}
+.phbs-item{flex:1;padding:16px 0 4px;text-align:center;border-right:.5px solid rgba(255,255,255,.05);}
+.phbs-item:last-child{border-right:none;}
+.phbs-num{font-size:22px;font-weight:700;color:var(--gold);font-family:'Cormorant Garamond',serif;animation:countUp .5s ease both;}
+.phbs-label{font-size:8.5px;color:rgba(248,244,239,.28);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;}
+
+/* â”€â”€ Premium quick actions â”€â”€ */
+.prem-quick-actions{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:20px 0;animation:fadeUp .5s ease .05s both;}
+.pqa-card{background:#fff;border-radius:10px;border:.5px solid var(--border-solid);padding:14px 10px;text-align:center;cursor:pointer;transition:box-shadow .18s,transform .18s;border-bottom:2.5px solid transparent;position:relative;overflow:hidden;}
+.pqa-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-bottom-color:var(--gold);}
+.pqa-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,160,23,.04),transparent);opacity:0;transition:opacity .2s;}
+.pqa-card:hover::before{opacity:1;}
+.pqa-icon{font-size:22px;margin-bottom:7px;}
+.pqa-label{font-size:10px;font-weight:600;color:var(--text);}
+.pqa-sub{font-size:8.5px;color:var(--dim);margin-top:1px;}
+.pqa-card.gold .pqa-label{color:var(--forest-light);}
+
+/* â”€â”€ Upcoming highlight (premium only) â”€â”€ */
+.upcoming-highlight{background:linear-gradient(135deg,var(--forest),var(--forest-mid));border-radius:14px;border:1px solid rgba(212,160,23,.18);padding:22px 26px;margin-bottom:20px;animation:fadeUp .5s ease .08s both;position:relative;overflow:hidden;display:none;}
+.upcoming-highlight.has-upcoming{display:block;}
+.uh-glow{position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,.09),transparent);pointer-events:none;}
+.uh-label{font-size:9px;color:rgba(212,160,23,.65);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.uh-label::before{content:'';width:14px;height:1px;background:rgba(212,160,23,.4);}
+.uh-name{font-size:20px;font-weight:700;color:var(--cream);font-family:'Cormorant Garamond',serif;margin-bottom:6px;}
+.uh-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.uh-meta-item{font-size:10.5px;color:rgba(248,244,239,.5);display:flex;align-items:center;gap:5px;}
+.uh-meta-item strong{color:rgba(248,244,239,.85);font-weight:600;}
+.uh-countdown{background:rgba(212,160,23,.1);border:1px solid rgba(212,160,23,.25);border-radius:8px;padding:8px 16px;display:inline-flex;align-items:center;gap:10px;margin-top:14px;}
+.uh-cd-label{font-size:9px;color:rgba(212,160,23,.6);text-transform:uppercase;letter-spacing:1.2px;}
+.uh-cd-days{font-size:18px;font-weight:700;color:var(--gold);font-family:'Cormorant Garamond',serif;}
+.uh-note{margin-top:12px;font-size:10.5px;color:rgba(248,244,239,.84);line-height:1.6;max-width:640px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(212,160,23,.16);}
+
+/* â”€â”€ Portal tabs â”€â”€ */
+.portal-tabs{display:flex;gap:0;background:#fff;border-radius:10px;border:.5px solid var(--border-solid);overflow:hidden;margin-bottom:18px;animation:fadeUp .5s ease .1s both;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.ptab{flex:1;background:none;border:none;border-bottom:2px solid transparent;font-size:11.5px;font-weight:500;padding:13px 8px;cursor:pointer;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.ptab.active{color:var(--forest-light);border-bottom-color:var(--gold);font-weight:600;background:rgba(27,67,50,.03);}
+.ptab:hover:not(.active){color:var(--text);}
+
+/* Status strip */
+.status-strip{background:#fff;border-radius:var(--r-sm);border:.5px solid var(--border-solid);padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;animation:fadeUp .5s ease .15s both;}
+.ss-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.ss-text{font-size:11px;color:var(--muted);flex:1;line-height:1.5;}
+.ss-badge{font-size:9.5px;padding:3px 10px;border-radius:20px;font-weight:600;flex-shrink:0;}
+.ss-text strong{color:var(--text);font-weight:700;}
+
+/* â”€â”€ Booking cards (premium enhanced) â”€â”€ */
+.bookings-list{display:flex;flex-direction:column;gap:14px;}
+.booking-card{background:#fff;border-radius:var(--r);border:.5px solid var(--border-solid);overflow:hidden;animation:fadeUp .45s ease both;transition:box-shadow .2s;cursor:default;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.booking-card:hover{box-shadow:var(--shadow);}
+.bc-header{display:flex;align-items:stretch;}
+.bc-accent{width:5px;flex-shrink:0;}
+.bc-icon-wrap{width:84px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;border-right:.5px solid #f5f5f5;}
+.bc-meta{flex:1;padding:16px 18px;}
+.bc-type-zone{font-size:9px;color:var(--forest-accent);text-transform:uppercase;letter-spacing:1.8px;font-weight:600;margin-bottom:4px;}
+.bc-name{font-size:15px;font-weight:700;color:var(--text);font-family:'Cormorant Garamond',serif;margin-bottom:5px;}
+.bc-dates{font-size:10.5px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.bc-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.bc-tag{font-size:9px;background:var(--sand);color:#555;padding:3px 9px;border-radius:20px;border:.5px solid rgba(0,0,0,.05);}
+.bc-right{padding:16px 18px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;min-width:150px;}
+.bc-ref{font-size:9.5px;color:var(--dim);letter-spacing:1.2px;font-weight:500;margin-bottom:5px;}
+.bc-price{font-size:17px;font-weight:700;color:var(--forest-light);font-family:'Cormorant Garamond',serif;}
+.bc-price span{font-size:9px;font-weight:400;color:var(--dim);}
+.bc-status-badge{font-size:9px;padding:4px 11px;border-radius:20px;font-weight:600;margin-top:4px;}
+.bc-actions{padding:10px 16px;border-top:.5px solid #f3f3f3;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.btn-view-proof{background:var(--forest-light);border:none;color:var(--cream);font-size:10.5px;font-weight:600;padding:7px 16px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;}
+.btn-view-proof:hover{background:var(--forest-accent);}
+.btn-cancel-bk{background:none;border:.5px solid #e0e0e0;color:var(--muted);font-size:10px;padding:6px 13px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-cancel-bk:hover{border-color:#e53935;color:#e53935;}
+.btn-download-pdf{background:none;border:.5px solid var(--border-solid);color:var(--muted);font-size:10px;padding:6px 13px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-download-pdf:hover{border-color:var(--gold);color:var(--gold);}
+.bc-expand-toggle{margin-left:auto;background:none;border:none;font-size:10px;color:var(--dim);cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* Expanded detail */
+.bc-expanded{display:none;padding:16px 18px 20px;border-top:.5px solid #f3f3f3;background:var(--sand);animation:fadeIn .25s ease;}
+.bc-expanded.open{display:block;}
+.bc-exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.bc-exp-item{background:#fff;border-radius:8px;padding:10px 13px;border:.5px solid var(--border-solid);}
+.bc-exp-label{font-size:8.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.9px;margin-bottom:3px;}
+.bc-exp-value{font-size:12px;font-weight:600;color:var(--text);}
+.bc-timing-callout{margin-bottom:14px;background:linear-gradient(135deg,#fff8eb,#f7f1e5);border:1px solid rgba(212,160,23,.22);border-left:4px solid var(--gold);border-radius:12px;padding:12px 14px;}
+.bc-timing-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
+.bc-timing-label{font-size:8.5px;color:#7a5c10;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.bc-timing-status{font-size:11px;font-weight:700;color:var(--forest-light);}
+.bc-timing-note{font-size:10.5px;color:#5e5448;line-height:1.55;}
+.bc-amenities-title{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600;}
+.bc-amenities{display:flex;flex-wrap:wrap;gap:5px;}
+.bc-amen-tag{font-size:9.5px;background:#fff;color:#555;padding:4px 10px;border-radius:20px;border:.5px solid var(--border-solid);}
+
+/* â”€â”€ Premium-only: Insights panel â”€â”€ */
+.insights-panel{background:linear-gradient(135deg,var(--forest),var(--forest-mid));border-radius:14px;border:1px solid rgba(212,160,23,.14);padding:22px 24px;margin-bottom:20px;animation:fadeUp .5s ease .12s both;}
+.ip-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.ip-title{font-size:13px;font-weight:600;color:var(--cream);font-family:'Cormorant Garamond',serif;display:flex;align-items:center;gap:9px;}
+.ip-title::before{content:'âœ¦';font-size:11px;color:var(--gold);}
+.ip-badge{font-size:9px;background:rgba(212,160,23,.18);border:1px solid rgba(212,160,23,.3);color:var(--gold);padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.6px;}
+.ip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.ip-card{background:rgba(255,255,255,.05);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,.06);}
+.ip-card-label{font-size:8.5px;color:rgba(248,244,239,.35);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px;}
+.ip-card-value{font-size:18px;font-weight:700;color:var(--cream);font-family:'Cormorant Garamond',serif;}
+.ip-card-sub{font-size:9.5px;color:rgba(212,160,23,.6);margin-top:2px;}
+
+/* Premium download strip */
+.prem-download-strip{background:linear-gradient(135deg,#fff,#fbf8f2);border-radius:14px;border:1px solid rgba(212,160,23,.14);padding:16px 18px;display:flex;align-items:center;gap:16px;justify-content:space-between;margin-bottom:18px;animation:fadeUp .5s ease .14s both;box-shadow:0 8px 24px rgba(7,26,14,.08);position:relative;overflow:hidden;}
+.prem-download-strip::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(212,160,23,.05),transparent 42%,rgba(7,26,14,.03));pointer-events:none;}
+.pds-icon{font-size:20px;}
+.pds-text{flex:1;position:relative;z-index:1;}
+.pds-title{font-size:12px;font-weight:600;color:var(--text);}
+.pds-sub{font-size:10px;color:var(--dim);margin-top:1px;}
+.pds-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;}
+.pds-badge{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid rgba(212,160,23,.18);background:rgba(212,160,23,.08);color:#7a5c10;}
+.pds-actions{display:flex;gap:10px;align-items:center;position:relative;z-index:1;}
+.btn-pds{background:linear-gradient(135deg,var(--forest-light),var(--forest-accent));border:none;color:var(--cream);font-size:10.5px;font-weight:600;padding:10px 18px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform .18s,box-shadow .18s;white-space:nowrap;}
+.btn-pds:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(27,67,50,.3);}
+.btn-pds.alt{background:#fff;color:var(--forest-light);border:1px solid rgba(212,160,23,.26);box-shadow:none;}
+.btn-pds.alt:hover{box-shadow:0 4px 14px rgba(212,160,23,.12);}
+
+/* Empty state */
+.empty-state{text-align:center;padding:52px 20px;}
+.empty-icon{font-size:48px;margin-bottom:14px;opacity:.45;}
+.empty-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:7px;font-family:'Cormorant Garamond',serif;}
+.empty-sub{font-size:11px;color:var(--muted);line-height:1.75;}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   CHAT (premium only)
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.chat-bd{position:fixed;inset:0;background:rgba(3,14,8,.62);z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;}
+.chat-bd.open{display:flex;}
+.chat-card{width:min(560px,92vw);height:min(680px,86vh);background:#f8f4ef;border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(212,160,23,.25);}
+.chat-head{height:86px;background:linear-gradient(135deg,#06170d,#0d2818);color:var(--cream);display:flex;align-items:center;gap:14px;padding:0 22px;}
+.chat-avatar{width:44px;height:44px;border-radius:50%;background:rgba(212,160,23,.16);border:1px solid rgba(212,160,23,.35);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:800;}
+.chat-title{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;}
+.chat-sub{font-size:11px;color:rgba(248,244,239,.62);margin-top:2px;}
+.chat-close{margin-left:auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;}
+.chat-messages{flex:1;padding:20px;overflow-y:auto;background:linear-gradient(180deg,#f8f4ef,#eee9e1);}
+.chat-empty{text-align:center;color:var(--dim);font-size:12px;margin-top:80px;line-height:1.6;}
+.chat-row{display:flex;margin-bottom:12px;}
+.chat-row.guest{justify-content:flex-end;}
+.chat-bubble{max-width:76%;padding:10px 13px;border-radius:16px;font-size:12px;line-height:1.45;box-shadow:0 6px 18px rgba(0,0,0,.06);}
+.chat-row.guest .chat-bubble{background:#0d2818;color:#fff;border-bottom-right-radius:4px;}
+.chat-row.reception .chat-bubble{background:#fff;color:var(--text);border:1px solid rgba(0,0,0,.08);border-bottom-left-radius:4px;}
+.chat-time{font-size:9px;opacity:.55;margin-top:4px;}
+.chat-inputbar{padding:14px;background:#fff;border-top:1px solid rgba(0,0,0,.08);display:flex;gap:10px;align-items:center;}
+.chat-input{flex:1;height:42px;border-radius:24px;border:1px solid rgba(0,0,0,.12);padding:0 15px;font-size:13px;outline:none;background:#fbfaf7;}
+.chat-input:focus{border-color:rgba(212,160,23,.7);box-shadow:0 0 0 3px rgba(212,160,23,.12);}
+.chat-send{height:42px;padding:0 18px;border:0;border-radius:24px;background:linear-gradient(135deg,#d4a017,#f0c33c);font-weight:800;color:#102014;cursor:pointer;}
+.chat-error{font-size:11px;color:#9b1c1c;padding:0 18px 10px;background:#fff;display:none;}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   PROOF MODAL (shared)
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.modal-bd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:3000;align-items:center;justify-content:center;padding:16px;overflow-y:auto;}
+.modal-bd.open{display:flex;animation:fadeIn .2s ease;}
+.proof-modal{width:min(680px,96vw);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.4);animation:modalIn .3s ease;margin:auto;}
+.proof-header{background:linear-gradient(135deg,var(--forest),var(--forest-mid));padding:22px 26px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(212,160,23,.15);}
+.ph-brand{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--cream);letter-spacing:3px;}
+.ph-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(248,244,239,.7);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.proof-body{padding:26px;}
+.proof-check-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.proof-check{width:36px;height:36px;border-radius:50%;background:var(--success-bg);border:2px solid var(--success);display:flex;align-items:center;justify-content:center;}
+.proof-check svg{stroke-dasharray:60;animation:checkDraw .5s ease .1s both;}
+.proof-confirm-title{font-size:16px;font-weight:700;color:var(--text);font-family:'Cormorant Garamond',serif;}
+.proof-confirm-sub{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.proof-qr-section{display:flex;gap:22px;margin-bottom:22px;padding:18px;background:var(--sand);border-radius:12px;border:.5px solid var(--border-solid);}
+.proof-qr{width:100px;height:100px;flex-shrink:0;}
+.proof-qr svg{width:100%;height:100%;}
+.proof-ref-col{flex:1;}
+.proof-ref-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;font-weight:600;}
+.proof-ref-val{font-size:20px;font-weight:700;color:var(--text);font-family:'Cormorant Garamond',serif;letter-spacing:1px;margin-bottom:8px;}
+.proof-status-row{display:flex;align-items:center;gap:8px;}
+.proof-details-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
+.proof-det-item{background:var(--sand);border-radius:8px;padding:10px 13px;border:.5px solid var(--border-solid);}
+.proof-det-label{font-size:8.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.9px;margin-bottom:3px;}
+.proof-det-value{font-size:12px;font-weight:600;color:var(--text);}
+.proof-amenities{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px;}
+.proof-amen-tag{font-size:9.5px;background:var(--sand);color:#555;padding:4px 10px;border-radius:20px;border:.5px solid var(--border-solid);}
+.proof-total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(135deg,var(--forest),var(--forest-mid));border-radius:10px;margin-bottom:18px;}
+.pt-label{font-size:10px;color:rgba(248,244,239,.45);text-transform:uppercase;letter-spacing:.8px;}
+.pt-value{font-size:20px;font-weight:700;color:var(--gold);font-family:'Cormorant Garamond',serif;}
+.proof-footer{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.btn-pf-dl{flex:1;background:var(--forest-light);border:none;color:var(--cream);font-size:11px;font-weight:600;padding:10px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;}
+.btn-pf-dl:hover{background:var(--forest-accent);}
+.btn-pf-share{flex:1;background:none;border:1px solid var(--border-solid);color:var(--muted);font-size:11px;font-weight:500;padding:10px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-pf-share:hover{border-color:var(--gold);color:var(--gold);}
+.proof-policy{font-size:9px;color:var(--dim);line-height:1.6;text-align:center;}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   CANCEL MODAL
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.cancel-modal-bd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:3000;align-items:center;justify-content:center;padding:16px;}
+.cancel-modal-bd.open{display:flex;animation:fadeIn .2s ease;}
+.cancel-modal{width:min(500px,96vw);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.4);animation:modalIn .3s ease;}
+.cm-header{background:linear-gradient(135deg,#2d0f0f,#470f0f);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;}
+.cm-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);font-weight:700;}
+.cm-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(248,244,239,.7);cursor:pointer;}
+.cm-body{padding:22px;}
+.cm-preview{background:var(--sand);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:16px;border:.5px solid var(--border-solid);}
+.cm-book-icon{font-size:28px;}
+.cm-book-name{font-size:14px;font-weight:700;color:var(--text);font-family:'Cormorant Garamond',serif;}
+.cm-book-dates{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.cm-policy-box{background:#fff8f0;border:1px solid #f5dcc0;border-radius:9px;padding:12px 14px;margin-bottom:14px;}
+.cm-policy-title{font-size:11px;font-weight:700;color:#a05010;margin-bottom:5px;}
+.cm-policy-text{font-size:10.5px;color:#7a4010;line-height:1.65;}
+.cm-field-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.9px;display:block;margin-bottom:6px;}
+.cm-select{width:100%;border:1.5px solid var(--border-solid);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;margin-bottom:14px;background:#fff;}
+.cm-confirm-check{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--muted);margin-bottom:18px;line-height:1.55;}
+.cm-confirm-check input{margin-top:2px;accent-color:var(--forest-light);}
+.cm-actions{display:flex;gap:10px;}
+.btn-cm-keep{flex:1;background:none;border:1px solid var(--border-solid);color:var(--muted);font-size:12px;padding:10px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-cm-cancel{flex:1;background:#c0392b;border:none;color:#fff;font-size:12px;font-weight:600;padding:10px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.cancel-success{text-align:center;padding:16px 8px 8px;}
+.cs-icon{font-size:40px;margin-bottom:10px;}
+.cs-title{font-size:17px;font-weight:700;font-family:'Cormorant Garamond',serif;margin-bottom:7px;color:var(--text);}
+.cs-sub{font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:12px;}
+.cs-refund{font-size:11px;color:var(--success);font-weight:600;margin-bottom:16px;}
+.btn-cs-done{background:var(--forest-light);border:none;color:var(--cream);font-size:12px;font-weight:600;padding:10px 28px;border-radius:22px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+</style>
+</head>
+<body>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     HERO
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div class="portal-hero" id="portalHero">
+  <div class="ph-glow"></div>
+  <div class="ph-orn">
+    <div class="orn-line l"></div><div class="orn-dot"></div><div class="orn-line r"></div>
+  </div>
+  <div class="ph-eyebrow">WildNest Eco Resort Â· Carmen, Cebu</div>
+  <div class="ph-title">Guest <span>Portal</span></div>
+  <div class="ph-bar"></div>
+  <div class="ph-sub">Access your reservations, QR passes, and exclusive guest tools.</div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     VIEW: LOOKUP
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div class="view active" id="viewLookup">
+  <div class="lookup-wrap">
+    <div class="lookup-card">
+      <div class="lk-header">
+        <div class="lk-icon">ðŸŒ¿</div>
+        <div class="lk-title">Access Your Reservations</div>
+        <div class="lk-sub">Enter your Booking ID &amp; email, or scan your confirmation QR code.</div>
+      </div>
+      <div class="lk-body">
+        <div class="lk-tabs">
+          <button class="lk-tab active" onclick="switchLkTab('ref',this)">ðŸ”‘ Booking ID &amp; Email</button>
+          <button class="lk-tab" onclick="switchLkTab('qr',this)">ðŸ“· Scan QR Code</button>
+        </div>
+
+        <!-- Tab 1: Booking ID + Email -->
+        <div class="tab-panel active" id="tabRef">
+          <div class="fld-group">
+            <label>Booking Reference</label>
+            <input class="fld-input" id="refInput" type="text" placeholder="WN-2026-XXXX" maxlength="12" oninput="this.value=this.value.toUpperCase()">
+            <div class="fld-hint">Found in your booking confirmation email (e.g. WN-2026-4821)</div>
+          </div>
+          <div class="fld-group">
+            <label>Email Address</label>
+            <input class="fld-input" id="refEmailInput" type="email" placeholder="your@email.com">
+            <div class="fld-hint">Must match the email used during booking</div>
+          </div>
+          <button class="btn-lookup" onclick="lookupByRef()">ðŸ” &nbsp;Find My Booking</button>
+          <div class="demo-hint">
+            <strong>Demo:</strong> Try <strong>WN-2026-4821</strong> (Premium) or <strong>WN-2026-9001</strong> (Limited) with any email.
+          </div>
+        </div>
+
+        <!-- Tab 2: QR Scan -->
+        <div class="tab-panel" id="tabQr">
+          <div class="qr-scanner-wrap">
+            <button class="qr-scanner-btn" onclick="toggleScanner()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3v2h-3zM14 18h2v3h-2zM18 18v2M20 18h1v3h-3"/></svg>
+              Tap to Scan QR Code
+            </button>
+            <div class="qr-scanner-area" id="scannerArea">
+              <div class="qr-corner tl"></div><div class="qr-corner tr"></div>
+              <div class="qr-corner bl"></div><div class="qr-corner br"></div>
+              <div class="qr-scan-beam"></div>
+              <div class="qr-scanner-placeholder">
+                <div class="qr-scanner-icon">ðŸ“·</div>
+                <div class="qr-scanner-text">Point your confirmation QR code at the scanner.<br><em style="opacity:.6">Demo: auto-fills after 2.5s</em></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn-lookup" onclick="lookupByQr()" style="margin-top:4px;">ðŸ” &nbsp;Access My Bookings</button>
+          <div class="demo-hint">
+            <strong>Demo QR:</strong> Scans as <strong>WN-2026-4821</strong> automatically after 2.5s. Then tap Access.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     VIEW: LIMITED PORTAL  (single booking, no history, no downloads, no chat)
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div class="view" id="viewLimited">
+  <div class="limited-wrap">
+
+    <!-- Notice banner -->
+    <div class="limited-notice">
+      <div class="ln-icon">ðŸ”</div>
+      <div class="ln-text">
+        <div class="ln-title">Limited Booking Access</div>
+        <div class="ln-sub">Your booking details are shown below. Verified portal guests access history, insights, downloads &amp; live support.</div>
+      </div>
+      <div class="ln-badge">Basic</div>
+    </div>
+
+    <!-- Single booking confirm card -->
+    <div class="limited-confirm-card" id="limitedConfirmCard">
+      <!-- filled by JS -->
+    </div>
+
+  </div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     VIEW: PREMIUM PORTAL
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div class="view" id="viewPremium">
+
+  <!-- Premium hero bar -->
+  <div class="premium-hero-bar">
+    <div class="phb-glow"></div>
+    <div class="phb-inner">
+      <div class="phb-avatar-wrap">
+        <div class="phb-avatar" id="premAvatar">JD</div>
+        <div class="phb-tier-ring"></div>
+      </div>
+      <div class="phb-info">
+        <div class="phb-eyebrow">Verified Guest</div>
+        <div class="phb-name" id="premName">Jane Doe</div>
+        <div class="phb-email" id="premEmail">guest@email.com</div>
+      </div>
+      <div class="phb-right">
+        <div class="phb-tier-badge">
+          <span class="ptb-star">âœ¦</span>
+          <span class="ptb-label">Premium Access</span>
+        </div>
+        <button class="btn-prem-signout" onclick="signOut()">Sign Out</button>
+      </div>
+    </div>
+    <div class="phb-stats">
+      <div class="phbs-item"><div class="phbs-num" id="premStatTotal">0</div><div class="phbs-label">Bookings</div></div>
+      <div class="phbs-item"><div class="phbs-num" id="premStatUpcoming">0</div><div class="phbs-label">Upcoming</div></div>
+      <div class="phbs-item"><div class="phbs-num" id="premStatNights">0</div><div class="phbs-label">Nights Stayed</div></div>
+      <div class="phbs-item"><div class="phbs-num" id="premStatSpend">â‚±0</div><div class="phbs-label">Total Value</div></div>
+    </div>
+  </div>
+
+  <div class="premium-wrap">
+
+    <!-- Quick actions (premium tier) -->
+    <div class="prem-quick-actions">
+      <div class="pqa-card gold" onclick="scrollToBookings()">
+        <div class="pqa-icon">ðŸ“‹</div>
+        <div class="pqa-label">My Bookings</div>
+        <div class="pqa-sub">All reservations</div>
+      </div>
+      <div class="pqa-card" onclick="downloadAllBookings()">
+        <div class="pqa-icon">â¬‡</div>
+        <div class="pqa-label">Download All</div>
+        <div class="pqa-sub">Full receipt bundle</div>
+      </div>
+      <div class="pqa-card" onclick="openChat(null,null)">
+        <div class="pqa-icon">ðŸ’¬</div>
+        <div class="pqa-label">Resort Chat</div>
+        <div class="pqa-sub">Live guest support</div>
+      </div>
+      <div class="pqa-card" onclick="scrollToInsights()">
+        <div class="pqa-icon">âœ¦</div>
+        <div class="pqa-label">Insights</div>
+        <div class="pqa-sub">Stay analytics</div>
+      </div>
+      <div class="pqa-card" onclick="signOut()">
+        <div class="pqa-icon">ðŸ”’</div>
+        <div class="pqa-label">Sign Out</div>
+        <div class="pqa-sub">End session</div>
+      </div>
+    </div>
+
+    <!-- Upcoming stay highlight -->
+    <div class="upcoming-highlight" id="upcomingHighlight">
+      <div class="uh-glow"></div>
+      <div class="uh-label">Your Next Stay</div>
+      <div class="uh-name" id="uhName">â€”</div>
+      <div class="uh-meta">
+        <div class="uh-meta-item">ðŸ“… <strong id="uhCheckin">â€”</strong></div>
+        <div class="uh-meta-item">ðŸŒ™ <strong id="uhNights">â€”</strong> nights</div>
+        <div class="uh-meta-item">ðŸ‘¥ <strong id="uhGuests">â€”</strong> guests</div>
+      </div>
+      <div class="uh-countdown">
+        <span class="uh-cd-label" id="uhStatusLabel">Days away</span>
+        <span class="uh-cd-days" id="uhStatusValue">—</span>
+      </div>
+      <div class="uh-note" id="uhNote">—</div>
+    </div>
+
+    <!-- Guest Insights (premium only) -->
+    <div class="insights-panel" id="insightsPanel">
+      <div class="ip-header">
+        <div class="ip-title">Stay Insights</div>
+        <div class="ip-badge">PREMIUM</div>
+      </div>
+      <div class="ip-grid">
+        <div class="ip-card">
+          <div class="ip-card-label">Total Nights</div>
+          <div class="ip-card-value" id="insNights">0</div>
+          <div class="ip-card-sub">across all stays</div>
+        </div>
+        <div class="ip-card">
+          <div class="ip-card-label">Total Invested</div>
+          <div class="ip-card-value" id="insSpend">â‚±0</div>
+          <div class="ip-card-sub">lifetime value</div>
+        </div>
+        <div class="ip-card">
+          <div class="ip-card-label">Booking Types</div>
+          <div class="ip-card-value" id="insTypes">â€”</div>
+          <div class="ip-card-sub">experience variety</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium download strip -->
+    <div class="prem-download-strip">
+      <div class="pds-icon">ðŸ“¦</div>
+      <div class="pds-text">
+        <div class="pds-title">Download All Booking Materials</div>
+        <div class="pds-badges">
+          <span class="pds-badge">Travel-ready proof</span>
+          <span class="pds-badge">QR included</span>
+          <span class="pds-badge">Official bundle</span>
+        </div>
+        <div class="pds-sub">Complete receipt bundle with QR codes â€” print or save for travel</div>
+      </div>
+      <button class="btn-pds" onclick="downloadAllBookings()">â¬‡ Download Bundle</button>
+    </div>
+
+    <!-- Status strip -->
+    <div class="status-strip" id="premStatusStrip">
+      <div class="ss-dot" style="background:var(--success);"></div>
+      <div class="ss-text">Portal access active. Your verified bookings are shown below.</div>
+      <div class="ss-badge" style="background:var(--success-bg);color:var(--success);">Verified âœ“</div>
+    </div>
+
+    <!-- Booking tabs -->
+    <div class="portal-tabs" id="bookingsAnchor">
+      <button class="ptab active" onclick="switchPortalTab('upcoming',this)">Upcoming</button>
+      <button class="ptab" onclick="switchPortalTab('completed',this)">Completed</button>
+      <button class="ptab" onclick="switchPortalTab('all',this)">All Bookings</button>
+      <button class="ptab" onclick="switchPortalTab('cancelled',this)">Cancelled</button>
+    </div>
+
+    <div class="bookings-list" id="premBookingsList"></div>
+  </div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     PROOF MODAL
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div class="modal-bd" id="proofModal" onclick="if(event.target===this)closeProof()">
+  <div class="proof-modal" id="proofContent"></div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     CANCEL MODAL
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div class="cancel-modal-bd" id="cancelModal" onclick="if(event.target===this)closeCancel()">
+  <div class="cancel-modal" id="cancelContent"></div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     CHAT BACKDROP
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div class="chat-bd" id="chatBackdrop" onclick="if(event.target===this)closeChat()">
+  <div class="chat-card">
+    <div class="chat-head">
+      <div class="chat-avatar">ðŸŒ¿</div>
+      <div>
+        <div class="chat-title">Resort Support</div>
+        <div class="chat-sub">WildNest Concierge Â· typically replies in minutes</div>
+      </div>
+      <button class="chat-close" onclick="closeChat()">âœ•</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-empty" id="chatEmptyState">No messages yet. Send us a message and our team will respond shortly.</div>
+    </div>
+    <div class="chat-error" id="chatError"></div>
+    <div class="chat-inputbar">
+      <input class="chat-input" id="chatInputEl" placeholder="Type a messageâ€¦" onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   ACCESS TIER CONSTANTS
+   C# passes guestObj.portalTier = "premium" | "limited"
+================================================================ */
+const TIER_PREMIUM = 'premium';
+const TIER_LIMITED = 'limited';
+
+/* ================================================================
+   DEMO DATA
+   WN-2026-4821 = premium (multi-booking, verified guest)
+   WN-2026-9001 = limited (single booking, lookup-only guest)
+================================================================ */
+const GUESTS = {
+  // â”€â”€ PREMIUM GUEST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  'WN-2026-4821': {
+    name:'Maria Santos', email:'maria.santos@email.com', phone:'+63 917 555 0101',
+    initials:'MS', portalTier: TIER_PREMIUM,
+    bookings:[
+      {
+        ref:'WN-2026-4821', bookingType:'Cabin Stay',
+        type:'Cabin Stay', name:'Bangon Forest Cabin',
+        icon:'ðŸ•', accentColor:'#1B4332', iconBg:'linear-gradient(135deg,#071a0e,#1B4332)',
+        checkIn:'2026-05-12', checkOut:'2026-05-15', nights:3, guests:2,
+        zone:'Cabin Â· Bangon Forest Wing',
+        status:'upcoming', price:4800, total:14400,
+        amenities:['ðŸ› Private Cabin','ðŸš¿ En-suite Bath','ðŸŒ¿ Forest View','ðŸ³ Breakfast','ðŸ¦œ Wildlife Access'],
+        addons:['Night Safari Package'],
+        payment:'GCash / Maya', bookedOn:'2026-04-01',
+        checkInTime:'3:00 PM', checkOutTime:'11:00 AM',
+        slotTime:'3:00 PM', specialRequests:'Vegetarian breakfast',
+        resortContact:'+63 32 XXX-XXXX', directions:'Carmen, Cebu Â· 40 min from Cebu City',
+        transport:'Private car'
+      },
+      {
+        ref:'WN-2026-3201', bookingType:'Full Stay + Experience',
+        type:'Full Stay + Experience', name:'Primate Park Safari Villa',
+        icon:'â­', accentColor:'#5a3200', iconBg:'linear-gradient(135deg,#1a0800,#5a3200)',
+        checkIn:'2026-02-20', checkOut:'2026-02-22', nights:2, guests:4,
+        zone:'Primate Park Â· Safari Wing',
+        status:'completed', price:7500, total:15000,
+        amenities:['ðŸ› Safari Villa','ðŸ¦ Private Safari','ðŸŒ¿ Forest Trail','ðŸ³ Breakfast','ðŸ“¸ Photo Pass'],
+        addons:['Photography Session'],
+        payment:'Credit Card', bookedOn:'2026-01-15',
+        checkInTime:'2:00 PM', checkOutTime:'11:00 AM',
+        slotTime:'2:00 PM', specialRequests:'None',
+        resortContact:'+63 32 XXX-XXXX', directions:'Carmen, Cebu',
+        transport:'Resort shuttle'
+      },
+      {
+        ref:'WN-2026-1180', bookingType:'Day Visit',
+        type:'Day Visit', name:'Conservation Day Tour',
+        icon:'ðŸŒ¿', accentColor:'#1a8a5a', iconBg:'linear-gradient(135deg,#0a2a1c,#0e4a2a)',
+        checkIn:'2026-01-10', checkOut:'2026-01-10', nights:0, guests:2,
+        zone:'Conservation Hub Â· Educational',
+        status:'completed', price:700, total:1400,
+        amenities:['ðŸ¦ Rare Species Tour','ðŸŒ¿ Breeding Program','ðŸ… Certificate','ðŸ“– Ranger Brief','ðŸ± Eco Lunch'],
+        addons:['Photography Package'],
+        payment:'GCash / Maya', bookedOn:'2025-12-20',
+        checkInTime:'9:00 AM', checkOutTime:'4:00 PM',
+        slotTime:'9:00 AM Full-Day', specialRequests:'None',
+        resortContact:'+63 32 XXX-XXXX', directions:'40 min from Cebu City',
+        transport:'Own vehicle'
+      }
+    ]
+  },
+
+  // â”€â”€ LIMITED GUEST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  'WN-2026-9001': {
+    name:'Carlos Reyes', email:'carlos.reyes@email.com', phone:'+63 918 000 0000',
+    initials:'CR', portalTier: TIER_LIMITED,
+    bookings:[
+      {
+        ref:'WN-2026-9001', bookingType:'Day Visit',
+        type:'Day Visit', name:'WildNest Day Pass',
+        icon:'ðŸŽŸ', accentColor:'#0F6E56', iconBg:'linear-gradient(135deg,#082010,#0F6E56)',
+        checkIn:'2026-05-20', checkOut:'2026-05-20', nights:0, guests:2,
+        zone:'All Zones Â· Day Pass',
+        status:'upcoming', price:700, total:1400,
+        amenities:['ðŸ—º All Zone Access','ðŸ¦ Animal Viewing','ðŸŒ¿ Trail Access','ðŸ…¿ Parking Included'],
+        addons:[],
+        payment:'GCash / Maya', bookedOn:'2026-04-18',
+        checkInTime:'8:00 AM', checkOutTime:'5:00 PM',
+        slotTime:'8:00 AM Full-Day', specialRequests:'None',
+        resortContact:'+63 32 XXX-XXXX', directions:'Carmen, Cebu Â· 40 min from Cebu City',
+        transport:'Own vehicle'
+      }
+    ]
+  }
+};
+
+let currentGuest = null;
+let currentTier = TIER_LIMITED;
+let currentPortalTab = 'upcoming';
+let cancelTarget = null;
+let scannerOpen = false;
+
+/* ================================================================
+   HELPER: ESCAPE HTML
+================================================================ */
+function escapeHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ================================================================
+   VIEW NAVIGATION
+================================================================ */
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // Hide hero for portal views
+  const hero = document.getElementById('portalHero');
+  if(id === 'viewPremium' || id === 'viewLimited'){
+    hero.style.display = 'none';
+  } else {
+    hero.style.display = '';
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function switchLkTab(tab,btn){
+  document.querySelectorAll('.lk-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  const map={ref:'tabRef',qr:'tabQr'};
+  document.getElementById(map[tab]).classList.add('active');
+}
+
+function switchPortalTab(tab,btn){
+  currentPortalTab=tab;
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPremiumBookings();
+}
+
+/* ================================================================
+   QR SCANNER
+================================================================ */
+let scannedQrRef = '';
+
+function toggleScanner(){
+  const area=document.getElementById('scannerArea');
+  scannerOpen=!scannerOpen;
+  area.classList.toggle('active',scannerOpen);
+  if(scannerOpen){
+    setTimeout(()=>{
+      if(scannerOpen){
+        scannedQrRef='WN-2026-4821';
+        area.querySelector('.qr-scanner-text').innerHTML='âœ… <strong style="color:#a8f0d8">QR Detected!</strong><br>'+scannedQrRef+'<br><em style="opacity:.6">Enter your email below then tap Access</em>';
+        scannerOpen=false;
+      }
+    },2500);
+  }
+}
+
+/* ================================================================
+   LOOKUP  â€” routes to premium or limited based on tier
+================================================================ */
+function lookupByQr(){
+  const ref=scannedQrRef.trim().toUpperCase();
+  if(!ref){alert('No QR code scanned yet. Tap "Tap to Scan QR Code" first.');return;}
+  doLookup(ref,'',true);
+}
+function lookupByRef(){
+  const ref=document.getElementById('refInput').value.trim().toUpperCase();
+  const email=document.getElementById('refEmailInput').value.trim();
+  doLookup(ref,email,false);
+}
+function doLookup(ref,email,qrMode){
+  if(!ref){alert('Please enter your Booking Reference.');return;}
+  if(!qrMode&&!email){alert('Please enter both your Booking Reference and email address.');return;}
+  // Tell C# to do the real MySQL lookup
+  if(window.chrome && window.chrome.webview){
+    window.chrome.webview.postMessage(JSON.stringify({action:'lookup',ref:ref,email:email}));
+  } else {
+    // Fallback demo
+    let foundGuest=null;
+    for(const g of Object.values(GUESTS)){
+      if(g.bookings.some(b=>b.ref===ref)){foundGuest=g;break;}
+    }
+    if(!foundGuest){alert('Booking not found. Try WN-2026-4821 or WN-2026-9001.');return;}
+    injectGuestData(foundGuest);
+  }
+}
+
+/* ================================================================
+   ENTRY POINT â€” called by C# after MySQL lookup
+   C# must pass { ..., portalTier: "premium" | "limited" }
+================================================================ */
+function injectGuestData(guestJson){
+  try{
+    const guest = typeof guestJson === 'string' ? JSON.parse(guestJson) : guestJson;
+    currentGuest = guest;
+    currentTier = guest.portalTier || TIER_LIMITED;
+    if(currentTier === TIER_PREMIUM){
+      loadPremiumPortal(guest);
+    } else {
+      loadLimitedPortal(guest);
+    }
+  } catch(e){
+    alert('Error loading portal: ' + e.message);
+  }
+}
+
+function showLookupError(msg){ alert(msg); }
+
+function signOut(){
+  currentGuest=null;
+  if(window.chrome&&window.chrome.webview){
+    window.chrome.webview.postMessage(JSON.stringify({action:'signout'}));
+    return;
+  }
+  showView('viewLookup');
+}
+
+/* ================================================================
+   LIMITED PORTAL LOADER
+================================================================ */
+function loadLimitedPortal(guest){
+  const booking = guest.bookings[0];
+  if(!booking){alert('No booking data found.');return;}
+
+  const qrSvg = generateQR(booking.ref);
+  const statusClass = 'status-' + (booking.status || 'upcoming');
+  const statusLabel = displayStatus(booking.status || 'upcoming');
+  const ci = formatDate(booking.checkIn);
+  const co = booking.nights > 0 ? formatDate(booking.checkOut) : null;
+  const dateStr = co ? `${ci} â†’ ${co}` : ci;
+
+  const timing = buildTimingSummary(booking);
+
+  document.getElementById('limitedConfirmCard').innerHTML = `
+    <div class="lcc-top">
+      <div class="lcc-icon" style="background:${escapeHtml(booking.iconBg||'var(--forest)')}">${escapeHtml(booking.icon||'ðŸ“‹')}</div>
+      <div class="lcc-head">
+        <div class="lcc-type">${escapeHtml(booking.bookingType||'Booking')}</div>
+        <div class="lcc-name">${escapeHtml(booking.name||'WildNest Booking')}</div>
+        <div class="lcc-ref">${escapeHtml(booking.ref)}</div>
+      </div>
+      <div class="lcc-status-pill ${statusClass}">${escapeHtml(statusLabel)}</div>
+    </div>
+
+    <div class="lcc-qr-zone">
+      <div class="lcc-qr">${qrSvg}</div>
+      <div class="lcc-qr-info">
+        <div class="qr-label">Booking QR Code</div>
+        <div class="qr-value">${escapeHtml(booking.ref)}</div>
+        <div class="qr-sub">Present at resort entrance Â· Valid for 1 use</div>
+      </div>
+    </div>
+
+    <div class="lcc-details">
+      <div class="lcc-details-grid">
+        <div class="lcc-det-item">
+          <div class="lcc-det-label">Guest</div>
+          <div class="lcc-det-value">${escapeHtml(guest.name)}</div>
+          <div class="lcc-det-sub">${escapeHtml(guest.email)}</div>
+        </div>
+        <div class="lcc-det-item">
+          <div class="lcc-det-label">Zone</div>
+          <div class="lcc-det-value">${escapeHtml(booking.zone||'WildNest Resort')}</div>
+        </div>
+        <div class="lcc-det-item">
+          <div class="lcc-det-label">Date${booking.nights>0?' / Check-in':''}</div>
+          <div class="lcc-det-value">${escapeHtml(ci)}</div>
+          ${booking.nights>0?`<div class="lcc-det-sub">Check-out: ${escapeHtml(formatDate(booking.checkOut))}</div>`:''}
+        </div>
+        <div class="lcc-det-item">
+          <div class="lcc-det-label">Guests</div>
+          <div class="lcc-det-value">${escapeHtml(String(booking.guests||1))} person${booking.guests===1?'':'s'}</div>
+        </div>
+        <div class="lcc-det-item">
+          <div class="lcc-det-label">${escapeHtml(timing.windowLabel)}</div>
+          <div class="lcc-det-value">${escapeHtml(timing.windowValue)}</div>
+        </div>
+        <div class="lcc-det-item">
+          <div class="lcc-det-label">${escapeHtml(timing.statusLabel)}</div>
+          <div class="lcc-det-value">${escapeHtml(timing.statusValue)}</div>
+        </div>
+      </div>
+    </div>
+
+      <div class="lcc-details" style="padding-top:0">
+      <div class="lcc-det-item lcc-action-box">
+        <div class="lcc-det-label">Next Step</div>
+        <div class="lcc-det-value">${escapeHtml(timing.actionNote || 'Please proceed according to your booking schedule.')}</div>
+      </div>
+    </div>
+
+    <div class="lcc-footer">
+      <div class="lcc-total-row">
+        <div class="lcc-total-label">Amount Paid</div>
+        <div class="lcc-total-value">â‚±${Number(booking.total||0).toLocaleString()}</div>
+      </div>
+
+      <div class="limited-actions">
+        <button class="btn-ltd-proof" onclick="openProof('${escapeHtml(booking.ref)}')">ðŸŽŸ View Proof</button>
+        <button class="btn-ltd-dl" onclick="downloadBooking('${escapeHtml(booking.ref)}')">â¬‡ Download</button>
+      </div>
+
+      <div class="upgrade-teaser">
+        <div class="ut-title">âœ¦ &nbsp;What Premium Guests See</div>
+        <div class="ut-features">
+          <span class="ut-feat">ðŸ“‹ Full booking history</span>
+          <span class="ut-feat">ðŸ“¦ Download all receipts</span>
+          <span class="ut-feat">ðŸ’¬ Live resort chat</span>
+          <span class="ut-feat">âœ¦ Stay insights</span>
+          <span class="ut-feat">ðŸŒ™ Nights tracker</span>
+          <span class="ut-feat">â­ Personalized dashboard</span>
+        </div>
+        <button class="btn-limited-back" onclick="signOut()">â† Back to Lookup</button>
+      </div>
+    </div>
+  `;
+
+  showView('viewLimited');
+}
+
+/* ================================================================
+   PREMIUM PORTAL LOADER
+================================================================ */
+function loadPremiumPortal(guest){
+  // Avatar / name / email
+  document.getElementById('premAvatar').textContent = guest.initials || getInitials(guest.name);
+  document.getElementById('premName').textContent = guest.name;
+  document.getElementById('premEmail').textContent = guest.email;
+
+  // Stats
+  const upcoming = guest.bookings.filter(b=>isActivePortalStatus(b.status)).length;
+  const nights = guest.bookings.reduce((s,b)=>s+(b.nights||0),0);
+  const total = guest.bookings.reduce((s,b)=>s+Number(b.total||0),0);
+  const types = [...new Set(guest.bookings.map(b=>b.bookingType))];
+  document.getElementById('premStatTotal').textContent = guest.bookings.length;
+  document.getElementById('premStatUpcoming').textContent = upcoming;
+  document.getElementById('premStatNights').textContent = nights;
+  document.getElementById('premStatSpend').textContent = 'â‚±'+Math.round(total/1000)+'K';
+
+  // Insights
+  document.getElementById('insNights').textContent = nights;
+  document.getElementById('insSpend').textContent = 'â‚±'+total.toLocaleString();
+  document.getElementById('insTypes').textContent = types.length;
+
+  // Upcoming highlight
+  const nextUpcoming =
+    guest.bookings.find(b=>b.status==='overdue' && b.nights>0) ||
+    guest.bookings.find(b=>b.status==='checkedin' && b.nights>0) ||
+    guest.bookings.find(b=>b.status==='upcoming' && b.nights>0);
+  const uhEl = document.getElementById('upcomingHighlight');
+  const statusStripText = document.querySelector('#premStatusStrip .ss-text');
+  const statusStripBadge = document.querySelector('#premStatusStrip .ss-badge');
+  const statusStripDot = document.querySelector('#premStatusStrip .ss-dot');
+  if(nextUpcoming){
+    const timing = buildTimingSummary(nextUpcoming);
+    uhEl.classList.add('has-upcoming');
+    document.querySelector('.uh-label').textContent =
+      nextUpcoming.status === 'overdue' ? 'Stay Needs Attention' :
+      nextUpcoming.status === 'checkedin' ? 'Current Stay' :
+      'Your Next Stay';
+    document.getElementById('uhName').textContent = nextUpcoming.name;
+    document.getElementById('uhCheckin').textContent = formatDate(nextUpcoming.checkIn);
+    document.getElementById('uhNights').textContent = nextUpcoming.nights;
+    document.getElementById('uhGuests').textContent = nextUpcoming.guests;
+    document.getElementById('uhStatusLabel').textContent = timing.statusLabel;
+    document.getElementById('uhStatusValue').textContent = timing.statusValue;
+    document.getElementById('uhNote').textContent = timing.actionNote || timing.windowValue;
+    if(statusStripText){
+      statusStripText.innerHTML = `<strong>${escapeHtml(nextUpcoming.name)}</strong> · ${escapeHtml(timing.actionNote || timing.statusValue)}`;
+    }
+    if(statusStripBadge){
+      statusStripBadge.textContent = timing.statusLabel;
+      statusStripBadge.className = 'ss-badge ' + ('status-' + (nextUpcoming.status || 'upcoming'));
+    }
+    if(statusStripDot){
+      statusStripDot.style.background =
+        nextUpcoming.status === 'overdue' ? 'var(--warn)' :
+        nextUpcoming.status === 'checkedin' ? 'var(--success)' :
+        'var(--gold)';
+    }
+  } else {
+    uhEl.classList.remove('has-upcoming');
+    if(statusStripText){
+      statusStripText.innerHTML = '<strong>Portal access active.</strong> Your verified bookings are shown below.';
+    }
+    if(statusStripBadge){
+      statusStripBadge.textContent = 'Verified ✓';
+      statusStripBadge.className = 'ss-badge';
+      statusStripBadge.style.background = 'var(--success-bg)';
+      statusStripBadge.style.color = 'var(--success)';
+    }
+    if(statusStripDot){
+      statusStripDot.style.background = 'var(--success)';
+    }
+  }
+
+  currentPortalTab = 'upcoming';
+  document.querySelectorAll('.ptab').forEach((b,i)=>b.classList.toggle('active',i===0));
+  renderPremiumBookings();
+  showView('viewPremium');
+}
+
+/* ================================================================
+   RENDER PREMIUM BOOKINGS
+================================================================ */
+function renderPremiumBookings(){
+  if(!currentGuest) return;
+  const list = document.getElementById('premBookingsList');
+  const tab = currentPortalTab;
+
+  let bookings = currentGuest.bookings.filter(b=>{
+    if(tab==='upcoming') return isActivePortalStatus(b.status);
+    if(tab==='completed') return b.status==='completed';
+    if(tab==='cancelled') return b.status==='cancelled';
+    return true;
+  });
+
+  if(bookings.length===0){
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">ðŸŒ¿</div><div class="empty-title">No ${tab} bookings</div><div class="empty-sub">Nothing here yet.</div></div>`;
+    return;
+  }
+
+  list.innerHTML = bookings.map((b,i)=>{
+    const statusClass='status-'+(b.status||'upcoming');
+    const statusLabel=displayStatus(b.status||'upcoming');
+    const timing = buildTimingSummary(b);
+    const ci=formatDate(b.checkIn), co=b.nights>0?formatDate(b.checkOut):'';
+    const dateStr=co?`${ci} â†’ ${co} Â· ${b.nights}n`:`${ci}${b.slotTime?' Â· '+escapeHtml(b.slotTime):''}`;
+    const amenityHtml=(b.amenities||[]).slice(0,3).map(a=>`<span class="bc-tag">${escapeHtml(a)}</span>`).join('');
+    const addonHtml=(b.addons||[]).map(a=>`<span class="bc-tag" style="border-color:rgba(212,160,23,.2);color:#7a5c10;">âœ¦ ${escapeHtml(a)}</span>`).join('');
+    const canCancel=b.status==='upcoming';
+
+    return `
+      <div class="booking-card" style="animation-delay:${i*0.06}s">
+        <div class="bc-header">
+          <div class="bc-accent" style="background:${escapeHtml(b.accentColor||'#1B4332')}"></div>
+          <div class="bc-icon-wrap" style="background:${escapeHtml(b.iconBg||'var(--forest)')}">${escapeHtml(b.icon||'ðŸ“‹')}</div>
+          <div class="bc-meta">
+            <div class="bc-type-zone">${escapeHtml(b.bookingType)} Â· ${escapeHtml(b.zone||'WildNest')}</div>
+            <div class="bc-name">${escapeHtml(b.name||'WildNest Booking')}</div>
+            <div class="bc-dates">ðŸ“… ${escapeHtml(dateStr)} Â· ðŸ‘¥ ${escapeHtml(String(b.guests||1))}</div>
+            <div class="bc-tags">${amenityHtml}${addonHtml}</div>
+          </div>
+          <div class="bc-right">
+            <div class="bc-ref">${escapeHtml(b.ref)}</div>
+            <div class="bc-price">â‚±${Number(b.total||0).toLocaleString()} <span>/total</span></div>
+            <div class="bc-status-badge ${statusClass}">${escapeHtml(statusLabel)}</div>
+          </div>
+        </div>
+        <div class="bc-actions">
+          <button class="btn-view-proof" onclick="openProof('${escapeHtml(b.ref)}')">ðŸŽŸ View &amp; QR</button>
+          <button class="btn-download-pdf" onclick="downloadBooking('${escapeHtml(b.ref)}')">â¬‡ Receipt</button>
+          ${canCancel?`<button class="btn-cancel-bk" onclick="openCancel('${escapeHtml(b.ref)}')">âœ• Cancel</button>`:''}
+          <button class="bc-expand-toggle" onclick="toggleExpand('exp-${escapeHtml(b.ref)}',this)">Details â–¾</button>
+        </div>
+        <div class="bc-expanded" id="exp-${escapeHtml(b.ref)}">
+          <div class="bc-timing-callout">
+            <div class="bc-timing-head">
+              <div class="bc-timing-label">${escapeHtml(timing.statusLabel)}</div>
+              <div class="bc-timing-status">${escapeHtml(timing.statusValue)}</div>
+            </div>
+            <div class="bc-timing-note">${escapeHtml(timing.actionNote || timing.windowValue)}</div>
+          </div>
+          <div class="bc-exp-grid">
+            <div class="bc-exp-item"><div class="bc-exp-label">Check-in</div><div class="bc-exp-value">${escapeHtml(ci)} Â· ${escapeHtml(b.checkInTime||'3:00 PM')}</div></div>
+            ${b.nights>0?`<div class="bc-exp-item"><div class="bc-exp-label">Check-out</div><div class="bc-exp-value">${escapeHtml(co)} Â· ${escapeHtml(b.checkOutTime||'11:00 AM')}</div></div>`:''}
+            <div class="bc-exp-item"><div class="bc-exp-label">${escapeHtml(timing.windowLabel)}</div><div class="bc-exp-value">${escapeHtml(timing.windowValue)}</div></div>
+            <div class="bc-exp-item"><div class="bc-exp-label">Portal Status</div><div class="bc-exp-value">${escapeHtml(statusLabel)}</div></div>
+            <div class="bc-exp-item"><div class="bc-exp-label">Payment</div><div class="bc-exp-value">${escapeHtml(b.payment||'â€”')}</div></div>
+            <div class="bc-exp-item"><div class="bc-exp-label">Transport</div><div class="bc-exp-value">${escapeHtml(b.transport||'Own vehicle')}</div></div>
+            <div class="bc-exp-item"><div class="bc-exp-label">Special Requests</div><div class="bc-exp-value">${escapeHtml(b.specialRequests||'None')}</div></div>
+            <div class="bc-exp-item"><div class="bc-exp-label">Contact</div><div class="bc-exp-value">${escapeHtml(b.resortContact||'+63 32 XXX-XXXX')}</div></div>
+          </div>
+          <div class="bc-amenities-title">Included</div>
+          <div class="bc-amenities">${(b.amenities||[]).map(a=>`<span class="bc-amen-tag">${escapeHtml(a)}</span>`).join('')}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleExpand(id,btn){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const open=el.classList.toggle('open');
+  btn.textContent=open?'Details â–´':'Details â–¾';
+}
+
+function scrollToBookings(){document.getElementById('bookingsAnchor').scrollIntoView({behavior:'smooth',block:'start'});}
+function scrollToInsights(){document.getElementById('insightsPanel').scrollIntoView({behavior:'smooth',block:'start'});}
+
+/* ================================================================
+   PROOF MODAL  (works for both tiers)
+================================================================ */
+function openProof(ref){
+  if(!currentGuest)return;
+  const booking=currentGuest.bookings.find(b=>b.ref===ref);
+  if(!booking)return;
+  const ci=formatDate(booking.checkIn);
+  const co=booking.nights>0?formatDate(booking.checkOut):'';
+  const qrSvg=generateQR(ref);
+  const statusClass='status-'+(booking.status||'upcoming');
+  const amenitiesHtml=(booking.amenities||[]).map(a=>`<span class="proof-amen-tag">${escapeHtml(a)}</span>`).join('');
+
+  document.getElementById('proofContent').innerHTML=`
+    <div class="proof-header">
+      <div class="ph-brand">WILDNEST</div>
+      <button class="ph-close" onclick="closeProof()">âœ•</button>
+    </div>
+    <div class="proof-body">
+      <div class="proof-check-row">
+        <div class="proof-check">
+          <svg width="18" height="18" fill="none" stroke="#1a8a5a" stroke-width="2.5" stroke-dasharray="60" stroke-dashoffset="0">
+            <polyline points="3,9 7,13 15,5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="proof-confirm-title">Booking Confirmed</div>
+          <div class="proof-confirm-sub">${escapeHtml(booking.name||'WildNest Booking')} Â· ${escapeHtml(booking.zone||'WildNest Resort')}</div>
+        </div>
+      </div>
+      <div class="proof-qr-section">
+        <div class="proof-qr">${qrSvg}</div>
+        <div class="proof-ref-col">
+          <div class="proof-ref-label">Booking Reference</div>
+          <div class="proof-ref-val">${escapeHtml(ref)}</div>
+          <div class="proof-status-row"><span class="bc-status-badge ${statusClass}">${escapeHtml(displayStatus(booking.status||'upcoming'))}</span></div>
+        </div>
+      </div>
+      <div class="proof-details-grid">
+        <div class="proof-det-item"><div class="proof-det-label">Guest</div><div class="proof-det-value">${escapeHtml(currentGuest.name)}</div></div>
+        <div class="proof-det-item"><div class="proof-det-label">Type</div><div class="proof-det-value">${escapeHtml(booking.bookingType||'Booking')}</div></div>
+        <div class="proof-det-item"><div class="proof-det-label">${booking.nights>0?'Check-in':'Date'}</div><div class="proof-det-value">${escapeHtml(ci)}</div></div>
+        ${booking.nights>0?`<div class="proof-det-item"><div class="proof-det-label">Check-out</div><div class="proof-det-value">${escapeHtml(co)}</div></div>`:''}
+        <div class="proof-det-item"><div class="proof-det-label">Guests</div><div class="proof-det-value">${escapeHtml(String(booking.guests||1))}</div></div>
+        <div class="proof-det-item"><div class="proof-det-label">Payment</div><div class="proof-det-value">${escapeHtml(booking.payment||'â€”')}</div></div>
+      </div>
+      <div class="proof-amenities">${amenitiesHtml}</div>
+      <div class="proof-total-row">
+        <div class="pt-label">Total Amount</div>
+        <div class="pt-value">â‚±${Number(booking.total||0).toLocaleString()}</div>
+      </div>
+      <div class="proof-footer">
+        <button class="btn-pf-dl" onclick="downloadBooking('${escapeHtml(ref)}')">â¬‡ Download Receipt</button>
+        <button class="btn-pf-share" onclick="navigator.clipboard.writeText('WildNest Booking: ${escapeHtml(ref)} â€” ${escapeHtml(currentGuest.name)}').then(()=>alert('Copied!'))">ðŸ”— Share</button>
+      </div>
+      <div class="proof-policy">Free cancellation up to 48 hours before check-in. This is your official WildNest booking confirmation. Support: reservations@wildnest.ph Â· +63 32 XXX-XXXX</div>
+    </div>
+  `;
+  document.getElementById('proofModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeProof(){
+  document.getElementById('proofModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ================================================================
+   CANCEL MODAL  (premium only â€” limited doesn't show cancel)
+================================================================ */
+function openCancel(ref){
+  cancelTarget=currentGuest.bookings.find(b=>b.ref===ref);
+  if(!cancelTarget)return;
+  const ci=formatDate(cancelTarget.checkIn);
+  const co=cancelTarget.nights>0?formatDate(cancelTarget.checkOut):'';
+  document.getElementById('cancelContent').innerHTML=`
+    <div class="cm-header">
+      <div class="cm-title">Cancel Reservation</div>
+      <button class="cm-close" onclick="closeCancel()">âœ•</button>
+    </div>
+    <div class="cm-body">
+      <div class="cm-preview">
+        <div class="cm-book-icon">${cancelTarget.icon}</div>
+        <div>
+          <div class="cm-book-name">${escapeHtml(cancelTarget.name)}</div>
+          <div class="cm-book-dates">${escapeHtml(ci)}${co?' â†’ '+escapeHtml(co):''} Â· â‚±${Number(cancelTarget.total).toLocaleString()}</div>
+        </div>
+      </div>
+      <div class="cm-policy-box">
+        <div class="cm-policy-title">âš ï¸ Cancellation Policy</div>
+        <div class="cm-policy-text">Free cancellation up to <strong>48 hours before check-in</strong>. After that, a cancellation fee of 1 night's rate applies. Full refund processed within 5â€“7 business days.</div>
+      </div>
+      <label class="cm-field-label">Reason for cancellation</label>
+      <select class="cm-select">
+        <option>Change of plans</option><option>Emergency / personal matter</option>
+        <option>Found a better option</option><option>Weather concerns</option>
+        <option>Health reasons</option><option>Other</option>
+      </select>
+      <div class="cm-confirm-check">
+        <input type="checkbox" id="cancelConfirmCheck">
+        <label for="cancelConfirmCheck">I understand this cannot be undone and agree to the cancellation policy above.</label>
+      </div>
+      <div class="cm-actions">
+        <button class="btn-cm-keep" onclick="closeCancel()">â† Keep Booking</button>
+        <button class="btn-cm-cancel" onclick="confirmCancel()">Confirm Cancellation</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('cancelModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function confirmCancel(){
+  if(!document.getElementById('cancelConfirmCheck').checked){alert('Please confirm you agree to the cancellation policy.');return;}
+  if(cancelTarget&&currentGuest){
+    const bk=currentGuest.bookings.find(b=>b.ref===cancelTarget.ref);
+    if(bk) bk.status='cancelled';
+  }
+  document.getElementById('cancelContent').innerHTML=`
+    <div style="padding:8px;">
+      <div class="cancel-success">
+        <div class="cs-icon">âœ…</div>
+        <div class="cs-title">Booking Cancelled</div>
+        <div class="cs-sub">Your reservation for <strong>${escapeHtml(cancelTarget.name)}</strong> has been cancelled. A confirmation has been sent to ${escapeHtml(currentGuest.email)}.</div>
+        <div class="cs-refund">ðŸ’š Refund of â‚±${Number(cancelTarget.total).toLocaleString()} will be processed in 5â€“7 business days</div>
+        <button class="btn-cs-done" onclick="closeCancel();renderPremiumBookings()">Done</button>
+      </div>
+    </div>`;
+  const upcoming=currentGuest.bookings.filter(b=>isActivePortalStatus(b.status)).length;
+  document.getElementById('premStatUpcoming').textContent=upcoming;
+}
+
+function closeCancel(){
+  document.getElementById('cancelModal').classList.remove('open');
+  document.body.style.overflow='';
+  cancelTarget=null;
+}
+
+/* ================================================================
+   CHAT  (premium only)
+================================================================ */
+let activeChatRef='';
+let activeChatName='';
+
+function openChat(ref, guestName){
+  activeChatRef = ref || (currentGuest?.bookings?.[0]?.ref || '');
+  activeChatName = guestName || currentGuest?.name || 'Guest';
+  document.getElementById('chatBackdrop').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(window.chrome&&window.chrome.webview){
+    window.chrome.webview.postMessage(JSON.stringify({
+      action:'chat_init',
+      reservationId: activeChatRef,
+      guestName: activeChatName
+    }));
+  }
+}
+
+function closeChat(){
+  document.getElementById('chatBackdrop').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function sendChat(){
+  const inp=document.getElementById('chatInputEl');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  if(window.chrome&&window.chrome.webview){
+    window.chrome.webview.postMessage(JSON.stringify({
+      action:'chat_send',message:msg,
+      reservationId:activeChatRef, guestName:activeChatName
+    }));
+  }
+  appendChatMessages([{role:'guest',message:msg,time:new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'})}]);
+  inp.value='';
+}
+
+function appendChatMessages(msgs){
+  const box=document.getElementById('chatMessages');
+  const empty=document.getElementById('chatEmptyState');
+  if(empty&&msgs.length) empty.style.display='none';
+  msgs.forEach(m=>{
+    const row=document.createElement('div');
+    row.className='chat-row '+(m.role==='guest'?'guest':'reception');
+    row.innerHTML=`<div><div class="chat-bubble">${escapeHtml(m.message)}</div><div class="chat-time">${escapeHtml(m.time||'')}</div></div>`;
+    box.appendChild(row);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+
+function loadChatHistory(msgs){ if(msgs&&msgs.length) appendChatMessages(msgs); }
+function chatError(msg){ const e=document.getElementById('chatError'); e.style.display='block'; e.textContent=msg; }
+
+/* ================================================================
+   DOWNLOADS
+================================================================ */
+function money(v){ return 'PHP '+Number(v||0).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+let __nativeSaveHandled = false;
+
+function browserDownloadHtmlFile(filename,html){
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+
+function toBase64Utf8(str){
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  const chunk = 0x8000;
+  for(let i = 0; i < bytes.length; i += chunk){
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+function downloadHtmlFile(filename,html){
+  if(window.chrome && window.chrome.webview){
+    __nativeSaveHandled = false;
+    try{
+      const htmlBase64 = toBase64Utf8(html);
+      window.chrome.webview.postMessage(JSON.stringify({
+        action:'save_html_base64',
+        filename:filename,
+        htmlBase64:htmlBase64
+      }));
+      setTimeout(()=>{
+        if(!__nativeSaveHandled){
+          try{
+            window.chrome.webview.postMessage(JSON.stringify({
+              action:'save_html',
+              filename:filename,
+              html:html
+            }));
+            setTimeout(()=>{
+              if(!__nativeSaveHandled){
+                browserDownloadHtmlFile(filename,html);
+              }
+            },900);
+          }catch(_){
+            browserDownloadHtmlFile(filename,html);
+          }
+        }
+      },1200);
+      return;
+    }catch(_){}
+  }
+  browserDownloadHtmlFile(filename,html);
+}
+
+function downloadPdfFile(filename,html){
+  if(window.chrome && window.chrome.webview){
+    __nativeSaveHandled = false;
+    try{
+      const htmlBase64 = toBase64Utf8(html);
+      window.chrome.webview.postMessage(JSON.stringify({
+        action:'save_pdf_base64',
+        filename:filename,
+        htmlBase64:htmlBase64
+      }));
+      setTimeout(()=>{
+        if(!__nativeSaveHandled){
+          browserDownloadHtmlFile(filename.replace(/\.pdf$/i,'.html'),html);
+        }
+      },1800);
+      return;
+    }catch(_){}
+  }
+  browserDownloadHtmlFile(filename.replace(/\.pdf$/i,'.html'),html);
+}
+
+function portalDownloadSaved(path){
+  __nativeSaveHandled = true;
+  alert(`Saved successfully to:\n${path}`);
+}
+
+function portalDownloadFailed(message){
+  __nativeSaveHandled = true;
+  alert(`Unable to save the file right now.\n${message}`);
+}
+
+function displayStatus(status){
+  const value = String(status || '').toLowerCase();
+  if(value === 'checkedin') return 'Checked In';
+  if(value === 'overdue') return 'Overdue';
+  if(value === 'checked-out') return 'Checked Out';
+  return capitalize(value || 'upcoming');
+}
+
+function isActivePortalStatus(status){
+  const value = String(status || '').toLowerCase();
+  return value === 'upcoming' || value === 'checkedin' || value === 'overdue';
+}
+
+function bookingRows(bookings){
+  return bookings.map(b=>{
+    const dates=b.nights>0
+      ?`${formatDate(b.checkIn)} to ${formatDate(b.checkOut)} (${b.nights} night${b.nights>1?'s':''})`
+      :`${formatDate(b.checkIn)}${b.slotTime?' - '+escapeHtml(b.slotTime):''}`;
+    return `<tr>
+      <td><strong>${escapeHtml(b.ref)}</strong><br><span>${escapeHtml(b.bookingType||'Booking')}</span></td>
+      <td>${escapeHtml(b.name||'WildNest Booking')}<br><span>${escapeHtml(b.zone||'WildNest Resort')}</span></td>
+      <td>${escapeHtml(dates)}</td>
+      <td>${Number(b.guests||0)} guest${Number(b.guests||0)===1?'':'s'}</td>
+      <td>${escapeHtml(displayStatus(b.status||'upcoming'))}</td>
+      <td>${escapeHtml(b.payment||'--')}</td>
+      <td class="amount">${money(b.total)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildReceiptHtml(bookings,title){
+  const guest=currentGuest||{};
+  const total=bookings.reduce((s,b)=>s+Number(b.total||0),0);
+  const generated=new Date().toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'});
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(title)}</title>
+  <style>
+    body{margin:0;background:#f4f0e9;color:#102016;font-family:Segoe UI,Arial,sans-serif}
+    .page{max-width:1080px;margin:28px auto;background:#fff;border:1px solid #ded7ca;border-radius:18px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.12)}
+    .head{background:#071a0e;color:#f7f3ec;padding:28px 34px;border-bottom:4px solid #d4a017}
+    .brand{font-family:Georgia,serif;font-size:28px;font-weight:800;letter-spacing:5px}
+    .title{font-size:18px;margin-top:10px;color:#d4a017;font-weight:700}
+    .meta{padding:24px 34px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;background:#fbfaf7;border-bottom:1px solid #e6dfd3}
+    .box{border:1px solid #e1dacd;border-radius:12px;padding:14px}
+    .lbl{font-size:11px;color:#80766a;text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+    .val{margin-top:6px;font-size:15px;font-weight:700;color:#071a0e}
+    table{width:100%;border-collapse:collapse}
+    th{background:#f2eee6;color:#61584d;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding:12px}
+    td{padding:14px 12px;border-bottom:1px solid #eee8de;vertical-align:top;font-size:13px}
+    td span{color:#80766a;font-size:12px}.amount{text-align:right;font-weight:800;color:#8c640b;white-space:nowrap}
+    .foot{padding:20px 34px;background:#071a0e;color:#d7d0c5;font-size:12px;display:flex;justify-content:space-between;gap:18px}
+  </style></head><body><div class="page">
+    <div class="head"><div class="brand">WILDNEST</div><div class="title">${escapeHtml(title)}</div></div>
+    <div class="meta">
+      <div class="box"><div class="lbl">Guest</div><div class="val">${escapeHtml(guest.name||'Guest')}</div><div>${escapeHtml(guest.email||'')}</div></div>
+      <div class="box"><div class="lbl">Generated</div><div class="val">${escapeHtml(generated)}</div><div>WildNest Guest Portal</div></div>
+      <div class="box"><div class="lbl">Total Value</div><div class="val">${money(total)}</div><div>${bookings.length} booking${bookings.length===1?'':'s'}</div></div>
+    </div>
+    <table><thead><tr><th>Reference</th><th>Booking</th><th>Date</th><th>Guests</th><th>Status</th><th>Payment</th><th>Total</th></tr></thead>
+    <tbody>${bookingRows(bookings)}</tbody></table>
+    <div class="foot"><div>Generated from WildNest Guest Portal â€” official booking record.</div><div>Support: reservations@wildnest.ph Â· +63 32 XXX-XXXX</div></div>
+  </div></body></html>`;
+}
+
+function downloadAllBookings(){
+  if(!currentGuest||!Array.isArray(currentGuest.bookings)||!currentGuest.bookings.length){
+    alert('No bookings loaded.');return;
+  }
+  const safeName=(currentGuest.name||'Guest').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'')||'Guest';
+  downloadPdfFile(`WildNest-${safeName}-All-Bookings.pdf`,buildReceiptHtml(currentGuest.bookings,'All Booking Receipts'));
+}
+
+function downloadBooking(ref){
+  if(!currentGuest||!Array.isArray(currentGuest.bookings))return;
+  const booking=currentGuest.bookings.find(b=>b.ref===ref);
+  if(!booking){alert('Booking not found.');return;}
+  downloadPdfFile(`WildNest-${ref}-Receipt.pdf`,buildReceiptHtml([booking],`Booking Receipt â€” ${ref}`));
+}
+
+/* ================================================================
+   QR GENERATOR
+================================================================ */
+function generateQR(ref){
+  const seed=ref.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const size=13;
+  let cells='';
+  const corner=new Set();
+  [[0,0],[0,6],[6,0]].forEach(([br,bc])=>{
+    for(let r=0;r<7;r++) for(let c=0;c<7;c++){
+      if(r===0||r===6||c===0||c===6||(r>=2&&r<=4&&c>=2&&c<=4))
+        corner.add(`${r+br},${c+bc}`);
+    }
+  });
+  for(let r=0;r<size;r++){
+    for(let c=0;c<size;c++){
+      const key=`${r},${c}`;
+      let filled=corner.has(key);
+      if(!filled){const v=(seed*(r*13+c*7)^(r*31+c*17))%100;filled=v<48;}
+      cells+=`<rect x="${c*8+4}" y="${r*8+4}" width="7" height="7" fill="${filled?'#0d2818':'#fff'}" rx="0.5"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 ${size*8+8} ${size*8+8}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#fff"/>${cells}</svg>`;
+}
+
+/* ================================================================
+   HELPERS
+================================================================ */
+function formatDate(str){
+  if(!str)return 'â€”';
+  const d=new Date(str);
+  return d.toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});
+}
+
+function capitalize(s){ return s?s.charAt(0).toUpperCase()+s.slice(1):s; }
+
+function getInitials(name){
+  const parts=(name||'').trim().split(' ');
+  if(parts.length>=2) return (parts[0][0]+(parts[parts.length-1][0])).toUpperCase();
+  return (name||'').slice(0,2).toUpperCase();
+}
+
+function normalizeTimeText(raw){
+  return String(raw||'')
+    .split('â€¢')[0]
+    .split('|')[0]
+    .replace(/\s+Full-Day/ig,'')
+    .trim();
+}
+
+function parseDateTime(dateStr,timeText,fallback){
+  if(!dateStr) return null;
+  const base = new Date(`${dateStr}T00:00:00`);
+  if(Number.isNaN(base.getTime())) return null;
+  const text = normalizeTimeText(timeText) || fallback || '';
+  if(!text) return base;
+
+  let hour = 0, minute = 0;
+  const m12 = text.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if(m12){
+    hour = parseInt(m12[1],10) % 12;
+    if(m12[3].toUpperCase() === 'PM') hour += 12;
+    minute = parseInt(m12[2],10);
+  } else {
+    const m24 = text.match(/^(\d{1,2}):(\d{2})$/);
+    if(!m24) return base;
+    hour = parseInt(m24[1],10);
+    minute = parseInt(m24[2],10);
+  }
+
+  return new Date(base.getFullYear(), base.getMonth(), base.getDate(), hour, minute, 0, 0);
+}
+
+function formatClock(dt){
+  return dt ? dt.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'}) : 'â€”';
+}
+
+function formatDateTime(dt){
+  return dt ? dt.toLocaleString('en-PH',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}) : 'â€”';
+}
+
+function formatRemaining(ms){
+  if(ms <= 0) return '0 mins';
+  const totalMinutes = Math.ceil(ms / 60000);
+  const days = Math.floor(totalMinutes / 1440);
+  const hours = Math.floor((totalMinutes % 1440) / 60);
+  const minutes = totalMinutes % 60;
+  const parts = [];
+  if(days > 0) parts.push(`${days} day${days === 1 ? '' : 's'}`);
+  if(hours > 0) parts.push(`${hours} hr${hours === 1 ? '' : 's'}`);
+  if(minutes > 0 && days === 0) parts.push(`${minutes} min${minutes === 1 ? '' : 's'}`);
+  return parts.slice(0,2).join(' ');
+}
+
+function experienceDurationMinutes(booking){
+  const durations = {
+    'Animal Feeding Tour': 45,
+    'Night Safari Walk': 120,
+    'Keeper Experience': 60,
+    'Sunrise Safari Walk': 120,
+    'Photo Encounter': 30
+  };
+  const source = [booking.name].concat(booking.addons || []);
+  let total = 0;
+  source.forEach(name => {
+    if(durations[name]) total += durations[name];
+  });
+  if(total <= 0) total = 120;
+  return Math.min(total, 8 * 60);
+}
+
+function buildTimingSummary(booking){
+  const now = new Date();
+  const type = String(booking.bookingType || '').toLowerCase();
+  const status = String(booking.status || '').toLowerCase();
+  const paymentMethod = String(booking.payment || '').toLowerCase();
+  const paymentStatus = String(booking.paymentStatus || '').toLowerCase();
+  const payAtResort = paymentMethod.includes('pay at resort') || paymentStatus.includes('pay on arrival');
+  const paymentAlreadyCollected = paymentStatus === 'paid' || paymentStatus === 'completed' || paymentStatus === 'settled';
+  let start = null;
+  let end = null;
+  let windowLabel = 'Booking Window';
+  const isStay = type.includes('cabin') || type.includes('full stay');
+
+  if(isStay){
+    windowLabel = 'Stay Window';
+    start = parseDateTime(booking.checkIn, booking.checkInTime, '2:00 PM');
+    end = parseDateTime(booking.checkOut || booking.checkIn, booking.checkOutTime, '11:00 AM');
+  } else if(type.includes('day visit')){
+    windowLabel = 'Day Pass Window';
+    start = parseDateTime(booking.checkIn, booking.checkInTime || booking.slotTime, '9:00 AM');
+    end = parseDateTime(booking.checkIn, booking.checkOutTime, '5:00 PM');
+  } else {
+    windowLabel = 'Session Window';
+    start = parseDateTime(booking.checkIn, booking.checkInTime || booking.slotTime, '9:00 AM');
+    if(start){
+      end = new Date(start.getTime() + experienceDurationMinutes(booking) * 60000);
+    }
+  }
+
+  if(!start || !end){
+    return {
+      windowLabel,
+      windowValue: 'To be confirmed',
+      statusLabel: 'Booking Status',
+      statusValue: 'Schedule will appear after confirmation.',
+      actionNote: 'Please wait for confirmation details before heading to reception.'
+    };
+  }
+
+  const windowValue = `${formatDateTime(start)} → ${formatDateTime(end)}`;
+  const openLabel = isStay ? 'Check-In Access' : 'Entry Access';
+  const activeLabel = isStay ? 'Checkout In' : 'Time Left';
+
+  if(status === 'cancelled'){
+    return {
+      windowLabel,
+      windowValue,
+      statusLabel: 'Cancelled',
+      statusValue: 'This reservation has been cancelled.',
+      actionNote: 'If you need help restoring or rebooking, please contact reception.'
+    };
+  }
+
+  if(status === 'completed'){
+    return {
+      windowLabel,
+      windowValue,
+      statusLabel: 'Completed',
+      statusValue: `Ended at ${formatClock(end)}`,
+      actionNote: 'This booking has already been completed.'
+    };
+  }
+
+  if(status === 'overdue'){
+    return {
+      windowLabel,
+      windowValue,
+      statusLabel: 'Overdue',
+      statusValue: `Overdue by ${formatRemaining(now - end)}`,
+      actionNote: 'Please report to reception immediately. Additional billing review may apply.'
+    };
+  }
+
+  if(status === 'checkedin'){
+    if(now <= end){
+      return {
+        windowLabel,
+        windowValue,
+        statusLabel: activeLabel,
+        statusValue: `${formatRemaining(end - now)} · until ${formatClock(end)}`,
+        actionNote: isStay
+          ? (payAtResort && !paymentAlreadyCollected
+              ? 'You are already checked in. Please settle your remaining balance at reception before checkout.'
+              : 'You are already checked in. Use this time to prepare for checkout before the deadline.')
+          : 'Your reservation is active now. Please complete your visit before the session closes.'
+      };
+    }
+
+    return {
+      windowLabel,
+      windowValue,
+      statusLabel: 'Overdue',
+      statusValue: `Overdue by ${formatRemaining(now - end)}`,
+      actionNote: 'Checkout has passed. Please proceed to reception for final billing review.'
+    };
+  }
+
+  if(now < start){
+    return {
+      windowLabel,
+      windowValue,
+      statusLabel: 'Opens In',
+      statusValue: `${formatRemaining(start - now)} · entry at ${formatClock(start)}`,
+      actionNote: payAtResort
+        ? `${openLabel} opens at ${formatClock(start)}. Please return at that time and prepare your payment at reception.`
+        : `${openLabel} opens at ${formatClock(start)}. Please return at that time.`
+    };
+  }
+
+  if(now <= end){
+    return {
+      windowLabel,
+      windowValue,
+      statusLabel: isStay ? 'Check In Now' : 'Active Now',
+      statusValue: isStay
+        ? `Arrival window is open · proceed to reception now`
+        : `${formatRemaining(end - now)} · until ${formatClock(end)}`,
+      actionNote: isStay
+        ? (payAtResort
+            ? `Your selected arrival time has been reached. Check in now at reception and settle your payment on arrival.`
+            : `Your selected arrival time has been reached. Check in now at reception.`)
+        : (payAtResort
+            ? `Your reservation is active now. Please go to reception or the gate, settle your payment, and complete entry validation before ${formatClock(end)}.`
+            : `Your reservation is active now. Please complete entry validation before ${formatClock(end)}.`)
+    };
+  }
+
+  return {
+    windowLabel,
+    windowValue,
+    statusLabel: 'Missed Window',
+    statusValue: `Ended at ${formatClock(end)}`,
+    actionNote: 'This booking window has already passed. Please coordinate with reception for assistance.'
+  };
+}
+</script>
+</body>
+</html>
+

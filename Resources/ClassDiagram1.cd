@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Project.HomePage">
+    <Position X="1" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FxAARKiSEDoJqJAJATCIAQSCakEAYAKOBhQEWSBlSSg=</HashCode>
+      <FileName>HomePage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Booking.DayVisit">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACgAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BookNow\DayVisit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Booking.ExperienceVisit">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACgAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BookNow\ExperienceVisit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Booking.FullStayExperience">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACgAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BookNow\FullStayExperience.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAnimals">
+    <Position X="20.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EhAABKCAADAIAIAIACCAAQACIAAAAACGABAAACBAACA=</HashCode>
+      <FileName>Homepage Buttons\UcAnimals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcCabin">
+    <Position X="22" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Project.UcCabin.CabinInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Homepage Buttons\UcCabin.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AlACoCCAgDoIQLQIgCKAZSCGCgAKkAPGABgMiCBZAAA=</HashCode>
+      <FileName>Homepage Buttons\UcCabin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcExperience">
+    <Position X="23.75" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Project.UcExperience.ExpInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Homepage Buttons\UcExperience.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AlACsCCgADoIQLSIgCKALyCiAhAKEAOGDxgMgCBbAAA=</HashCode>
+      <FileName>Homepage Buttons\UcExperience.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcMap">
+    <Position X="25.5" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Project.UcMap.CabinInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Homepage Buttons\UcMap.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EIACBCAAgGETAEAAABCAEAAWBiAgAAAECCoAACKEhoA=</HashCode>
+      <FileName>Homepage Buttons\UcMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.ToggleButton">
+    <Position X="18.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAIAAAAAAAAEgBAAAAAAgAAAAAIAAAAIAEAAAA=</HashCode>
+      <FileName>Homepage Buttons\UcMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcVisit">
+    <Position X="20.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EhAABKCAADAIAIAIACCAAQACIAAAAACGABAAACBAACA=</HashCode>
+      <FileName>Homepage Buttons\UcVisit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.ZoneInfo">
+    <Position X="18.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACgAAMAABAAAAAAAAQ0AQAAIAAAAAAAAAAQAEAAAA=</HashCode>
+      <FileName>Homepage Buttons\ZoneInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminAnimals">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAABACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcAdministrator\UcAdminAnimals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminBills">
+    <Position X="11" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACBAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcAdministrator\UcAdminBills.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminCabins">
+    <Position X="13" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACCAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcAdministrator\UcAdminCabins.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminDashboard">
+    <Position X="9.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JgABQgAAgCAQoAAAQECBAAgSAEIAAEAIAAAYABQEAIE=</HashCode>
+      <FileName>UcAdministrator\UcAdminDashboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminEncounters">
+    <Position X="11" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAgAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcAdministrator\UcAdminEncounters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminGuests">
+    <Position X="13" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>UcAdministrator\UcAdminGuests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminReservations">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>UcAdministrator\UcAdminReservations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAdministrator.UcAdminUsers">
+    <Position X="11" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcAdministrator\UcAdminUsers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcReception.UcReceptionCabins">
+    <Position X="28.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACCAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcReception\UcReceptionCabins.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcReception.UcReceptionCheckIn">
+    <Position X="30" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAIAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcReception\UcReceptionCheckIn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcReception.UcReceptionCheckOut">
+    <Position X="30" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcReception\UcReceptionCheckOut.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcReception.UcReceptionDashboard">
+    <Position X="31.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JgABQgAAgCASIAAAQECBAAgSAAYAgAAAAAAYABQEAok=</HashCode>
+      <FileName>UcReception\UcReceptionDashboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcReception.UcReceptionEncounters">
+    <Position X="28.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAgAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcReception\UcReceptionEncounters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcReception.UcReceptionGuests">
+    <Position X="30" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>UcReception\UcReceptionGuests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcReception.UcReceptionNewBooking">
+    <Position X="28.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>UcReception\UcReceptionNewBooking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcTourGuide.UcTourGuideComplete">
+    <Position X="34" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>UcTourGuide\UcTourGuideComplete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcTourGuide.UcTourGuideDashboard">
+    <Position X="34" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgABQhAIgCAQIAAEQACBAAgSAAIAAEAAAAAYABQAAIU=</HashCode>
+      <FileName>UcTourGuide\UcTourGuideDashboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcTourGuide.UcTourGuideGroups">
+    <Position X="34" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcTourGuide\UcTourGuideGroups.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcTourGuide.UcTourGuideHistory">
+    <Position X="35.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>UcTourGuide\UcTourGuideHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcZooKeeper.UcZookeeperClear">
+    <Position X="43.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcZooKeeper\UcZookeeperClear.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcZooKeeper.UcZookeeperDashboard">
+    <Position X="45.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgABQgAAiCAQMAAAQACBAAiSAAIAAEAAAAEcAB0AAIE=</HashCode>
+      <FileName>UcZooKeeper\UcZookeeperDashboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcZooKeeper.UcZookeeperFeeding">
+    <Position X="47.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcZooKeeper\UcZookeeperFeeding.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcZooKeeper.UcZookeeperFlag">
+    <Position X="43.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UcZooKeeper\UcZookeeperFlag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcZooKeeper.UcZookeeperHealth">
+    <Position X="47.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>UcZooKeeper\UcZookeeperHealth.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcZooKeeper.UcZookeeperLog">
+    <Position X="49" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>UcZooKeeper\UcZookeeperLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.BookNow">
+    <Position X="38.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkAQIKAAFTgAAAACABCABYACAAAAICACAAAQoCAAACQ=</HashCode>
+      <FileName>BookNow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.EmailLookout">
+    <Position X="38.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgNAIQBiCpEEAAgECAAADCAGAADoAFCAAAAAAYAAA=</HashCode>
+      <FileName>EmailLookout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.MyAccomodation">
+    <Position X="40.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAE0JAgSBiCscUAAGACEAqBCBACAHogHADAAoAxYBBA=</HashCode>
+      <FileName>MyAccomodation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.SplashScreen">
+    <Position X="13" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAADCAgwAAAACyAgAACAAAAAAAIgACQAAABAAg=</HashCode>
+      <FileName>SplashScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.StaffDashboard">
+    <Position X="15" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAUCAAACgAAAAAAACAEgQCAAEAAEAAAAgJAAAAAgE=</HashCode>
+      <FileName>StaffDashboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.StaffLogin">
+    <Position X="10.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBmQCEAgADADAhABgASABAYDkSAAgOCAABAIABBCgAA=</HashCode>
+      <FileName>StaffLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UcAbout">
+    <Position X="16.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EhAABKCAADAIAIAIACCAAQACIAAAAACGABAAACBAACA=</HashCode>
+      <FileName>UcAbout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
